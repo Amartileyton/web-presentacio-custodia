@@ -646,6 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCatalunyaMap();
 
   // --- 10. CRONOGRAMA GANTT EXECUTIU (14 ACCIONS / 7 MESOS) ---
+  // Visualització completa d'una tongada (totes les accions visibles alhora)
   function initGanttChart() {
     const container = document.getElementById('gantt-rows-container');
     const detailBadge = document.getElementById('gantt-detail-badge');
@@ -655,51 +656,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailDep = document.getElementById('gantt-detail-dep');
     const detailRec = document.getElementById('gantt-detail-rec');
 
-    const filterAll = document.getElementById('gantt-filter-all');
-    const filterF1 = document.getElementById('gantt-filter-f1');
-    const filterF2 = document.getElementById('gantt-filter-f2');
-    const filterF3 = document.getElementById('gantt-filter-f3');
-
     if (!container || typeof GANTT_ACTIONS === 'undefined') return;
 
-    let currentFilter = 'all'; // 'all', 1, 2, 3
     let selectedIndex = 0;
 
     function renderGanttRows() {
       container.innerHTML = '';
-      
-      const filtered = currentFilter === 'all' 
-        ? GANTT_ACTIONS 
-        : GANTT_ACTIONS.filter(a => a.fase === currentFilter);
-
       let lastFase = null;
 
-      filtered.forEach((action, idx) => {
-        // Separador de Fase
+      GANTT_ACTIONS.forEach((action) => {
+        // Separador de Fase compacte
         if (action.fase !== lastFase) {
           lastFase = action.fase;
           const faseHeader = document.createElement('div');
           const faseColorCls = action.fase === 1 
-            ? 'bg-emerald-50 text-emerald-800 border-emerald-200' 
+            ? 'bg-emerald-50/80 text-emerald-900 border-emerald-200' 
             : action.fase === 2 
-              ? 'bg-blue-50 text-blue-800 border-blue-200' 
-              : 'bg-amber-50 text-amber-800 border-amber-200';
+              ? 'bg-blue-50/80 text-blue-900 border-blue-200' 
+              : 'bg-amber-50/80 text-amber-900 border-amber-200';
           
-          faseHeader.className = `px-2 py-1 text-[10px] font-extrabold rounded-md border flex items-center justify-between mt-1 mb-0.5 ${faseColorCls}`;
+          faseHeader.className = `px-2 py-0.5 text-[9px] font-extrabold rounded border flex items-center justify-between my-0.5 tracking-tight ${faseColorCls}`;
           faseHeader.innerHTML = `
             <span>${action.faseNom.toUpperCase()}</span>
-            <span class="font-mono text-[9px] uppercase tracking-wider">${action.fase === 1 ? 'Mesos 1-2' : action.fase === 2 ? 'Mesos 3-5' : 'Mesos 1-7'}</span>
+            <span class="font-mono text-[8.5px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
           `;
           container.appendChild(faseHeader);
         }
 
-        // Fila de l'Acció
+        // Fila compacta de l'Acció
         const row = document.createElement('div');
         const isSelected = (action.num === GANTT_ACTIONS[selectedIndex].num);
-        row.className = `gantt-row py-1 px-1.5 rounded-lg border border-slate-100 hover:border-slate-300 cursor-pointer ${isSelected ? 'is-selected' : ''}`;
+        row.className = `gantt-row py-0.5 px-1.5 rounded border border-transparent hover:border-slate-200 cursor-pointer ${isSelected ? 'is-selected' : ''}`;
         row.dataset.actionNum = action.num;
 
-        // Barra de Gantt
         // 7 mesos -> cada mes és 100/7 = 14.2857%
         const leftPct = ((action.inici - 1) / 7 * 100).toFixed(2);
         const widthPct = ((action.fi - action.inici + 1) / 7 * 100).toFixed(2);
@@ -719,9 +708,9 @@ document.addEventListener('DOMContentLoaded', () => {
             : `M${action.inici}-M${action.fi}`;
 
         row.innerHTML = `
-          <!-- Nom i Responsable (Columna 46%) -->
+          <!-- Nom i Responsable (Columna 48%) -->
           <div class="flex items-center gap-1.5 pr-2 overflow-hidden">
-            <span class="w-4 h-4 rounded text-[9px] font-mono font-bold flex items-center justify-center shrink-0 ${
+            <span class="w-3.5 h-3.5 rounded text-[8.5px] font-mono font-bold flex items-center justify-center shrink-0 ${
               action.fase === 1 ? 'bg-emerald-100 text-emerald-800' : action.fase === 2 ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
             }">${action.num}</span>
             <span class="text-[10px] text-slate-800 truncate font-medium flex-1" title="${action.accio}">${action.accio}</span>
@@ -780,19 +769,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (detailRec) detailRec.textContent = action.recursos;
     }
 
-    function setFilter(filter, activeBtn) {
-      currentFilter = filter;
-      [filterAll, filterF1, filterF2, filterF3].forEach(btn => btn?.classList.remove('is-active'));
-      activeBtn?.classList.add('is-active');
-      renderGanttRows();
-    }
-
-    filterAll?.addEventListener('click', () => setFilter('all', filterAll));
-    filterF1?.addEventListener('click', () => setFilter(1, filterF1));
-    filterF2?.addEventListener('click', () => setFilter(2, filterF2));
-    filterF3?.addEventListener('click', () => setFilter(3, filterF3));
-
-    // Renderitzar inicial i seleccionar acció 1 (o acció 13 de pilot)
+    // Renderitzar les 14 accions d'una sola tongada
     renderGanttRows();
     updateInspector(GANTT_ACTIONS[0]);
   }
