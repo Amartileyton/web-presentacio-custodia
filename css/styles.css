@@ -498,3 +498,59 @@ body::-webkit-scrollbar,
   0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
   50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
 }
+
+
+/* Animació i Ressaltat del Cronograma Gantt */
+.gantt-row {
+  display: grid;
+  grid-template-columns: 44% repeat(7, 1fr);
+  align-items: center;
+  transition: background-color 0.12s ease, opacity 0.35s ease, transform 0.2s ease;
+  position: relative;
+  min-height: 30px;
+}
+
+.gantt-row.is-dimmed {
+  opacity: 0.22;
+  filter: grayscale(40%);
+}
+
+.gantt-row.is-highlighted {
+  opacity: 1;
+  filter: none;
+}
+
+.gantt-bar {
+  position: absolute;
+  height: 17px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s ease, filter 0.15s ease, opacity 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+  overflow: hidden;
+}
+
+/* Floating Presentation Controller Pill */
+#presentation-clicker-bar {
+  animation: slideUpPill 0.4s ease-out;
+}
+
+@keyframes slideUpPill {
+  from {
+    transform: translate(-50%, 120%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}

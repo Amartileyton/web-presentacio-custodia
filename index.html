@@ -1134,6 +1134,20 @@
     </div>
   </footer>
 
+    <!-- =========================================================================
+       BARRA FLOTANT DE CONTROL DE PRESENTACIÓ (PAS A PAS PER CLIC)
+       ========================================================================= -->
+  <aside id="presentation-clicker-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700/80 shadow-2xl flex items-center gap-3 text-xs font-medium select-none transition-all hover:scale-102">
+    <button id="pres-btn-prev" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white cursor-pointer" title="Pas Anterior (o Fletxa Esquerra)">◀</button>
+    <div class="flex items-center gap-2 cursor-pointer" id="pres-click-advance" title="Clic per avançar el següent pas / diapositiva">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span id="pres-step-badge" class="font-mono font-bold text-emerald-300">Pas 1 / 12</span>
+      <span class="text-slate-500">|</span>
+      <span id="pres-step-name" class="text-slate-200 text-[11px] max-w-[200px] sm:max-w-[340px] truncate">1. Abast Territorial & 97 ACDs</span>
+    </div>
+    <button id="pres-btn-next" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white font-bold cursor-pointer" title="Següent Pas (o Clic)">▶</button>
+  </aside>
+
   <!-- Lògica de Scrollytelling i Interacció -->
   <script src="js/app.js"></script>
 </body>

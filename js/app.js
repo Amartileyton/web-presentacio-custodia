@@ -603,6 +603,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (activeSectionIdx !== currentSectionIndex) {
       activateStage(activeSectionIdx);
+      if (window.presentationController) {
+        window.presentationController.syncToSection(activeSectionIdx);
+      }
     }
     isUpdatingWaypoints = false;
   }
@@ -728,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="gantt-grid-col"></div>
               <div class="gantt-grid-col is-pilot-month"></div>
             </div>
-            <div class="gantt-bar ${barClass}" style="left: ${leftPct}%; width: ${widthPct}%;" title="Mes ${action.inici} a ${action.fi} (${action.durada} mesos)">
+            <div class="gantt-bar ${barClass}" style="left: ${leftPct}%; width: ${widthPct}%;" data-target-width="${widthPct}%" data-fase="${action.fase}" data-action-num="${action.num}" title="Mes ${action.inici} a ${action.fi} (${action.durada} mesos)">
               <span class="truncate px-1">${labelText}</span>
             </div>
           </div>
@@ -767,6 +770,72 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (detailDep) detailDep.textContent = action.dependencia;
       if (detailRec) detailRec.textContent = action.recursos;
+    }
+
+    // Funcions d'Animació Interactiva del Gantt per Fases
+    window.animateGanttPhase = function animateGanttPhase(fase) {
+      const allRows = container.querySelectorAll('.gantt-row');
+      const allBars = container.querySelectorAll('.gantt-bar');
+
+      allRows.forEach(row => {
+        const actionNum = parseInt(row.dataset.actionNum, 10);
+        const action = GANTT_ACTIONS.find(a => a.num === actionNum);
+        if (!action) return;
+
+        if (fase === 'all' || action.fase <= fase) {
+          row.classList.remove('is-dimmed');
+          row.classList.add('is-highlighted');
+        } else {
+          row.classList.add('is-dimmed');
+          row.classList.remove('is-highlighted');
+        }
+      });
+
+      allBars.forEach((bar) => {
+        const barFase = parseInt(bar.dataset.fase, 10);
+        const actionNum = parseInt(bar.dataset.actionNum, 10);
+        const targetW = bar.dataset.targetWidth || '14.28%';
+
+        if (fase === 'all' || barFase <= fase) {
+          if (barFase === fase || fase === 'all') {
+            bar.style.width = '0%';
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                bar.style.width = targetW;
+              }, (actionNum % 6) * 55);
+            });
+          } else {
+            bar.style.width = targetW;
+          }
+        } else {
+          bar.style.width = '0%';
+        }
+      });
+
+      if (fase === 1) {
+        updateInspector(GANTT_ACTIONS[0]);
+        highlightGanttRow(1);
+      } else if (fase === 2) {
+        updateInspector(GANTT_ACTIONS[6]);
+        highlightGanttRow(7);
+      } else if (fase === 3 || fase === 'all') {
+        updateInspector(GANTT_ACTIONS[12]);
+        highlightGanttRow(13);
+      }
+    };
+
+    window.animateAllGantt = function animateAllGantt() {
+      window.animateGanttPhase('all');
+    };
+
+    function highlightGanttRow(actionNum) {
+      container.querySelectorAll('.gantt-row').forEach(r => {
+        if (parseInt(r.dataset.actionNum, 10) === actionNum) {
+          r.classList.add('is-selected');
+        } else {
+          r.classList.remove('is-selected');
+        }
+      });
     }
 
     // Renderitzar les 14 accions d'una sola tongada
@@ -863,7 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 8. NAVEGACIÓ PER TECLAT I FLETXES DEL RAIL ---
+  // --- 8. CONTROLADOR EXECUTIU DE PRESENTACIÓ PER CLICS & TECLAT ---
   function navigateToSection(index) {
     if (index >= 0 && index < totalSections) {
       const targetSection = sections[index];
@@ -873,73 +942,299 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function handleAdvance() {
-    // Si estem a la Secció 2 (ASME Pinned), avancem progressivament pel diagrama abans de saltar
-    if (currentSectionIndex === 2) {
-      const sec2 = sections[2];
-      const sec3 = sections[3];
-      if (sec2 && sec3) {
-        const start = sec2.offsetTop - 100;
-        const end = sec3.offsetTop - 100;
-        const currentY = window.scrollY || document.documentElement.scrollTop;
-        const stepChunk = (end - start) / 3;
+  // Animació suau del Diagrama ASME entre ratios de progrés
+  let asmeAnimFrame = null;
+  window.currentAsmeRatio = 0.0;
+  function animateAsmeTo(targetRatio, duration = 450) {
+    if (asmeAnimFrame) cancelAnimationFrame(asmeAnimFrame);
+    const startRatio = window.currentAsmeRatio || 0.0;
+    const startTime = performance.now();
 
-        if (currentY < end - 180) {
-          const targetY = Math.min(end, currentY + stepChunk);
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-          return;
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = startRatio + (targetRatio - startRatio) * eased;
+      if (typeof renderAsmeProgress === 'function') {
+        renderAsmeProgress(val);
+      }
+      window.currentAsmeRatio = val;
+      if (t < 1) {
+        asmeAnimFrame = requestAnimationFrame(step);
+      } else {
+        if (typeof renderAsmeProgress === 'function') {
+          renderAsmeProgress(targetRatio);
+        }
+        window.currentAsmeRatio = targetRatio;
+        asmeAnimFrame = null;
+      }
+    }
+    asmeAnimFrame = requestAnimationFrame(step);
+  }
+
+  // SEQÜÈNCIA D'ESDEVENIMENTS DE LA PRESENTACIÓ (PAS A PAS PER CLIC)
+  const PRESENTATION_STEPS = [
+    {
+      step: 0,
+      sectionIndex: 0,
+      name: "1. Abast Territorial & 97 ACDs",
+      desc: "Mapa de Catalunya amb 97 ACDs i senyals sonar actives",
+      action: () => {
+        navigateToSection(0);
+        activateStage(0);
+      }
+    },
+    {
+      step: 1,
+      sectionIndex: 1,
+      name: "2. Procés ASME General PG-ME",
+      desc: "Identificació d'actors (USC, OAC, Custòdia, UI)",
+      action: () => {
+        navigateToSection(1);
+        activateStage(1);
+      }
+    },
+    {
+      step: 2,
+      sectionIndex: 2,
+      name: "3. ASME Garjola: Bloc ACD (1-5)",
+      desc: "Inici, valoració, immobilització reglada i límit ≤ 30 min",
+      action: () => {
+        navigateToSection(2);
+        activateStage(2);
+        animateAsmeTo(0.35, 450);
+      }
+    },
+    {
+      step: 3,
+      sectionIndex: 2,
+      name: "4. ASME Garjola: Ruptura TIC & Atestats (6-9)",
+      desc: "Diligència atestat SIP i registre manual Custòdia",
+      action: () => {
+        navigateToSection(2);
+        activateStage(2);
+        animateAsmeTo(0.68, 450);
+      }
+    },
+    {
+      step: 4,
+      sectionIndex: 2,
+      name: "5. ASME Garjola: Mèdics & Tancament (10-13)",
+      desc: "Avaluació facultatiu, part mèdic i fi de subprocés (13/13)",
+      action: () => {
+        navigateToSection(2);
+        activateStage(2);
+        animateAsmeTo(1.0, 500);
+      }
+    },
+    {
+      step: 5,
+      sectionIndex: 3,
+      name: "6. Proposta de Valor: Diagnosi AS-IS",
+      desc: "Deficiències operatives, paper extraviable i manca d'alertes",
+      action: () => {
+        navigateToSection(3);
+        activateStage(3);
+        setAsIsToBeMode('asis');
+      }
+    },
+    {
+      step: 6,
+      sectionIndex: 3,
+      name: "7. Proposta de Valor: Model TO-BE Redissenyat",
+      desc: "Passarel·la única TIC, avís > 30 min i integració 100%",
+      action: () => {
+        navigateToSection(3);
+        activateStage(3);
+        setAsIsToBeMode('tobe');
+      }
+    },
+    {
+      step: 7,
+      sectionIndex: 4,
+      name: "8. Pla Implantació: Gantt F1 Organització",
+      desc: "Accions 1 a 5 (Mesos 1-2): Redisseny TO-BE i funcions",
+      action: () => {
+        navigateToSection(4);
+        activateStage(4);
+        if (typeof window.animateGanttPhase === 'function') {
+          window.animateGanttPhase(1);
+        }
+      }
+    },
+    {
+      step: 8,
+      sectionIndex: 4,
+      name: "9. Pla Implantació: Gantt F2 TIC",
+      desc: "Accions 6 a 8 (Mesos 3-5): Connectar Custòdia i Atestats",
+      action: () => {
+        navigateToSection(4);
+        activateStage(4);
+        if (typeof window.animateGanttPhase === 'function') {
+          window.animateGanttPhase(2);
+        }
+      }
+    },
+    {
+      step: 9,
+      sectionIndex: 4,
+      name: "10. Pla Implantació: Gantt F3 Pilot Badalona",
+      desc: "Accions 9 a 14 (Mesos 1-7): Fita Pilot ACD Badalona M7",
+      action: () => {
+        navigateToSection(4);
+        activateStage(4);
+        if (typeof window.animateGanttPhase === 'function') {
+          window.animateGanttPhase(3);
+        }
+      }
+    },
+    {
+      step: 10,
+      sectionIndex: 5,
+      name: "11. Governança: Semàfor Verd (En termini)",
+      desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
+      action: () => {
+        navigateToSection(5);
+        activateStage(5);
+        const greenBtn = document.querySelector('.traffic-btn[data-status="green"]');
+        greenBtn?.click();
+      }
+    },
+    {
+      step: 11,
+      sectionIndex: 5,
+      name: "12. Governança: Resposta a Riscos & Conclusió",
+      desc: "Mesures correctores, decisió executiva i tancament",
+      action: () => {
+        navigateToSection(5);
+        activateStage(5);
+        const amberBtn = document.querySelector('.traffic-btn[data-status="amber"]');
+        amberBtn?.click();
+      }
+    }
+  ];
+
+  let currentPresStep = 0;
+
+  function updatePresentationUI() {
+    const cur = PRESENTATION_STEPS[currentPresStep];
+    if (!cur) return;
+
+    const badge = document.getElementById('pres-step-badge');
+    const nameEl = document.getElementById('pres-step-name');
+    if (badge) badge.textContent = `Pas ${currentPresStep + 1} / ${PRESENTATION_STEPS.length}`;
+    if (nameEl) nameEl.textContent = cur.name;
+
+    // Sincronitzar waypoints
+    if (waypointItems && waypointItems[cur.sectionIndex]) {
+      waypointItems.forEach((w, idx) => {
+        if (idx === cur.sectionIndex) {
+          w.classList.add('is-active');
+        } else {
+          w.classList.remove('is-active');
+        }
+      });
+    }
+  }
+
+  window.presentationController = {
+    get currentStep() {
+      return currentPresStep;
+    },
+    goToStep(stepIdx) {
+      if (stepIdx < 0) stepIdx = 0;
+      if (stepIdx >= PRESENTATION_STEPS.length) stepIdx = PRESENTATION_STEPS.length - 1;
+      currentPresStep = stepIdx;
+      const stepObj = PRESENTATION_STEPS[currentPresStep];
+      if (stepObj && typeof stepObj.action === 'function') {
+        stepObj.action();
+      }
+      updatePresentationUI();
+    },
+    nextStep() {
+      if (currentPresStep < PRESENTATION_STEPS.length - 1) {
+        this.goToStep(currentPresStep + 1);
+      } else {
+        this.goToStep(currentPresStep);
+      }
+    },
+    prevStep() {
+      if (currentPresStep > 0) {
+        this.goToStep(currentPresStep - 1);
+      }
+    },
+    syncToSection(sectionIdx) {
+      const cur = PRESENTATION_STEPS[currentPresStep];
+      if (cur && cur.sectionIndex !== sectionIdx) {
+        const matchingStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === sectionIdx);
+        if (matchingStep !== -1) {
+          currentPresStep = matchingStep;
+          updatePresentationUI();
         }
       }
     }
-    navigateToSection(Math.min(totalSections - 1, currentSectionIndex + 1));
-  }
+  };
 
-  function handlePrevious() {
-    if (currentSectionIndex === 2) {
-      const sec2 = sections[2];
-      const sec3 = sections[3];
-      if (sec2 && sec3) {
-        const start = sec2.offsetTop - 100;
-        const end = sec3.offsetTop - 100;
-        const currentY = window.scrollY || document.documentElement.scrollTop;
-        const stepChunk = (end - start) / 3;
+  // 1. ESDEVENIMENT GLOBAL DE CLIC PER AVANÇAR LA PRESENTACIÓ
+  document.addEventListener('click', (e) => {
+    // Si l'usuari fa clic en un control interactiu específic, deixem que actuï lliurement
+    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .decision-toggle-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance');
+    if (interactive) return;
 
-        if (currentY > start + 180) {
-          const targetY = Math.max(start, currentY - stepChunk);
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-          return;
-        }
-      }
-    }
-    navigateToSection(Math.max(0, currentSectionIndex - 1));
-  }
-
-  railBtnUp?.addEventListener('click', () => {
-    handlePrevious();
+    // Qualsevol clic a la diapositiva avança un pas/animació!
+    window.presentationController.nextStep();
   });
 
-  railBtnDown?.addEventListener('click', () => {
-    handleAdvance();
+  // 2. CONTROLS DE LA BARRA FLOTANT
+  document.getElementById('pres-btn-next')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.nextStep();
   });
 
+  document.getElementById('pres-click-advance')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.nextStep();
+  });
+
+  document.getElementById('pres-btn-prev')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.prevStep();
+  });
+
+  // 3. BOTONS DEL RAIL LATERAL
+  railBtnDown?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.nextStep();
+  });
+
+  railBtnUp?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.prevStep();
+  });
+
+  // 4. NAVEGACIÓ PER TECLAT I CLICKER DE PRESENTACIÓ
   document.addEventListener('keydown', (e) => {
     if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
-    if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === 'Enter' || (e.key === ' ' && !e.shiftKey)) {
       e.preventDefault();
-      handleAdvance();
-    } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+      window.presentationController.nextStep();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Backspace' || (e.key === ' ' && e.shiftKey)) {
       e.preventDefault();
-      handlePrevious();
+      window.presentationController.prevStep();
     } else if (e.key === 'Home') {
       e.preventDefault();
-      navigateToSection(0);
+      window.presentationController.goToStep(0);
     } else if (e.key === 'End') {
       e.preventDefault();
-      navigateToSection(totalSections - 1);
+      window.presentationController.goToStep(PRESENTATION_STEPS.length - 1);
     } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
       const stepIdx = parseInt(e.key, 10) - 1;
-      navigateToSection(stepIdx);
+      const targetStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === stepIdx);
+      if (targetStep !== -1) {
+        window.presentationController.goToStep(targetStep);
+      }
     }
   });
 

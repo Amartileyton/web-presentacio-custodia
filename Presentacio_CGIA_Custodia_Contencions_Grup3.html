@@ -547,6 +547,62 @@ body::-webkit-scrollbar,
   50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); }
 }
 
+
+/* Animació i Ressaltat del Cronograma Gantt */
+.gantt-row {
+  display: grid;
+  grid-template-columns: 44% repeat(7, 1fr);
+  align-items: center;
+  transition: background-color 0.12s ease, opacity 0.35s ease, transform 0.2s ease;
+  position: relative;
+  min-height: 30px;
+}
+
+.gantt-row.is-dimmed {
+  opacity: 0.22;
+  filter: grayscale(40%);
+}
+
+.gantt-row.is-highlighted {
+  opacity: 1;
+  filter: none;
+}
+
+.gantt-bar {
+  position: absolute;
+  height: 17px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.15s ease, filter 0.15s ease, opacity 0.3s ease;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+  overflow: hidden;
+}
+
+/* Floating Presentation Controller Pill */
+#presentation-clicker-bar {
+  animation: slideUpPill 0.4s ease-out;
+}
+
+@keyframes slideUpPill {
+  from {
+    transform: translate(-50%, 120%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
   </style>
 </head>
 <body class="bg-[#f8fafc] text-slate-800 antialiased selection:bg-pgme-blue selection:text-white">
@@ -1636,6 +1692,20 @@ body::-webkit-scrollbar,
     </div>
   </footer>
 
+    <!-- =========================================================================
+       BARRA FLOTANT DE CONTROL DE PRESENTACIÓ (PAS A PAS PER CLIC)
+       ========================================================================= -->
+  <aside id="presentation-clicker-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700/80 shadow-2xl flex items-center gap-3 text-xs font-medium select-none transition-all hover:scale-102">
+    <button id="pres-btn-prev" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white cursor-pointer" title="Pas Anterior (o Fletxa Esquerra)">◀</button>
+    <div class="flex items-center gap-2 cursor-pointer" id="pres-click-advance" title="Clic per avançar el següent pas / diapositiva">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <span id="pres-step-badge" class="font-mono font-bold text-emerald-300">Pas 1 / 12</span>
+      <span class="text-slate-500">|</span>
+      <span id="pres-step-name" class="text-slate-200 text-[11px] max-w-[200px] sm:max-w-[340px] truncate">1. Abast Territorial & 97 ACDs</span>
+    </div>
+    <button id="pres-btn-next" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white font-bold cursor-pointer" title="Següent Pas (o Clic)">▶</button>
+  </aside>
+
   <!-- Lògica de Scrollytelling i Interacció -->
   <script>
 const GANTT_ACTIONS = [{"fase": 1, "faseNom": "Fase 1: Millores Organitzatives", "faseColor": "emerald", "num": 1, "accio": "Recollir les necessitats i incidències detectades pels efectius d'ACD, OAC i unitats instructores.", "responsable": "AINSP-CGIA", "inici": 1, "fi": 1, "durada": 1, "dependencia": "Inici immediat", "recursos": "Grup de treball amb responsables d'ACD i unitats instructores; enquestes internes.", "estat": "Planificat"}, {"fase": 1, "faseNom": "Fase 1: Millores Organitzatives", "faseColor": "emerald", "num": 2, "accio": "Analitzar i redissenyar el procés complet TO-BE, identificant tasques manuals a eliminar, fluxos d'informació i nous punts de control.", "responsable": "AORG-CGIA", "inici": 1, "fi": 1, "durada": 1, "dependencia": "En paral·lel amb la recollida de necessitats; validació al final del mes 1.", "recursos": "Grup de treball amb responsables d'ACD, unitats instructores i CGIA.", "estat": "Planificat"}, {"fase": 1, "faseNom": "Fase 1: Millores Organitzatives", "faseColor": "emerald", "num": 3, "accio": "Determinar i documentar les funcions dels agents actuants, responsables d'ACD i unitats instructores.", "responsable": "AORG-CGIA", "inici": 1, "fi": 2, "durada": 2, "dependencia": "Depèn de la primera versió del TO-BE.", "recursos": "Actualització de documentació operativa corporativa i procediments interns.", "estat": "Planificat"}, {"fase": 1, "faseNom": "Fase 1: Millores Organitzatives", "faseColor": "emerald", "num": 4, "accio": "Definir un model únic d'actuació i estandarditzar el registre de les contencions.", "responsable": "CGIA i CGTIC", "inici": 1, "fi": 2, "durada": 2, "dependencia": "Requisit previ per tancar els requeriments TIC.", "recursos": "Revisió dels procediments corporatius i definició de la introducció única de dades.", "estat": "Planificat"}, {"fase": 1, "faseNom": "Fase 1: Millores Organitzatives", "faseColor": "emerald", "num": 5, "accio": "Incorporar controls de seguretat jurídica i traçabilitat: avisos de durada, controls periòdics i supervisió mèdica.", "responsable": "AORG-CGIA", "inici": 1, "fi": 2, "durada": 2, "dependencia": "S'ha eliminat la fila duplicada del document d'origen.", "recursos": "Revisió normativa i procedimental; definició dels controls i responsables.", "estat": "Planificat"}, {"fase": 2, "faseNom": "Fase 2: Desenvolupament Tecnològic", "faseColor": "blue", "num": 6, "accio": "Adaptar les aplicacions corporatives amb formularis normalitzats per a la recollida estructurada de dades de les contencions.", "responsable": "CGTIC", "inici": 3, "fi": 5, "durada": 3, "dependencia": "TO-BE, model de registre i requisits funcionals validats.", "recursos": "Evolutiu informàtic de la PG-ME.", "estat": "Planificat"}, {"fase": 2, "faseNom": "Fase 2: Desenvolupament Tecnològic", "faseColor": "blue", "num": 7, "accio": "Connectar Custòdia i Atestats per garantir una única font de dades i eliminar incoherències.", "responsable": "AAE-CGIA i CGTIC", "inici": 3, "fi": 5, "durada": 3, "dependencia": "Coordinada amb l'adaptació dels formularis.", "recursos": "Anàlisi funcional, passarel·la de dades i 1 desenvolupador: 8 h/dia, 5 dies/setmana, durant 3-5 mesos.", "estat": "Planificat"}, {"fase": 2, "faseNom": "Fase 2: Desenvolupament Tecnològic", "faseColor": "blue", "num": 8, "accio": "Automatitzar la reutilització de la informació per evitar la introducció repetida en aplicacions o diligències.", "responsable": "AAE-CGIA i CGTIC", "inici": 3, "fi": 5, "durada": 3, "dependencia": "Depèn de la integració Custòdia-Atestats.", "recursos": "Adaptacions funcionals i tècniques de comunicació entre sistemes.", "estat": "Planificat"}, {"fase": 3, "faseNom": "Fase 3: Gestió del Canvi i Pilot", "faseColor": "amber", "num": 9, "accio": "Revisar i, si escau, modificar el marc procedimental afectat: PRO 006 i IO 002; contrastar l'article 520 LECrim i la LO 7/2021.", "responsable": "AORG-CGIA", "inici": 1, "fi": 5, "durada": 5, "dependencia": "Ha d'estar resolt abans de la formació i del pilot.", "recursos": "Revisió jurídica, procedimental, funcional i de protecció de dades.", "estat": "Planificat"}, {"fase": 3, "faseNom": "Fase 3: Gestió del Canvi i Pilot", "faseColor": "amber", "num": 10, "accio": "Preparar materials i formar el personal d'ACD, OAC i unitats instructores en el nou procediment i les noves eines.", "responsable": "AORG-CGIA (coordinació)", "inici": 5, "fi": 6, "durada": 2, "dependencia": "La formació operativa final es fa després de les proves funcionals i abans del pilot.", "recursos": "Material didàctic, comunicats, Intranet, Teams, PPT i vídeo (3 efectius de l'AORG).", "estat": "Planificat"}, {"fase": 3, "faseNom": "Fase 3: Gestió del Canvi i Pilot", "faseColor": "amber", "num": 11, "accio": "Definir i implantar indicadors separats de qualitat, seguretat, compliment, eficiència i traçabilitat.", "responsable": "AAE-CGIA", "inici": 1, "fi": 6, "durada": 6, "dependencia": "Quadre d'indicadors operatiu abans d'iniciar el pilot.", "recursos": "Eines d'explotació de dades, quadre de comandament i informes periòdics.", "estat": "Planificat"}, {"fase": 3, "faseNom": "Fase 3: Gestió del Canvi i Pilot", "faseColor": "amber", "num": 12, "accio": "Fer proves tècniques i funcionals, validar la integració i corregir incidències crítiques.", "responsable": "CGTIC, AAE-CGIA i usuaris clau", "inici": 5, "fi": 6, "durada": 2, "dependencia": "Porta de decisió: cap error crític o bloquejant.", "recursos": "Entorn de proves, casos de prova, suport tècnic i acta de validació.", "estat": "Planificat"}, {"fase": 3, "faseNom": "Fase 3: Gestió del Canvi i Pilot", "faseColor": "amber", "num": 13, "accio": "Executar la prova pilot a l'ACD Badalona.", "responsable": "AINSP-CGIA, CGTIC i ACD Badalona", "inici": 7, "fi": 7, "durada": 1, "dependencia": "Només després de validar sistemes, normativa, formació i indicadors.", "recursos": "Suport tècnic dedicat i supervisió diària; ACD Badalona (~10 detinguts/dia) i supervisió permanent.", "estat": "Planificat"}, {"fase": 3, "faseNom": "Fase 3: Gestió del Canvi i Pilot", "faseColor": "amber", "num": 14, "accio": "Avaluar els resultats inicials del pilot i acordar ajustos abans del desplegament territorial.", "responsable": "AINSP, AAE, AORG i CGTIC", "inici": 7, "fi": 7, "durada": 1, "dependencia": "Tancament del pilot i decisió sobre continuïtat o correccions.", "recursos": "Informe de pilot, incidències, indicadors, mesures correctores i proposta de desplegament.", "estat": "Planificat"}];
@@ -2243,6 +2313,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (activeSectionIdx !== currentSectionIndex) {
       activateStage(activeSectionIdx);
+      if (window.presentationController) {
+        window.presentationController.syncToSection(activeSectionIdx);
+      }
     }
     isUpdatingWaypoints = false;
   }
@@ -2368,7 +2441,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="gantt-grid-col"></div>
               <div class="gantt-grid-col is-pilot-month"></div>
             </div>
-            <div class="gantt-bar ${barClass}" style="left: ${leftPct}%; width: ${widthPct}%;" title="Mes ${action.inici} a ${action.fi} (${action.durada} mesos)">
+            <div class="gantt-bar ${barClass}" style="left: ${leftPct}%; width: ${widthPct}%;" data-target-width="${widthPct}%" data-fase="${action.fase}" data-action-num="${action.num}" title="Mes ${action.inici} a ${action.fi} (${action.durada} mesos)">
               <span class="truncate px-1">${labelText}</span>
             </div>
           </div>
@@ -2407,6 +2480,72 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (detailDep) detailDep.textContent = action.dependencia;
       if (detailRec) detailRec.textContent = action.recursos;
+    }
+
+    // Funcions d'Animació Interactiva del Gantt per Fases
+    window.animateGanttPhase = function animateGanttPhase(fase) {
+      const allRows = container.querySelectorAll('.gantt-row');
+      const allBars = container.querySelectorAll('.gantt-bar');
+
+      allRows.forEach(row => {
+        const actionNum = parseInt(row.dataset.actionNum, 10);
+        const action = GANTT_ACTIONS.find(a => a.num === actionNum);
+        if (!action) return;
+
+        if (fase === 'all' || action.fase <= fase) {
+          row.classList.remove('is-dimmed');
+          row.classList.add('is-highlighted');
+        } else {
+          row.classList.add('is-dimmed');
+          row.classList.remove('is-highlighted');
+        }
+      });
+
+      allBars.forEach((bar) => {
+        const barFase = parseInt(bar.dataset.fase, 10);
+        const actionNum = parseInt(bar.dataset.actionNum, 10);
+        const targetW = bar.dataset.targetWidth || '14.28%';
+
+        if (fase === 'all' || barFase <= fase) {
+          if (barFase === fase || fase === 'all') {
+            bar.style.width = '0%';
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                bar.style.width = targetW;
+              }, (actionNum % 6) * 55);
+            });
+          } else {
+            bar.style.width = targetW;
+          }
+        } else {
+          bar.style.width = '0%';
+        }
+      });
+
+      if (fase === 1) {
+        updateInspector(GANTT_ACTIONS[0]);
+        highlightGanttRow(1);
+      } else if (fase === 2) {
+        updateInspector(GANTT_ACTIONS[6]);
+        highlightGanttRow(7);
+      } else if (fase === 3 || fase === 'all') {
+        updateInspector(GANTT_ACTIONS[12]);
+        highlightGanttRow(13);
+      }
+    };
+
+    window.animateAllGantt = function animateAllGantt() {
+      window.animateGanttPhase('all');
+    };
+
+    function highlightGanttRow(actionNum) {
+      container.querySelectorAll('.gantt-row').forEach(r => {
+        if (parseInt(r.dataset.actionNum, 10) === actionNum) {
+          r.classList.add('is-selected');
+        } else {
+          r.classList.remove('is-selected');
+        }
+      });
     }
 
     // Renderitzar les 14 accions d'una sola tongada
@@ -2503,7 +2642,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- 8. NAVEGACIÓ PER TECLAT I FLETXES DEL RAIL ---
+  // --- 8. CONTROLADOR EXECUTIU DE PRESENTACIÓ PER CLICS & TECLAT ---
   function navigateToSection(index) {
     if (index >= 0 && index < totalSections) {
       const targetSection = sections[index];
@@ -2513,73 +2652,299 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function handleAdvance() {
-    // Si estem a la Secció 2 (ASME Pinned), avancem progressivament pel diagrama abans de saltar
-    if (currentSectionIndex === 2) {
-      const sec2 = sections[2];
-      const sec3 = sections[3];
-      if (sec2 && sec3) {
-        const start = sec2.offsetTop - 100;
-        const end = sec3.offsetTop - 100;
-        const currentY = window.scrollY || document.documentElement.scrollTop;
-        const stepChunk = (end - start) / 3;
+  // Animació suau del Diagrama ASME entre ratios de progrés
+  let asmeAnimFrame = null;
+  window.currentAsmeRatio = 0.0;
+  function animateAsmeTo(targetRatio, duration = 450) {
+    if (asmeAnimFrame) cancelAnimationFrame(asmeAnimFrame);
+    const startRatio = window.currentAsmeRatio || 0.0;
+    const startTime = performance.now();
 
-        if (currentY < end - 180) {
-          const targetY = Math.min(end, currentY + stepChunk);
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-          return;
+    function step(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / duration);
+      // easeOutCubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = startRatio + (targetRatio - startRatio) * eased;
+      if (typeof renderAsmeProgress === 'function') {
+        renderAsmeProgress(val);
+      }
+      window.currentAsmeRatio = val;
+      if (t < 1) {
+        asmeAnimFrame = requestAnimationFrame(step);
+      } else {
+        if (typeof renderAsmeProgress === 'function') {
+          renderAsmeProgress(targetRatio);
+        }
+        window.currentAsmeRatio = targetRatio;
+        asmeAnimFrame = null;
+      }
+    }
+    asmeAnimFrame = requestAnimationFrame(step);
+  }
+
+  // SEQÜÈNCIA D'ESDEVENIMENTS DE LA PRESENTACIÓ (PAS A PAS PER CLIC)
+  const PRESENTATION_STEPS = [
+    {
+      step: 0,
+      sectionIndex: 0,
+      name: "1. Abast Territorial & 97 ACDs",
+      desc: "Mapa de Catalunya amb 97 ACDs i senyals sonar actives",
+      action: () => {
+        navigateToSection(0);
+        activateStage(0);
+      }
+    },
+    {
+      step: 1,
+      sectionIndex: 1,
+      name: "2. Procés ASME General PG-ME",
+      desc: "Identificació d'actors (USC, OAC, Custòdia, UI)",
+      action: () => {
+        navigateToSection(1);
+        activateStage(1);
+      }
+    },
+    {
+      step: 2,
+      sectionIndex: 2,
+      name: "3. ASME Garjola: Bloc ACD (1-5)",
+      desc: "Inici, valoració, immobilització reglada i límit ≤ 30 min",
+      action: () => {
+        navigateToSection(2);
+        activateStage(2);
+        animateAsmeTo(0.35, 450);
+      }
+    },
+    {
+      step: 3,
+      sectionIndex: 2,
+      name: "4. ASME Garjola: Ruptura TIC & Atestats (6-9)",
+      desc: "Diligència atestat SIP i registre manual Custòdia",
+      action: () => {
+        navigateToSection(2);
+        activateStage(2);
+        animateAsmeTo(0.68, 450);
+      }
+    },
+    {
+      step: 4,
+      sectionIndex: 2,
+      name: "5. ASME Garjola: Mèdics & Tancament (10-13)",
+      desc: "Avaluació facultatiu, part mèdic i fi de subprocés (13/13)",
+      action: () => {
+        navigateToSection(2);
+        activateStage(2);
+        animateAsmeTo(1.0, 500);
+      }
+    },
+    {
+      step: 5,
+      sectionIndex: 3,
+      name: "6. Proposta de Valor: Diagnosi AS-IS",
+      desc: "Deficiències operatives, paper extraviable i manca d'alertes",
+      action: () => {
+        navigateToSection(3);
+        activateStage(3);
+        setAsIsToBeMode('asis');
+      }
+    },
+    {
+      step: 6,
+      sectionIndex: 3,
+      name: "7. Proposta de Valor: Model TO-BE Redissenyat",
+      desc: "Passarel·la única TIC, avís > 30 min i integració 100%",
+      action: () => {
+        navigateToSection(3);
+        activateStage(3);
+        setAsIsToBeMode('tobe');
+      }
+    },
+    {
+      step: 7,
+      sectionIndex: 4,
+      name: "8. Pla Implantació: Gantt F1 Organització",
+      desc: "Accions 1 a 5 (Mesos 1-2): Redisseny TO-BE i funcions",
+      action: () => {
+        navigateToSection(4);
+        activateStage(4);
+        if (typeof window.animateGanttPhase === 'function') {
+          window.animateGanttPhase(1);
+        }
+      }
+    },
+    {
+      step: 8,
+      sectionIndex: 4,
+      name: "9. Pla Implantació: Gantt F2 TIC",
+      desc: "Accions 6 a 8 (Mesos 3-5): Connectar Custòdia i Atestats",
+      action: () => {
+        navigateToSection(4);
+        activateStage(4);
+        if (typeof window.animateGanttPhase === 'function') {
+          window.animateGanttPhase(2);
+        }
+      }
+    },
+    {
+      step: 9,
+      sectionIndex: 4,
+      name: "10. Pla Implantació: Gantt F3 Pilot Badalona",
+      desc: "Accions 9 a 14 (Mesos 1-7): Fita Pilot ACD Badalona M7",
+      action: () => {
+        navigateToSection(4);
+        activateStage(4);
+        if (typeof window.animateGanttPhase === 'function') {
+          window.animateGanttPhase(3);
+        }
+      }
+    },
+    {
+      step: 10,
+      sectionIndex: 5,
+      name: "11. Governança: Semàfor Verd (En termini)",
+      desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
+      action: () => {
+        navigateToSection(5);
+        activateStage(5);
+        const greenBtn = document.querySelector('.traffic-btn[data-status="green"]');
+        greenBtn?.click();
+      }
+    },
+    {
+      step: 11,
+      sectionIndex: 5,
+      name: "12. Governança: Resposta a Riscos & Conclusió",
+      desc: "Mesures correctores, decisió executiva i tancament",
+      action: () => {
+        navigateToSection(5);
+        activateStage(5);
+        const amberBtn = document.querySelector('.traffic-btn[data-status="amber"]');
+        amberBtn?.click();
+      }
+    }
+  ];
+
+  let currentPresStep = 0;
+
+  function updatePresentationUI() {
+    const cur = PRESENTATION_STEPS[currentPresStep];
+    if (!cur) return;
+
+    const badge = document.getElementById('pres-step-badge');
+    const nameEl = document.getElementById('pres-step-name');
+    if (badge) badge.textContent = `Pas ${currentPresStep + 1} / ${PRESENTATION_STEPS.length}`;
+    if (nameEl) nameEl.textContent = cur.name;
+
+    // Sincronitzar waypoints
+    if (waypointItems && waypointItems[cur.sectionIndex]) {
+      waypointItems.forEach((w, idx) => {
+        if (idx === cur.sectionIndex) {
+          w.classList.add('is-active');
+        } else {
+          w.classList.remove('is-active');
+        }
+      });
+    }
+  }
+
+  window.presentationController = {
+    get currentStep() {
+      return currentPresStep;
+    },
+    goToStep(stepIdx) {
+      if (stepIdx < 0) stepIdx = 0;
+      if (stepIdx >= PRESENTATION_STEPS.length) stepIdx = PRESENTATION_STEPS.length - 1;
+      currentPresStep = stepIdx;
+      const stepObj = PRESENTATION_STEPS[currentPresStep];
+      if (stepObj && typeof stepObj.action === 'function') {
+        stepObj.action();
+      }
+      updatePresentationUI();
+    },
+    nextStep() {
+      if (currentPresStep < PRESENTATION_STEPS.length - 1) {
+        this.goToStep(currentPresStep + 1);
+      } else {
+        this.goToStep(currentPresStep);
+      }
+    },
+    prevStep() {
+      if (currentPresStep > 0) {
+        this.goToStep(currentPresStep - 1);
+      }
+    },
+    syncToSection(sectionIdx) {
+      const cur = PRESENTATION_STEPS[currentPresStep];
+      if (cur && cur.sectionIndex !== sectionIdx) {
+        const matchingStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === sectionIdx);
+        if (matchingStep !== -1) {
+          currentPresStep = matchingStep;
+          updatePresentationUI();
         }
       }
     }
-    navigateToSection(Math.min(totalSections - 1, currentSectionIndex + 1));
-  }
+  };
 
-  function handlePrevious() {
-    if (currentSectionIndex === 2) {
-      const sec2 = sections[2];
-      const sec3 = sections[3];
-      if (sec2 && sec3) {
-        const start = sec2.offsetTop - 100;
-        const end = sec3.offsetTop - 100;
-        const currentY = window.scrollY || document.documentElement.scrollTop;
-        const stepChunk = (end - start) / 3;
+  // 1. ESDEVENIMENT GLOBAL DE CLIC PER AVANÇAR LA PRESENTACIÓ
+  document.addEventListener('click', (e) => {
+    // Si l'usuari fa clic en un control interactiu específic, deixem que actuï lliurement
+    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .decision-toggle-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance');
+    if (interactive) return;
 
-        if (currentY > start + 180) {
-          const targetY = Math.max(start, currentY - stepChunk);
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
-          return;
-        }
-      }
-    }
-    navigateToSection(Math.max(0, currentSectionIndex - 1));
-  }
-
-  railBtnUp?.addEventListener('click', () => {
-    handlePrevious();
+    // Qualsevol clic a la diapositiva avança un pas/animació!
+    window.presentationController.nextStep();
   });
 
-  railBtnDown?.addEventListener('click', () => {
-    handleAdvance();
+  // 2. CONTROLS DE LA BARRA FLOTANT
+  document.getElementById('pres-btn-next')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.nextStep();
   });
 
+  document.getElementById('pres-click-advance')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.nextStep();
+  });
+
+  document.getElementById('pres-btn-prev')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.prevStep();
+  });
+
+  // 3. BOTONS DEL RAIL LATERAL
+  railBtnDown?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.nextStep();
+  });
+
+  railBtnUp?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    window.presentationController.prevStep();
+  });
+
+  // 4. NAVEGACIÓ PER TECLAT I CLICKER DE PRESENTACIÓ
   document.addEventListener('keydown', (e) => {
     if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
-    if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === 'Enter' || (e.key === ' ' && !e.shiftKey)) {
       e.preventDefault();
-      handleAdvance();
-    } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
+      window.presentationController.nextStep();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Backspace' || (e.key === ' ' && e.shiftKey)) {
       e.preventDefault();
-      handlePrevious();
+      window.presentationController.prevStep();
     } else if (e.key === 'Home') {
       e.preventDefault();
-      navigateToSection(0);
+      window.presentationController.goToStep(0);
     } else if (e.key === 'End') {
       e.preventDefault();
-      navigateToSection(totalSections - 1);
+      window.presentationController.goToStep(PRESENTATION_STEPS.length - 1);
     } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
       const stepIdx = parseInt(e.key, 10) - 1;
-      navigateToSection(stepIdx);
+      const targetStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === stepIdx);
+      if (targetStep !== -1) {
+        window.presentationController.goToStep(targetStep);
+      }
     }
   });
 
