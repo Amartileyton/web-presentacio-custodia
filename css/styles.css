@@ -403,17 +403,17 @@ body::-webkit-scrollbar,
    ========================================================================== */
 .gantt-grid-header {
   display: grid;
-  grid-template-columns: 48% repeat(7, 1fr);
+  grid-template-columns: 44% repeat(7, 1fr);
   align-items: center;
 }
 
 .gantt-row {
   display: grid;
-  grid-template-columns: 48% repeat(7, 1fr);
+  grid-template-columns: 44% repeat(7, 1fr);
   align-items: center;
   transition: background-color 0.12s ease;
   position: relative;
-  min-height: 22px;
+  min-height: 30px;
 }
 
 .gantt-row:hover {
@@ -427,7 +427,7 @@ body::-webkit-scrollbar,
 .gantt-timeline-area {
   grid-column: 2 / -1;
   position: relative;
-  height: 18px;
+  height: 22px;
   display: flex;
   align-items: center;
 }
@@ -456,13 +456,13 @@ body::-webkit-scrollbar,
 
 .gantt-bar {
   position: absolute;
-  height: 13.5px;
-  border-radius: 3px;
+  height: 17px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: monospace;
-  font-size: 8.5px;
+  font-size: 9.5px;
   font-weight: 700;
   color: #ffffff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);

@@ -675,18 +675,18 @@ document.addEventListener('DOMContentLoaded', () => {
               ? 'bg-blue-50/80 text-blue-900 border-blue-200' 
               : 'bg-amber-50/80 text-amber-900 border-amber-200';
           
-          faseHeader.className = `px-2 py-0.5 text-[9px] font-extrabold rounded border flex items-center justify-between my-0.5 tracking-tight ${faseColorCls}`;
+          faseHeader.className = `px-2.5 py-1 text-[9.5px] font-extrabold rounded-md border flex items-center justify-between my-1 tracking-tight ${faseColorCls}`;
           faseHeader.innerHTML = `
-            <span>${action.faseNom.toUpperCase()}</span>
-            <span class="font-mono text-[8.5px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
+            <span class="tracking-wide">${action.faseNom.toUpperCase()}</span>
+            <span class="font-mono text-[9px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
           `;
           container.appendChild(faseHeader);
         }
 
-        // Fila compacta de l'Acció
+        // Fila de l'Acció amb alçada ajustada al contenidor
         const row = document.createElement('div');
         const isSelected = (action.num === GANTT_ACTIONS[selectedIndex].num);
-        row.className = `gantt-row py-0.5 px-1.5 rounded border border-transparent hover:border-slate-200 cursor-pointer ${isSelected ? 'is-selected' : ''}`;
+        row.className = `gantt-row py-1 px-2 rounded-lg border border-transparent hover:border-slate-200 cursor-pointer ${isSelected ? 'is-selected' : ''}`;
         row.dataset.actionNum = action.num;
 
         // 7 mesos -> cada mes és 100/7 = 14.2857%
@@ -708,13 +708,13 @@ document.addEventListener('DOMContentLoaded', () => {
             : `M${action.inici}-M${action.fi}`;
 
         row.innerHTML = `
-          <!-- Nom i Responsable (Columna 48%) -->
-          <div class="flex items-center gap-1.5 pr-2 overflow-hidden">
-            <span class="w-3.5 h-3.5 rounded text-[8.5px] font-mono font-bold flex items-center justify-center shrink-0 ${
+          <!-- Nom i Responsable (Columna 44%) -->
+          <div class="flex items-center gap-2 pr-2.5 overflow-hidden">
+            <span class="w-4 h-4 rounded text-[9px] font-mono font-bold flex items-center justify-center shrink-0 ${
               action.fase === 1 ? 'bg-emerald-100 text-emerald-800' : action.fase === 2 ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
             }">${action.num}</span>
-            <span class="text-[10px] text-slate-800 truncate font-medium flex-1" title="${action.accio}">${action.accio}</span>
-            <span class="text-[8px] font-mono font-semibold px-1 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">${action.responsable}</span>
+            <span class="text-[10.5px] text-slate-800 truncate font-medium flex-1" title="${action.accio}">${action.accio}</span>
+            <span class="text-[8.5px] font-mono font-semibold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0">${action.responsable}</span>
           </div>
 
           <!-- Àrea de Timeline (Columnes 2 a 8, Mesos 1 a 7) -->
