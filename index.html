@@ -821,8 +821,8 @@
                 </div>
               </div>
 
-              <!-- VISTA 1: PROCÉS REDISSENYAT (TO-BE) (PER DEFECTE) -->
-              <div id="view-tobe-content" class="space-y-3">
+              <!-- VISTA 1: PROCÉS REDISSENYAT (TO-BE) - RESUM TEXTUAL (PAS 7) -->
+              <div id="view-tobe-summary" class="space-y-3">
                 <div class="border border-emerald-200 bg-emerald-50/50 rounded-xl p-3 flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
@@ -886,6 +886,35 @@
                       </li>
                     </ul>
                   </div>
+                </div>
+              </div>
+
+              <!-- VISTA 3: DIAGRAMA ASME TO-BE REDISSENYAT ANIMAT (PAS 8) -->
+              <div id="view-tobe-diagram" class="hidden flex-1 flex flex-col h-full">
+                <!-- Barra superior de control del diagrama ASME TO-BE -->
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-200 shrink-0">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <div>
+                      <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 leading-tight">
+                        Diagrama ASME TO-BE · Subprocés de Contenció Redissenyat (Interoperabilitat 100%)
+                      </h3>
+                      <span class="text-[10px] text-slate-500 block">Passarel·la automàtica Custòdia-SIP, avís &le; 30 min i formulari mèdic integrat</span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="asme-tobe-step-badge" class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs">
+                      Caixes: 13 / 13 (100%)
+                    </span>
+                    <button onclick="descargarAsmeToBePNG()" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-600 text-slate-700 hover:text-white text-[11px] font-bold transition-all shadow-2xs flex items-center gap-1 border border-slate-200 cursor-pointer" title="Descarregar diagrama TO-BE complet en alta resolució PNG">
+                      <span>⬇ PNG</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Contenidor Canvas d'Alta Resolució TO-BE -->
+                <div class="asme-canvas-container relative w-full flex-1 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-hidden">
+                  <canvas id="asmeToBeCanvas" class="w-full h-auto max-h-[calc(100vh-13rem)] object-contain block"></canvas>
                 </div>
               </div>
 
@@ -1117,7 +1146,7 @@
     <button id="pres-btn-prev" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white cursor-pointer" title="Pas Anterior (o Fletxa Esquerra)">◀</button>
     <div class="flex items-center gap-2 cursor-pointer" id="pres-click-advance" title="Clic per avançar el següent pas / diapositiva">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-      <span id="pres-step-badge" class="font-mono font-bold text-emerald-300">Pas 1 / 12</span>
+      <span id="pres-step-badge" class="font-mono font-bold text-emerald-300">Pas 1 / 13</span>
       <span class="text-slate-500">|</span>
       <span id="pres-step-name" class="text-slate-200 text-[11px] max-w-[200px] sm:max-w-[340px] truncate">1. Abast Territorial & 97 ACDs</span>
     </div>

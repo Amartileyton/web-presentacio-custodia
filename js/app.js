@@ -187,8 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function drawStartEnd(ctx, x, y, w, h, title, subtitle) {
+  function drawStartEnd(ctx, x, y, w, h, title, subtitle, alpha = 1.0) {
     const r = h / 2;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + w - r, y);
@@ -206,9 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (subtitle) {
       drawTextMultiLine(ctx, subtitle, x + w / 2, y + h / 2 + 12, 14, '11px "Segoe UI", sans-serif', '#166534');
     }
+    ctx.restore();
   }
 
-  function drawOperation(ctx, x, y, w, h, title, subtitle, isOrange = false) {
+  function drawOperation(ctx, x, y, w, h, title, subtitle, isOrange = false, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
     ctx.beginPath();
     ctx.roundRect(x, y, w, h, 4);
     ctx.fillStyle = isOrange ? ASME_COLORS.opOrangeFill : ASME_COLORS.opBlueFill;
@@ -224,11 +229,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (subtitle) {
       drawTextMultiLine(ctx, subtitle, x + w / 2, y + h / 2 + 17, 14, '11px "Segoe UI", sans-serif', subColor);
     }
+    ctx.restore();
   }
 
-  function drawDecision(ctx, x, y, w, h, title, subtitle) {
+  function drawDecision(ctx, x, y, w, h, title, subtitle, alpha = 1.0) {
     const cx = x + w / 2;
     const cy = y + h / 2;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
     ctx.beginPath();
     ctx.moveTo(cx, y);
     ctx.lineTo(x + w, cy);
@@ -245,9 +253,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (subtitle) {
       drawTextMultiLine(ctx, subtitle, cx, cy + 14, 13, '10.5px "Segoe UI", sans-serif', '#9f1239');
     }
+    ctx.restore();
   }
 
-  function drawDocument(ctx, x, y, w, h, title, subtitle, regTag = null) {
+  function drawDocument(ctx, x, y, w, h, title, subtitle, regTag = null, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineTo(x + w, y);
@@ -276,10 +287,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (subtitle) {
       drawTextMultiLine(ctx, subtitle, x + w / 2, y + h / 2 + 12, 13, '10.5px "Segoe UI", sans-serif', '#b45309');
     }
+    ctx.restore();
   }
 
-  function drawDelay(ctx, x, y, w, h, title, subtitle) {
+  function drawDelay(ctx, x, y, w, h, title, subtitle, alpha = 1.0) {
     const r = h / 2;
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
     ctx.beginPath();
     ctx.moveTo(x, y);
     ctx.lineTo(x + w - r, y);
@@ -296,6 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (subtitle) {
       drawTextMultiLine(ctx, subtitle, x + (w - r/3) / 2, y + h / 2 + 13, 13, '11px "Segoe UI", sans-serif', '#6b21a8');
     }
+    ctx.restore();
   }
 
   function drawArrow(ctx, points, dashed = false, label = null, labelPos = null) {
@@ -329,18 +344,152 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function drawProgressiveArrow(ctx, points, t, label, isDashed = false, color = '#1c3b5e', glowColor = '#0284c7') {
+    if (t <= 0 || points.length < 2) return;
+
+    let totalLen = 0;
+    const segLens = [];
+    for (let i = 0; i < points.length - 1; i++) {
+      const dx = points[i+1].x - points[i].x;
+      const dy = points[i+1].y - points[i].y;
+      const d = Math.hypot(dx, dy);
+      segLens.push(d);
+      totalLen += d;
+    }
+
+    const targetDist = totalLen * Math.min(1, Math.max(0, t));
+    let distCovered = 0;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+
+    let currentTip = points[0];
+    let tipAngle = 0;
+
+    for (let i = 0; i < points.length - 1; i++) {
+      const p1 = points[i];
+      const p2 = points[i+1];
+      const segLen = segLens[i];
+
+      if (distCovered + segLen <= targetDist) {
+        ctx.lineTo(p2.x, p2.y);
+        distCovered += segLen;
+        currentTip = p2;
+        tipAngle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+      } else {
+        const remain = targetDist - distCovered;
+        const ratio = segLen > 0 ? remain / segLen : 0;
+        const nx = p1.x + (p2.x - p1.x) * ratio;
+        const ny = p1.y + (p2.y - p1.y) * ratio;
+        ctx.lineTo(nx, ny);
+        currentTip = { x: nx, y: ny };
+        tipAngle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        break;
+      }
+    }
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2.2;
+    if (isDashed) ctx.setLineDash([6, 4]);
+    ctx.stroke();
+    if (isDashed) ctx.setLineDash([]);
+
+    if (targetDist > 8) {
+      const headLen = 8.5;
+      ctx.beginPath();
+      ctx.moveTo(currentTip.x, currentTip.y);
+      ctx.lineTo(currentTip.x - headLen * Math.cos(tipAngle - Math.PI / 6), currentTip.y - headLen * Math.sin(tipAngle - Math.PI / 6));
+      ctx.lineTo(currentTip.x - headLen * Math.cos(tipAngle + Math.PI / 6), currentTip.y - headLen * Math.sin(tipAngle + Math.PI / 6));
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      if (t < 0.99) {
+        ctx.beginPath();
+        ctx.arc(currentTip.x, currentTip.y, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = glowColor;
+        ctx.shadowColor = glowColor;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+      }
+    }
+
+    if (label && t > 0.5) {
+      const midP = points[Math.floor(points.length / 2)];
+      ctx.save();
+      ctx.font = 'bold 10px "Segoe UI", sans-serif';
+      const txtWidth = ctx.measureText(label).width;
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.fillRect(midP.x - txtWidth / 2 - 4, midP.y - 15, txtWidth + 8, 14);
+      ctx.fillStyle = '#334155';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, midP.x, midP.y - 4);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+    // Definició de Nodes i Fletxes del Diagrama ASME Garjola (AS-IS)
+  const GARJOLA_NODES = {
+    G1: { id: 'G1', type: 'start', x: 205, y: 57, w: 150, h: 62, title: 'INICI', sub: 'Persona alterada o\nviolenta en garjola', lane: '1. ACD' },
+    G2: { id: 'G2', type: 'dec', x: 395, y: 46, w: 175, h: 84, title: 'DEC-1: Valoració\nResp. Custòdia', sub: 'Requereix contenció?', lane: '1. ACD' },
+    G3: { id: 'G3', type: 'op', x: 615, y: 48, w: 190, h: 80, title: 'OP-1: Execució de la\ncontenció física', sub: 'Immobilització reglada\nsegons protocol', isDup: false, lane: '1. ACD' },
+    G4: { id: 'G4', type: 'delay', x: 845, y: 52, w: 190, h: 72, title: 'ESP-1: Manteniment\nde la contenció', sub: 'Temps màxim ≤ 30 min', lane: '1. ACD' },
+    G5: { id: 'G5', type: 'op', x: 1075, y: 48, w: 195, h: 80, title: 'OP-2: Retirada de\nla contenció física', sub: 'Cessament (≤ 30m), avís mèdic\ni sol·licitud a U. Instructora', isDup: false, lane: '1. ACD' },
+    G6: { id: 'G6', type: 'op', x: 615, y: 382, w: 195, h: 82, title: "OP-3: Inclusió de\ndiligència en l'atestat", sub: 'Sol·licitada per ACD:\nconstància de contenció', isDup: true, lane: '2. UNITAT INSTRUCTORA' },
+    G7: { id: 'G7', type: 'delay', x: 845, y: 602, w: 190, h: 72, title: "ESP-2: Espera d'arribada\nd'assistència mèdica", sub: 'Desplaçament a garjola', lane: '3. SERVEIS MÈDICS' },
+    G8: { id: 'G8', type: 'doc', reg: 'REG #1', x: 1075, y: 385, w: 190, h: 78, title: 'DOC-1: Diligència de\ncontenció (SIP/Atestat)', sub: "Constància documental\nen l'atestat policial", lane: '2. UNITAT INSTRUCTORA' },
+    G9: { id: 'G9', type: 'op', x: 1075, y: 232, w: 195, h: 80, title: "OP-4: Registre en\nl'aplicació Custòdia", sub: 'Introducció manual de\nla contenció realitzada', isDup: true, lane: '1. ACD' },
+    G10: { id: 'G10', type: 'op', x: 1075, y: 598, w: 195, h: 80, title: 'OP-5: Avaluació mèdica\nde la persona agitada', sub: 'Exploració física i\npsicològica post-contenció', isDup: false, lane: '3. SERVEIS MÈDICS' },
+    G11: { id: 'G11', type: 'doc', reg: 'REG #2', x: 1310, y: 235, w: 170, h: 76, title: 'DOC-3: Registre\naplicació Custòdia', sub: 'Constància digital\nde la contenció', lane: '1. ACD' },
+    G12: { id: 'G12', type: 'doc', reg: null, x: 1310, y: 601, w: 170, h: 76, title: "DOC-2: Informe\nd'assistència mèdica", sub: "Facultatiu adjunta\npart a l'expedient", lane: '3. SERVEIS MÈDICS' },
+    G13: { id: 'G13', type: 'end', x: 1320, y: 57, w: 150, h: 62, title: 'FI SUBPROCÉS', sub: 'Persona estabilitzada\ni atestat complementat', lane: '1. ACD' }
+  };
+
+  const GARJOLA_ARROWS = [
+    { id: 'GA1', pts: [{x: 355, y: 88}, {x: 395, y: 88}], label: '' },
+    { id: 'GA2', pts: [{x: 570, y: 88}, {x: 615, y: 88}], label: 'SÍ' },
+    { id: 'GA3', pts: [{x: 805, y: 88}, {x: 845, y: 88}], label: '' },
+    { id: 'GA4', pts: [{x: 1035, y: 88}, {x: 1075, y: 88}], label: '≤ 30 min' },
+    { id: 'GA5', pts: [{x: 1100, y: 128}, {x: 1100, y: 202}, {x: 710, y: 202}, {x: 710, y: 382}], label: 'Sol·licitud diligència' },
+    { id: 'GA6a', pts: [{x: 915, y: 124}, {x: 915, y: 602}], dashed: true, label: 'Avís mèdic (durant)' },
+    { id: 'GA6b', pts: [{x: 1130, y: 128}, {x: 1130, y: 172}, {x: 975, y: 172}, {x: 975, y: 602}], dashed: true, label: 'Avís mèdic (post)' },
+    { id: 'GA7', pts: [{x: 810, y: 423}, {x: 1075, y: 423}], label: '' },
+    { id: 'GA8', pts: [{x: 1180, y: 128}, {x: 1180, y: 232}], label: 'Pas a registre' },
+    { id: 'GA9', pts: [{x: 1035, y: 638}, {x: 1075, y: 638}], label: '' },
+    { id: 'GA10', pts: [{x: 1270, y: 272}, {x: 1310, y: 272}], label: '' },
+    { id: 'GA11', pts: [{x: 1270, y: 638}, {x: 1310, y: 638}], label: '' },
+    { id: 'GA12a', pts: [{x: 1395, y: 235}, {x: 1395, y: 119}], label: 'Registre' },
+    { id: 'GA12b', pts: [{x: 1265, y: 424}, {x: 1290, y: 424}, {x: 1290, y: 88}, {x: 1320, y: 88}], label: 'Diligència atestat' },
+    { id: 'GA12c', pts: [{x: 1395, y: 601}, {x: 1395, y: 119}], dashed: true, label: 'Part mèdic' }
+  ];
+
+  const GARJOLA_STEPS = [
+    { target: 'G1', nodes: ['G1'], arrows: [] },
+    { target: 'G2', nodes: ['G1', 'G2'], arrows: ['GA1'] },
+    { target: 'G3', nodes: ['G1', 'G2', 'G3'], arrows: ['GA1', 'GA2'] },
+    { target: 'G4', nodes: ['G1', 'G2', 'G3', 'G4'], arrows: ['GA1', 'GA2', 'GA3'] },
+    { target: 'G5', nodes: ['G1', 'G2', 'G3', 'G4', 'G5'], arrows: ['GA1', 'GA2', 'GA3', 'GA4'] },
+    { target: 'G6', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5'] },
+    { target: 'G7', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b'] },
+    { target: 'G8', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b', 'GA7'] },
+    { target: 'G9', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b', 'GA7', 'GA8'] },
+    { target: 'G10', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b', 'GA7', 'GA8', 'GA9'] },
+    { target: 'G11', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b', 'GA7', 'GA8', 'GA9', 'GA10'] },
+    { target: 'G12', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b', 'GA7', 'GA8', 'GA9', 'GA10', 'GA11'] },
+    { target: 'G13', nodes: ['G1', 'G2', 'G3', 'G4', 'G5', 'G6', 'G7', 'G8', 'G9', 'G10', 'G11', 'G12', 'G13'], arrows: ['GA1', 'GA2', 'GA3', 'GA4', 'GA5', 'GA6a', 'GA6b', 'GA7', 'GA8', 'GA9', 'GA10', 'GA11', 'GA12a', 'GA12b', 'GA12c'] }
+  ];
+
   window.renderAsmeProgress = function renderAsmeProgress(progressRatio) {
     if (!asmeCanvas || !asmeCtx) return;
-    const ratio = Math.min(1, Math.max(0, progressRatio));
+    const p = Math.min(1, Math.max(0, progressRatio));
 
-    // Assegurar escala 2x d'alta resolució Retina a cada frame
     asmeCtx.setTransform(ASME_SCALE, 0, 0, ASME_SCALE, 0, 0);
-
-    // Netejar canvas
     asmeCtx.fillStyle = '#ffffff';
     asmeCtx.fillRect(0, 0, ASME_WIDTH, ASME_HEIGHT);
 
-    // 1. ESTRUCTURA DE CARRILS (SWIMLANES) SENSE ENCAPÇALAMENT INNECESSARI
+    // 1. ESTRUCTURA DE CARRILS (SWIMLANES)
     const tableLeft = 15;
     const tableTop = 15;
     const laneHeaderWidth = 145;
@@ -363,136 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
       asmeCtx.strokeRect(tableLeft + laneHeaderWidth, currentY, tableWidth - laneHeaderWidth, lane.height);
 
       drawTextMultiLine(asmeCtx, lane.title, tableLeft + laneHeaderWidth / 2, currentY + lane.height / 2, 18, 'bold 13.5px "Segoe UI", sans-serif', '#1e293b');
-
       currentY += lane.height;
     });
 
-    // 2. APARICIÓ SEQÜENCIAL DE LES 13 CAIXES I FLETXES SEGONS EL PROGRÉS
-    // Totes les coordenades y s'han desplaçat -73px en retirar la capçalera
-    let visibleSteps = 0;
-
-    // Pas 1 (>= 0.05): INICI (Persona alterada o violenta en garjola)
-    if (ratio >= 0.05) {
-      drawStartEnd(asmeCtx, 205, 57, 150, 62, 'INICI', 'Persona alterada o\nviolenta en garjola');
-      visibleSteps = 1;
-    }
-
-    // Pas 2 (>= 0.12): Fletxa 1 -> DEC-1 (Valoració Resp. Custòdia)
-    if (ratio >= 0.12) {
-      drawArrow(asmeCtx, [{x: 355, y: 88}, {x: 395, y: 88}]);
-      drawDecision(asmeCtx, 395, 46, 175, 84, 'DEC-1: Valoració\nResp. Custòdia', 'Requereix contenció?');
-      visibleSteps = 2;
-    }
-
-    // Pas 3 (>= 0.20): Fletxa 2 (SÍ) -> OP-1 (Execució contenció física)
-    if (ratio >= 0.20) {
-      drawArrow(asmeCtx, [{x: 570, y: 88}, {x: 615, y: 88}], false, 'SÍ', {x: 590, y: 76});
-      drawOperation(asmeCtx, 615, 48, 190, 80, 'OP-1: Execució de la\ncontenció física', 'Immobilització reglada\nsegons protocol', false);
-      visibleSteps = 3;
-    }
-
-    // Pas 4 (>= 0.28): Fletxa 3 -> ESP-1 (Manteniment de la contenció <= 30 min)
-    if (ratio >= 0.28) {
-      drawArrow(asmeCtx, [{x: 805, y: 88}, {x: 845, y: 88}]);
-      drawDelay(asmeCtx, 845, 52, 190, 72, 'ESP-1: Manteniment\nde la contenció', 'Temps màxim ≤ 30 min');
-      visibleSteps = 4;
-    }
-
-    // Pas 5 (>= 0.36): Fletxa 4 (<= 30 min) -> OP-2 (Retirada de la contenció física)
-    if (ratio >= 0.36) {
-      drawArrow(asmeCtx, [{x: 1035, y: 88}, {x: 1075, y: 88}], false, '≤ 30 min', {x: 1055, y: 75});
-      drawOperation(asmeCtx, 1075, 48, 195, 80, 'OP-2: Retirada de\nla contenció física', 'Cessament (≤ 30m), avís mèdic\ni sol·licitud a U. Instructora', false);
-      visibleSteps = 5;
-    }
-
-    // Pas 6 (>= 0.44): Fletxa 5 (Comunicació a U. Instructora) -> OP-3
-    if (ratio >= 0.44) {
-      drawArrow(
-        asmeCtx,
-        [{x: 1100, y: 128}, {x: 1100, y: 202}, {x: 710, y: 202}, {x: 710, y: 382}],
-        false,
-        'Sol·licitud de diligència a la U. Instructora (post-contenció)',
-        {x: 905, y: 192}
-      );
-      drawOperation(asmeCtx, 615, 382, 195, 82, "OP-3: Inclusió de\ndiligència en l'atestat", 'Sol·licitada per ACD:\nconstància de contenció', true);
-      visibleSteps = 6;
-    }
-
-    // Pas 7 (>= 0.52): Fletxes mèdiques 7a i 7b -> ESP-2 (Espera assistència mèdica)
-    if (ratio >= 0.52) {
-      drawArrow(
-        asmeCtx,
-        [{x: 915, y: 124}, {x: 915, y: 602}],
-        true,
-        'Sol·licitud mèdica (durant contenció)',
-        {x: 805, y: 257}
-      );
-      drawArrow(
-        asmeCtx,
-        [{x: 1130, y: 128}, {x: 1130, y: 172}, {x: 975, y: 172}, {x: 975, y: 602}],
-        true,
-        'Sol·licitud mèdica (post-contenció)',
-        {x: 1060, y: 160}
-      );
-      drawDelay(asmeCtx, 845, 602, 190, 72, "ESP-2: Espera d'arribada\nd'assistència mèdica", 'Desplaçament a garjola');
-      visibleSteps = 7;
-    }
-
-    // Pas 8 (>= 0.60): Fletxa 6 -> DOC-1 (Diligència de contenció en SIP/Atestat REG #1)
-    if (ratio >= 0.60) {
-      drawArrow(asmeCtx, [{x: 810, y: 423}, {x: 1075, y: 423}]);
-      drawDocument(asmeCtx, 1075, 385, 190, 78, 'DOC-1: Diligència de\ncontenció (SIP/Atestat)', "Constància documental\nen l'atestat policial", 'REG #1');
-      visibleSteps = 8;
-    }
-
-    // Pas 9 (>= 0.68): Fletxa 10 -> OP-4 (Registre en l'aplicació Custòdia)
-    if (ratio >= 0.68) {
-      drawArrow(
-        asmeCtx,
-        [{x: 1180, y: 128}, {x: 1180, y: 232}],
-        false,
-        'Pas a registre',
-        {x: 1226, y: 202}
-      );
-      drawOperation(asmeCtx, 1075, 232, 195, 80, "OP-4: Registre en\nl'aplicació Custòdia", 'Introducció manual de\nla contenció realitzada', true);
-      visibleSteps = 9;
-    }
-
-    // Pas 10 (>= 0.76): Fletxa 8 -> OP-5 (Avaluació mèdica facultatiu)
-    if (ratio >= 0.76) {
-      drawArrow(asmeCtx, [{x: 1035, y: 638}, {x: 1075, y: 638}]);
-      drawOperation(asmeCtx, 1075, 598, 195, 80, 'OP-5: Avaluació mèdica\nde la persona agitada', 'Exploració física i\npsicològica post-contenció', false);
-      visibleSteps = 10;
-    }
-
-    // Pas 11 (>= 0.83): Fletxa 11 -> DOC-3 (Registre digital aplicació Custòdia REG #2)
-    if (ratio >= 0.83) {
-      drawArrow(asmeCtx, [{x: 1270, y: 272}, {x: 1310, y: 272}]);
-      drawDocument(asmeCtx, 1310, 235, 170, 76, "DOC-3: Registre\naplicació Custòdia", 'Constància digital\nde la contenció', 'REG #2');
-      visibleSteps = 11;
-    }
-
-    // Pas 12 (>= 0.90): Fletxa 9 -> DOC-2 (Informe / Part d'assistència mèdica)
-    if (ratio >= 0.90) {
-      drawArrow(asmeCtx, [{x: 1270, y: 638}, {x: 1310, y: 638}]);
-      drawDocument(asmeCtx, 1310, 601, 170, 76, "DOC-2: Informe\nd'assistència mèdica", "Facultatiu adjunta\npart a l'expedient", null);
-      visibleSteps = 12;
-    }
-
-    // Pas 13 (>= 0.96): Fletxes 12a, 12b, 12c -> FI SUBPROCÉS + Llegenda ASME
-    if (ratio >= 0.96) {
-      // 12a. DOC-3 -> FI
-      drawArrow(asmeCtx, [{x: 1395, y: 235}, {x: 1395, y: 119}], false, 'Registre custòdia', {x: 1445, y: 177});
-      // 12b. DOC-1 -> FI
-      drawArrow(asmeCtx, [{x: 1265, y: 424}, {x: 1290, y: 424}, {x: 1290, y: 88}, {x: 1320, y: 88}], false, 'Diligència atestat', {x: 1235, y: 360});
-      // 12c. DOC-2 -> FI
-      drawArrow(asmeCtx, [{x: 1395, y: 601}, {x: 1395, y: 119}], true, 'Part mèdic adjuntat', {x: 1448, y: 480});
-
-      drawStartEnd(asmeCtx, 1320, 57, 150, 62, 'FI SUBPROCÉS', 'Persona estabilitzada\ni atestat complementat');
-      visibleSteps = 13;
-    }
-
-    // 3. LLEGENDA DE CONVENCIONS ASME (Inferior)
+    // 2. LLEGENDA DE CONVENCIONS ASME (Inferior)
     const legY = 746;
     asmeCtx.fillStyle = '#f8fafc';
     asmeCtx.fillRect(tableLeft, legY, tableWidth, 48);
@@ -505,30 +528,86 @@ document.addEventListener('DOMContentLoaded', () => {
     asmeCtx.textAlign = 'left';
     asmeCtx.fillText('LLEGENDA ASME:', tableLeft + 15, legY + 26);
 
-    drawStartEnd(asmeCtx, tableLeft + 130, legY + 10, 110, 28, 'Inici / Fi', null);
-    drawOperation(asmeCtx, tableLeft + 255, legY + 10, 145, 28, 'Operació Estàndard', null, false);
-    drawOperation(asmeCtx, tableLeft + 415, legY + 10, 175, 28, 'Punt de Ruptura (Manual)', null, true);
-    drawDecision(asmeCtx, tableLeft + 605, legY + 6, 95, 36, 'Decisió', null);
-    drawDocument(asmeCtx, tableLeft + 715, legY + 8, 140, 32, 'Diligència / Registre', null, 'REG');
-    drawDelay(asmeCtx, tableLeft + 870, legY + 10, 135, 28, 'Espera / Demora', null);
+    drawStartEnd(asmeCtx, tableLeft + 130, legY + 10, 110, 28, 'Inici / Fi', null, 1);
+    drawOperation(asmeCtx, tableLeft + 255, legY + 10, 145, 28, 'Operació Estàndard', null, false, 1);
+    drawOperation(asmeCtx, tableLeft + 415, legY + 10, 175, 28, 'Punt de Ruptura (Manual)', null, true, 1);
+    drawDecision(asmeCtx, tableLeft + 605, legY + 6, 95, 36, 'Decisió', null, 1);
+    drawDocument(asmeCtx, tableLeft + 715, legY + 8, 140, 32, 'Diligència / Registre', null, 'REG', 1);
+    drawDelay(asmeCtx, tableLeft + 870, legY + 10, 135, 28, 'Espera / Demora', null, 1);
 
-    // Actualitzar el comptador de caixes de la fase
-    if (asmeStepBadge) {
-      if (visibleSteps === 0) {
+    // Si el progrés és 0, només mostrem els carrils nets i la llegenda
+    if (p <= 0.001) {
+      if (asmeStepBadge) {
         asmeStepBadge.textContent = 'Caixes: 0 / 13 (0%)';
         asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200 shadow-2xs';
-      } else {
-        asmeStepBadge.textContent = `Caixes: ${visibleSteps} / 13 (${Math.round((visibleSteps / 13) * 100)}%)`;
-        if (visibleSteps === 13) {
-          asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs';
-        } else {
-          asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20 shadow-2xs';
-        }
+      }
+      return;
+    }
+
+    // 3. APARICIÓ SUAVITZADA AMB FLETXES PROGRESSIVES I FADE-IN DE NODES
+    const totalSteps = GARJOLA_STEPS.length;
+    const currentStepFloat = p * (totalSteps - 1);
+    const currentStepIdx = Math.min(totalSteps - 1, Math.floor(currentStepFloat));
+    const stepProgress = currentStepFloat - currentStepIdx;
+
+    const activeStep = GARJOLA_STEPS[currentStepIdx];
+    const visibleArrows = new Set(activeStep.arrows);
+
+    let drawingArrowId = null;
+    let drawingArrowProgress = 0;
+    if (currentStepIdx < totalSteps - 1) {
+      const nextStep = GARJOLA_STEPS[currentStepIdx + 1];
+      const newArrows = nextStep.arrows.filter(a => !activeStep.arrows.includes(a));
+      if (newArrows.length > 0) {
+        drawingArrowId = newArrows[0];
+        drawingArrowProgress = stepProgress;
       }
     }
-  }
 
-  window.descargarAsmePNG = function() {
+    // Dibuixar fletxes progressives
+    GARJOLA_ARROWS.forEach(arrow => {
+      if (visibleArrows.has(arrow.id)) {
+        drawProgressiveArrow(asmeCtx, arrow.pts, 1.0, arrow.label, arrow.dashed, ASME_COLORS.arrow, '#0284c7');
+      } else if (arrow.id === drawingArrowId) {
+        drawProgressiveArrow(asmeCtx, arrow.pts, drawingArrowProgress, arrow.label, arrow.dashed, ASME_COLORS.arrow, '#0284c7');
+      }
+    });
+
+    // Dibuixar nodes actius amb transparència suau
+    activeStep.nodes.forEach(nodeId => {
+      const n = GARJOLA_NODES[nodeId];
+      if (!n) return;
+      const alpha = (nodeId === activeStep.target && currentStepIdx < totalSteps - 1 && p < 0.99)
+        ? Math.min(1.0, Math.max(0.05, stepProgress * 2.2))
+        : 1.0;
+
+      if (n.type === 'start' || n.type === 'end') {
+        drawStartEnd(asmeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'op') {
+        drawOperation(asmeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, n.isDup, alpha);
+      } else if (n.type === 'dec') {
+        drawDecision(asmeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'doc') {
+        drawDocument(asmeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, n.reg, alpha);
+      } else if (n.type === 'delay') {
+        drawDelay(asmeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      }
+    });
+
+    // Actualitzar comptador de caixes
+    const visibleCount = activeStep.nodes.length;
+    if (asmeStepBadge) {
+      if (p >= 0.99) {
+        asmeStepBadge.textContent = 'Caixes: 13 / 13 (100%)';
+        asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs';
+      } else {
+        asmeStepBadge.textContent = `Caixes: ${visibleCount} / 13 (${Math.round((visibleCount / 13) * 100)}%)`;
+        asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20 shadow-2xs';
+      }
+    }
+  };
+
+    window.descargarAsmePNG = function() {
     if (!asmeCanvas) return;
     renderAsmeProgress(1.0);
     const link = document.createElement('a');
@@ -1036,6 +1115,7 @@ document.addEventListener('DOMContentLoaded', () => {
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(0);
         activateStage(0);
       }
@@ -1048,6 +1128,7 @@ document.addEventListener('DOMContentLoaded', () => {
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(1);
         activateStage(1);
         if (typeof window.renderAsmeGeneral === 'function') {
@@ -1062,6 +1143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       desc: "Dibuix dinàmic de les 16 caixes i fletxes a través dels 4 carrils",
       action: () => {
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(1);
         activateStage(1);
         if (typeof window.playAsmeGeneralAnimation === 'function') {
@@ -1072,14 +1154,22 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 3,
       sectionIndex: 2,
-      name: "4. Subprocés ASME Garjola (Estructura)",
+      name: "4. Subprocés ASME Garjola AS-IS (Estructura)",
       desc: "Estructura inicial buida de 3 carrils (ACD, Unitat Instructora, Serveis Mèdics)",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         window.isGarjolaPresentationControlled = true;
         navigateToSection(2);
         activateStage(2);
+        if (typeof setMetricsDisplay === 'function') {
+          setMetricsDisplay(0.0);
+          if (metricsStatusBadge) {
+            metricsStatusBadge.textContent = 'Clic per animar (AS-IS ➔ TO-BE)';
+            metricsStatusBadge.className = 'text-[9px] text-pgme-blue font-mono font-semibold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200 transition-colors';
+          }
+        }
         if (typeof window.renderAsmeProgress === 'function') {
           window.renderAsmeProgress(0.0);
         }
@@ -1088,15 +1178,23 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 4,
       sectionIndex: 2,
-      name: "5. Animació Subprocés ASME Garjola",
-      desc: "Dibuix fluid de les 13 caixes operatives i 12 fluxos de contenció",
+      name: "5. Animació Subprocés ASME Garjola AS-IS & Indicadors",
+      desc: "Dibuix fluid suau de les 13 caixes operatives i activació dels 4 indicadors clau",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         window.isGarjolaPresentationControlled = true;
         navigateToSection(2);
         activateStage(2);
         if (typeof window.playAsmeGarjolaAnimation === 'function') {
           window.playAsmeGarjolaAnimation(6500);
+        }
+        if (typeof animateMetricsTransition === 'function') {
+          animateMetricsTransition(0, 1, 3500);
+          if (metricsStatusBadge) {
+            metricsStatusBadge.textContent = 'Objectiu TO-BE assolit (100%)';
+            metricsStatusBadge.className = 'text-[9px] text-emerald-700 font-mono font-semibold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-300 transition-colors shadow-2xs';
+          }
         }
       }
     },
@@ -1107,6 +1205,7 @@ document.addEventListener('DOMContentLoaded', () => {
       desc: "Deficiències operatives, paper extraviable i manca d'alertes",
       action: () => {
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(3);
         activateStage(3);
         setAsIsToBeMode('asis');
@@ -1115,20 +1214,35 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 6,
       sectionIndex: 3,
-      name: "7. Proposta de Valor: Model TO-BE Redissenyat",
-      desc: "Passarel·la única TIC, avís > 30 min i integració 100%",
+      name: "7. Proposta de Valor: Principis Clau TO-BE",
+      desc: "Model de 3 carrils: Registre Únic ACD, Passarel·la SIP i Formulari Mèdic Integrat",
       action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(3);
         activateStage(3);
-        setAsIsToBeMode('tobe');
+        setAsIsToBeMode('tobe-summary');
       }
     },
     {
       step: 7,
+      sectionIndex: 3,
+      name: "8. Proposta de Valor: Diagrama ASME Redissenyat TO-BE",
+      desc: "Diagrama animat (13 caixes): interoperabilitat 100%, avís ≤ 30 min i flux digital",
+      action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        navigateToSection(3);
+        activateStage(3);
+        setAsIsToBeMode('tobe-diagram');
+      }
+    },
+    {
+      step: 8,
       sectionIndex: 4,
-      name: "8. Pla Implantació: Gantt F1 Organització (M1-M2)",
+      name: "9. Pla Implantació: Gantt F1 Organització (M1-M2)",
       desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
       action: () => {
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(4);
         activateStage(4);
         if (typeof window.animateGanttPhase === 'function') {
@@ -1137,9 +1251,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 8,
+      step: 9,
       sectionIndex: 4,
-      name: "9. Pla Implantació: Gantt F2 TIC (M3-M5)",
+      name: "10. Pla Implantació: Gantt F2 TIC (M3-M5)",
       desc: "Accions 6 a 8: Connectar Custòdia i Atestats (Font única de dades)",
       action: () => {
         navigateToSection(4);
@@ -1150,9 +1264,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 9,
+      step: 10,
       sectionIndex: 4,
-      name: "10. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
+      name: "11. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
       desc: "Accions 9 a 14: Fita Clau Prova Pilot ACD Badalona (Mes 7)",
       action: () => {
         navigateToSection(4);
@@ -1163,9 +1277,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 10,
+      step: 11,
       sectionIndex: 5,
-      name: "11. Governança: Semàfor Verd (En termini)",
+      name: "12. Governança: Semàfor Verd (En termini)",
       desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
       action: () => {
         navigateToSection(5);
@@ -1175,9 +1289,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 11,
+      step: 12,
       sectionIndex: 5,
-      name: "12. Governança: Resposta a Riscos & Conclusió",
+      name: "13. Governança: Resposta a Riscos & Conclusió",
       desc: "Mesures correctores, decisió executiva i tancament",
       action: () => {
         navigateToSection(5);
@@ -1311,34 +1425,498 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- 9. COMPONENTS INTERACTIUS DE L'ESTAT 3: TOGGLE AS-IS / TO-BE ---
+  // --- 9. COMPONENTS INTERACTIUS DE L'ESTAT 3: TOGGLE AS-IS / TO-BE & DIAGRAMA ASME TO-BE ---
   const toggleAsIsBtn = document.getElementById('toggle-asis-btn');
   const toggleToBeBtn = document.getElementById('toggle-tobe-btn');
   const viewAsIsContent = document.getElementById('view-asis-content');
-  const viewToBeContent = document.getElementById('view-tobe-content');
+  const viewToBeSummary = document.getElementById('view-tobe-summary');
+  const viewToBeDiagram = document.getElementById('view-tobe-diagram');
+  let currentAsIsToBeState = 'tobe-summary';
 
   function setAsIsToBeMode(mode) {
-    if (mode === 'tobe') {
-      toggleToBeBtn?.classList.add('is-active', 'bg-pgme-blue', 'text-white');
-      toggleToBeBtn?.classList.remove('text-slate-600');
-      toggleAsIsBtn?.classList.remove('is-active', 'bg-pgme-blue', 'text-white');
-      toggleAsIsBtn?.classList.add('text-slate-600');
-      
-      viewAsIsContent?.classList.add('hidden');
-      viewToBeContent?.classList.remove('hidden');
-    } else {
+    currentAsIsToBeState = mode;
+    if (mode === 'asis') {
       toggleAsIsBtn?.classList.add('is-active', 'bg-pgme-blue', 'text-white');
       toggleAsIsBtn?.classList.remove('text-slate-600');
       toggleToBeBtn?.classList.remove('is-active', 'bg-pgme-blue', 'text-white');
       toggleToBeBtn?.classList.add('text-slate-600');
 
-      viewToBeContent?.classList.add('hidden');
       viewAsIsContent?.classList.remove('hidden');
+      viewToBeSummary?.classList.add('hidden');
+      viewToBeDiagram?.classList.add('hidden');
+      if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+    } else if (mode === 'tobe-diagram') {
+      toggleToBeBtn?.classList.add('is-active', 'bg-pgme-blue', 'text-white');
+      toggleToBeBtn?.classList.remove('text-slate-600');
+      toggleAsIsBtn?.classList.remove('is-active', 'bg-pgme-blue', 'text-white');
+      toggleAsIsBtn?.classList.add('text-slate-600');
+
+      viewAsIsContent?.classList.add('hidden');
+      viewToBeSummary?.classList.add('hidden');
+      viewToBeDiagram?.classList.remove('hidden');
+      if (typeof window.playAsmeToBeAnimation === 'function') {
+        window.playAsmeToBeAnimation(6500);
+      }
+    } else {
+      // 'tobe' o 'tobe-summary'
+      toggleToBeBtn?.classList.add('is-active', 'bg-pgme-blue', 'text-white');
+      toggleToBeBtn?.classList.remove('text-slate-600');
+      toggleAsIsBtn?.classList.remove('is-active', 'bg-pgme-blue', 'text-white');
+      toggleAsIsBtn?.classList.add('text-slate-600');
+
+      viewAsIsContent?.classList.add('hidden');
+      viewToBeSummary?.classList.remove('hidden');
+      viewToBeDiagram?.classList.add('hidden');
+      if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
     }
   }
 
   toggleAsIsBtn?.addEventListener('click', () => setAsIsToBeMode('asis'));
-  toggleToBeBtn?.addEventListener('click', () => setAsIsToBeMode('tobe'));
+  toggleToBeBtn?.addEventListener('click', () => {
+    if (currentAsIsToBeState === 'tobe-summary') {
+      setAsIsToBeMode('tobe-diagram');
+    } else {
+      setAsIsToBeMode('tobe-summary');
+    }
+  });
+
+  // =========================================================================
+  // --- DIAGRAMA ASME SUBPROCÉS REDISSENYAT TO-BE (VECTOR HD ENGINE) ---
+  // =========================================================================
+  const asmeToBeCanvas = document.getElementById('asmeToBeCanvas');
+  const asmeToBeCtx = asmeToBeCanvas ? asmeToBeCanvas.getContext('2d') : null;
+  const asmeToBeStepBadge = document.getElementById('asme-tobe-step-badge');
+
+  const TOBE_WIDTH = 1520;
+  const TOBE_HEIGHT = 800;
+  const TOBE_SCALE = 2;
+
+  if (asmeToBeCanvas && asmeToBeCtx) {
+    asmeToBeCanvas.width = TOBE_WIDTH * TOBE_SCALE;
+    asmeToBeCanvas.height = TOBE_HEIGHT * TOBE_SCALE;
+    asmeToBeCtx.scale(TOBE_SCALE, TOBE_SCALE);
+  }
+
+  const TOBE_COLORS = {
+    laneHeaderBg: '#eaedf0',
+    gridBorder: '#b8c0c8',
+    startEndFill: '#e6f5ea',
+    startEndStroke: '#1a8836',
+    opStandardFill: '#edf3f8',
+    opStandardStroke: '#2a5679',
+    opOptimizedFill: '#ecfdf5',
+    opOptimizedStroke: '#059669',
+    decFill: '#fdeded',
+    decStroke: '#b92b27',
+    docFill: '#fff7e6',
+    docStroke: '#d48817',
+    docOptimizedFill: '#f0fdf4',
+    docOptimizedStroke: '#16a34a',
+    regBadge: '#059669',
+    waitFill: '#eff6ff',
+    waitStroke: '#2563eb',
+    arrowStandard: '#1c3b5e',
+    arrowOptimized: '#059669'
+  };
+
+  const TOBE_NODES = {
+    TB1: { id: 'TB1', type: 'start', x: 175, y: 55, w: 145, h: 62, title: 'INICI', sub: 'Persona alterada o\nviolenta en garjola', lane: '1. ACD' },
+    TB2: { id: 'TB2', type: 'dec', x: 350, y: 44, w: 165, h: 84, title: 'DEC-1: Valoració\nResp. Custòdia', sub: 'Criteri reglat i homogeni', lane: '1. ACD' },
+    TB3: { id: 'TB3', type: 'op_standard', x: 545, y: 46, w: 175, h: 80, title: 'OP-1: Execució de la\ncontenció física', sub: 'Immobilització reglada\ni proporcional', lane: '1. ACD' },
+    TB4: { id: 'TB4', type: 'op_optimized', x: 750, y: 46, w: 185, h: 80, title: 'OP-2: Registre Únic\na Custòdia', sub: 'Formulari estructurat\n(Dada única normalitzada)', lane: '1. ACD' },
+    TB5: { id: 'TB5', type: 'delay_alert', x: 965, y: 48, w: 185, h: 76, title: 'ESP-1: Control de Temps\nAvís Automàtic ≤ 30 min', sub: 'Alerta visual preventiva\nper a l\'agent de custòdia', lane: '1. ACD' },
+    TB6: { id: 'TB6', type: 'op_standard', x: 1180, y: 46, w: 180, h: 80, title: 'OP-3: Retirada de\nla contenció física', sub: 'Cessament en termini\n(≤ 30 min) i supervisió', lane: '1. ACD' },
+
+    // CARRIL 2: UNITAT INSTRUCTORA (OAC / UI)
+    TB7: { id: 'TB7', type: 'op_optimized', x: 545, y: 380, w: 200, h: 82, title: 'OP-4: Passarel·la SIP\nAutomàtica', sub: 'Injecció directa de dades\nsense reescriptura (0% error)', lane: '2. UNITAT INSTRUCTORA' },
+    TB8: { id: 'TB8', type: 'doc_optimized', reg: 'REG #1', x: 775, y: 382, w: 195, h: 78, title: 'DOC-1: Diligència en\nAtestat SIP Automàtica', sub: 'Generació automàtica\nvinculada a l\'atestat', lane: '2. UNITAT INSTRUCTORA' },
+    TB9: { id: 'TB9', type: 'doc_optimized', reg: '100% JUDICIAL', x: 1000, y: 382, w: 200, h: 78, title: 'DOC-2: Seguretat Jurídica\ni Traçabilitat 100%', sub: 'Constància judicial íntegra\ni rendició de comptes', lane: '2. UNITAT INSTRUCTORA' },
+
+    // CARRIL 3: SERVEIS MÈDICS (SEM / CAP)
+    TB10: { id: 'TB10', type: 'op_optimized', x: 775, y: 595, w: 200, h: 80, title: 'OP-5: Petició Mèdica\nTelemàtica Integrada', sub: 'Sol·licitud digital immediata\nal SEM / CAP referent', lane: '3. SERVEIS MÈDICS' },
+    TB11: { id: 'TB11', type: 'delay', x: 1005, y: 599, w: 185, h: 72, title: 'ESP-2: Arribada i\nassistència facultatiu', sub: 'Temps de resposta\nmonitoritzat', lane: '3. SERVEIS MÈDICS' },
+    TB12: { id: 'TB12', type: 'doc_optimized', reg: 'CLÍN', x: 1220, y: 595, w: 195, h: 80, title: 'DOC-3: Formulari Mèdic\nIntegrat & Certificat', sub: 'Adjunció automàtica del\npart mèdic a l\'expedient', lane: '3. SERVEIS MÈDICS' },
+
+    // FI SUBPROCÉS TO-BE
+    TB13: { id: 'TB13', type: 'end', x: 1280, y: 215, w: 185, h: 68, title: 'FI SUBPROCÉS TO-BE', sub: '100% Interoperabilitat,\nsense buits ni duplicitats', lane: '1. ACD' }
+  };
+
+  const TOBE_ARROWS = [
+    { id: 'TBA1', pts: [{x: 320, y: 86}, {x: 350, y: 86}], label: '', color: TOBE_COLORS.arrowStandard },
+    { id: 'TBA2', pts: [{x: 515, y: 86}, {x: 545, y: 86}], label: 'SÍ (Reglat)', color: TOBE_COLORS.arrowStandard },
+    { id: 'TBA3', pts: [{x: 720, y: 86}, {x: 750, y: 86}], label: 'Dada Única', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA4', pts: [{x: 935, y: 86}, {x: 965, y: 86}], label: 'Temporitzador', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA5', pts: [{x: 1150, y: 86}, {x: 1180, y: 86}], label: '≤ 30 min', color: TOBE_COLORS.arrowStandard },
+    { id: 'TBA6', pts: [{x: 842, y: 126}, {x: 842, y: 220}, {x: 645, y: 220}, {x: 645, y: 380}], label: 'Passarel·la SIP Automàtica', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA7', pts: [{x: 745, y: 421}, {x: 775, y: 421}], label: 'Injecció', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA8', pts: [{x: 970, y: 421}, {x: 1000, y: 421}], label: '100% Diligències', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA9', pts: [{x: 842, y: 126}, {x: 842, y: 220}, {x: 875, y: 220}, {x: 875, y: 595}], dashed: true, label: 'Petició Telemàtica SEM/CAP', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA10', pts: [{x: 975, y: 635}, {x: 1005, y: 635}], label: '', color: TOBE_COLORS.arrowStandard },
+    { id: 'TBA11', pts: [{x: 1190, y: 635}, {x: 1220, y: 635}], label: 'Part digital', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA12a', pts: [{x: 1270, y: 126}, {x: 1270, y: 170}, {x: 1372, y: 170}, {x: 1372, y: 215}], label: 'Retirada final', color: TOBE_COLORS.arrowStandard },
+    { id: 'TBA12b', pts: [{x: 1200, y: 421}, {x: 1372, y: 421}, {x: 1372, y: 283}], label: 'Seguretat Jurídica', color: TOBE_COLORS.arrowOptimized },
+    { id: 'TBA12c', pts: [{x: 1317, y: 595}, {x: 1317, y: 283}], dashed: true, label: 'Certificat mèdic', color: TOBE_COLORS.arrowOptimized }
+  ];
+
+  const TOBE_STEPS = [
+    { target: 'TB1', nodes: ['TB1'], arrows: [] },
+    { target: 'TB2', nodes: ['TB1', 'TB2'], arrows: ['TBA1'] },
+    { target: 'TB3', nodes: ['TB1', 'TB2', 'TB3'], arrows: ['TBA1', 'TBA2'] },
+    { target: 'TB4', nodes: ['TB1', 'TB2', 'TB3', 'TB4'], arrows: ['TBA1', 'TBA2', 'TBA3'] },
+    { target: 'TB5', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4'] },
+    { target: 'TB6', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5'] },
+    { target: 'TB7', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6'] },
+    { target: 'TB8', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7'] },
+    { target: 'TB9', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8'] },
+    { target: 'TB10', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9'] },
+    { target: 'TB11', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10'] },
+    { target: 'TB12', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11', 'TB12'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10', 'TBA11'] },
+    { target: 'TB13', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11', 'TB12', 'TB13'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10', 'TBA11', 'TBA12a', 'TBA12b', 'TBA12c'] }
+  ];
+
+  function drawStartEndToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, 20);
+    ctx.fillStyle = TOBE_COLORS.startEndFill;
+    ctx.fill();
+    ctx.lineWidth = 2.2;
+    ctx.strokeStyle = TOBE_COLORS.startEndStroke;
+    ctx.stroke();
+
+    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 8 : h / 2), 16, 'bold 13px "Segoe UI", sans-serif', '#166534');
+    if (sub) {
+      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 10, 13, '11px "Segoe UI", sans-serif', '#15803d');
+    }
+    ctx.restore();
+  }
+
+  function drawOperationToBe(ctx, x, y, w, h, title, sub, isOptimized = false, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, 8);
+    ctx.fillStyle = isOptimized ? TOBE_COLORS.opOptimizedFill : TOBE_COLORS.opStandardFill;
+    ctx.fill();
+    ctx.lineWidth = isOptimized ? 2.4 : 1.8;
+    ctx.strokeStyle = isOptimized ? TOBE_COLORS.opOptimizedStroke : TOBE_COLORS.opStandardStroke;
+    ctx.stroke();
+
+    if (isOptimized) {
+      ctx.fillStyle = '#059669';
+      ctx.beginPath();
+      ctx.roundRect(x + w - 74, y + 4, 68, 14, 4);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 8.5px "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('OPTIMITZAT ✓', x + w - 40, y + 14);
+    }
+
+    const textColor = isOptimized ? '#065f46' : '#1e3a8a';
+    const subColor = isOptimized ? '#047857' : '#3b82f6';
+    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 10 : h / 2), 15, 'bold 12px "Segoe UI", sans-serif', textColor);
+    if (sub) {
+      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 12, 12, '10.5px "Segoe UI", sans-serif', subColor);
+    }
+    ctx.restore();
+  }
+
+  function drawDecisionToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.beginPath();
+    ctx.moveTo(x + w / 2, y);
+    ctx.lineTo(x + w, y + h / 2);
+    ctx.lineTo(x + w / 2, y + h);
+    ctx.lineTo(x, y + h / 2);
+    ctx.closePath();
+    ctx.fillStyle = TOBE_COLORS.decFill;
+    ctx.fill();
+    ctx.lineWidth = 1.8;
+    ctx.strokeStyle = TOBE_COLORS.decStroke;
+    ctx.stroke();
+
+    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11px "Segoe UI", sans-serif', '#991b1b');
+    if (sub) {
+      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 10, 11, '9.5px "Segoe UI", sans-serif', '#dc2626');
+    }
+    ctx.restore();
+  }
+
+  function drawDocumentToBe(ctx, x, y, w, h, title, sub, regCode, isOptimized = true, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + w, y);
+    ctx.lineTo(x + w, y + h - 8);
+    ctx.quadraticCurveTo(x + w * 0.75, y + h - 16, x + w * 0.5, y + h - 8);
+    ctx.quadraticCurveTo(x + w * 0.25, y + h, x, y + h - 8);
+    ctx.closePath();
+    ctx.fillStyle = isOptimized ? TOBE_COLORS.docOptimizedFill : TOBE_COLORS.docFill;
+    ctx.fill();
+    ctx.lineWidth = 2.0;
+    ctx.strokeStyle = isOptimized ? TOBE_COLORS.docOptimizedStroke : TOBE_COLORS.docStroke;
+    ctx.stroke();
+
+    if (regCode) {
+      ctx.fillStyle = TOBE_COLORS.regBadge;
+      const bWidth = regCode.length > 6 ? 66 : 42;
+      ctx.beginPath();
+      ctx.roundRect(x + w - bWidth - 6, y + 4, bWidth, 14, 4);
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 8.5px "Segoe UI", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(regCode, x + w - bWidth / 2 - 6, y + 14);
+    }
+
+    const textColor = isOptimized ? '#14532d' : '#9a3412';
+    const subColor = isOptimized ? '#166534' : '#c2410c';
+    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11.5px "Segoe UI", sans-serif', textColor);
+    if (sub) {
+      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 10, 11, '10px "Segoe UI", sans-serif', subColor);
+    }
+    ctx.restore();
+  }
+
+  function drawDelayAlertToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + w - h / 2, y);
+    ctx.arc(x + w - h / 2, y + h / 2, h / 2, -Math.PI / 2, Math.PI / 2);
+    ctx.lineTo(x, y + h);
+    ctx.closePath();
+    ctx.fillStyle = '#eff6ff';
+    ctx.fill();
+    ctx.lineWidth = 2.2;
+    ctx.strokeStyle = '#2563eb';
+    ctx.stroke();
+
+    ctx.fillStyle = '#2563eb';
+    ctx.beginPath();
+    ctx.roundRect(x + w - 48, y + 4, 34, 14, 4);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 8.5px "Segoe UI", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('AVÍS TIC', x + w - 31, y + 14);
+
+    drawTextMultiLine(ctx, title, x + (w - h / 4) / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11px "Segoe UI", sans-serif', '#1e3a8a');
+    if (sub) {
+      drawTextMultiLine(ctx, sub, x + (w - h / 4) / 2, y + h / 2 + 10, 11, '10px "Segoe UI", sans-serif', '#2563eb');
+    }
+    ctx.restore();
+  }
+
+  function drawDelayStandardToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x + w - h / 2, y);
+    ctx.arc(x + w - h / 2, y + h / 2, h / 2, -Math.PI / 2, Math.PI / 2);
+    ctx.lineTo(x, y + h);
+    ctx.closePath();
+    ctx.fillStyle = '#f4eafc';
+    ctx.fill();
+    ctx.lineWidth = 1.8;
+    ctx.strokeStyle = '#73299a';
+    ctx.stroke();
+
+    drawTextMultiLine(ctx, title, x + (w - h / 4) / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11px "Segoe UI", sans-serif', '#581c87');
+    if (sub) {
+      drawTextMultiLine(ctx, sub, x + (w - h / 4) / 2, y + h / 2 + 10, 11, '10px "Segoe UI", sans-serif', '#7e22ce');
+    }
+    ctx.restore();
+  }
+
+  window.renderAsmeToBe = function renderAsmeToBe(progressRatio) {
+    if (!asmeToBeCanvas || !asmeToBeCtx) return;
+    const p = Math.min(1, Math.max(0, progressRatio));
+
+    asmeToBeCtx.setTransform(TOBE_SCALE, 0, 0, TOBE_SCALE, 0, 0);
+    asmeToBeCtx.fillStyle = '#ffffff';
+    asmeToBeCtx.fillRect(0, 0, TOBE_WIDTH, TOBE_HEIGHT);
+
+    // 1. Swimlanes TO-BE
+    const tableLeft = 15;
+    const tableTop = 15;
+    const laneHeaderWidth = 145;
+    const tableWidth = TOBE_WIDTH - 30;
+
+    const lanes = [
+      { height: 310, title: '1. ACD' },
+      { height: 195, title: '2. UNITAT INSTRUCTORA (OAC / UI)' },
+      { height: 215, title: '3. SERVEIS MÈDICS' }
+    ];
+
+    let currentY = tableTop;
+    lanes.forEach((lane) => {
+      asmeToBeCtx.fillStyle = TOBE_COLORS.laneHeaderBg;
+      asmeToBeCtx.fillRect(tableLeft, currentY, laneHeaderWidth, lane.height);
+
+      asmeToBeCtx.strokeStyle = TOBE_COLORS.gridBorder;
+      asmeToBeCtx.lineWidth = 1.5;
+      asmeToBeCtx.strokeRect(tableLeft, currentY, laneHeaderWidth, lane.height);
+      asmeToBeCtx.strokeRect(tableLeft + laneHeaderWidth, currentY, tableWidth - laneHeaderWidth, lane.height);
+
+      drawTextMultiLine(asmeToBeCtx, lane.title, tableLeft + laneHeaderWidth / 2, currentY + lane.height / 2, 18, 'bold 13px "Segoe UI", sans-serif', '#1e293b');
+      currentY += lane.height;
+    });
+
+    // 2. Llegenda inferior TO-BE
+    const legY = 746;
+    asmeToBeCtx.fillStyle = '#f8fafc';
+    asmeToBeCtx.fillRect(tableLeft, legY, tableWidth, 48);
+    asmeToBeCtx.strokeStyle = TOBE_COLORS.gridBorder;
+    asmeToBeCtx.lineWidth = 1;
+    asmeToBeCtx.strokeRect(tableLeft, legY, tableWidth, 48);
+
+    asmeToBeCtx.fillStyle = '#0f172a';
+    asmeToBeCtx.font = 'bold 11px "Segoe UI", sans-serif';
+    asmeToBeCtx.textAlign = 'left';
+    asmeToBeCtx.fillText('LLEGENDA TO-BE:', tableLeft + 15, legY + 26);
+
+    drawStartEndToBe(asmeToBeCtx, tableLeft + 130, legY + 10, 105, 28, 'Inici / Fi', null, 1);
+    drawOperationToBe(asmeToBeCtx, tableLeft + 245, legY + 10, 155, 28, 'Procés Automatitzat TIC', null, true, 1);
+    drawOperationToBe(asmeToBeCtx, tableLeft + 410, legY + 10, 135, 28, 'Operació Estàndard', null, false, 1);
+    drawDecisionToBe(asmeToBeCtx, tableLeft + 555, legY + 6, 90, 36, 'Decisió Reglada', null, 1);
+    drawDocumentToBe(asmeToBeCtx, tableLeft + 655, legY + 8, 145, 32, 'Diligència Automàtica SIP', null, 'REG', true, 1);
+    drawDelayAlertToBe(asmeToBeCtx, tableLeft + 810, legY + 9, 140, 30, 'Avís Visual ≤ 30 min', null, 1);
+    drawDelayStandardToBe(asmeToBeCtx, tableLeft + 960, legY + 9, 125, 30, 'Assistència Mèdica', null, 1);
+
+    if (p <= 0.001) {
+      if (asmeToBeStepBadge) {
+        asmeToBeStepBadge.textContent = 'Caixes: 0 / 13 (0%)';
+        asmeToBeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200 shadow-2xs';
+      }
+      return;
+    }
+
+    // 3. APARICIÓ PROGRESSIVA I SUAU DELS NODES TO-BE
+    const totalSteps = TOBE_STEPS.length;
+    const currentStepFloat = p * (totalSteps - 1);
+    const currentStepIdx = Math.min(totalSteps - 1, Math.floor(currentStepFloat));
+    const stepProgress = currentStepFloat - currentStepIdx;
+
+    const activeStep = TOBE_STEPS[currentStepIdx];
+    const visibleArrows = new Set(activeStep.arrows);
+
+    let drawingArrowId = null;
+    let drawingArrowProgress = 0;
+    if (currentStepIdx < totalSteps - 1) {
+      const nextStep = TOBE_STEPS[currentStepIdx + 1];
+      const newArrows = nextStep.arrows.filter(a => !activeStep.arrows.includes(a));
+      if (newArrows.length > 0) {
+        drawingArrowId = newArrows[0];
+        drawingArrowProgress = stepProgress;
+      }
+    }
+
+    // Dibuixar fletxes progressives
+    TOBE_ARROWS.forEach(arrow => {
+      if (visibleArrows.has(arrow.id)) {
+        drawProgressiveArrow(asmeToBeCtx, arrow.pts, 1.0, arrow.label, arrow.dashed, arrow.color, '#10b981');
+      } else if (arrow.id === drawingArrowId) {
+        drawProgressiveArrow(asmeToBeCtx, arrow.pts, drawingArrowProgress, arrow.label, arrow.dashed, arrow.color, '#10b981');
+      }
+    });
+
+    // Dibuixar nodes TO-BE
+    activeStep.nodes.forEach(nodeId => {
+      const n = TOBE_NODES[nodeId];
+      if (!n) return;
+      const alpha = (nodeId === activeStep.target && currentStepIdx < totalSteps - 1 && p < 0.99)
+        ? Math.min(1.0, Math.max(0.05, stepProgress * 2.2))
+        : 1.0;
+
+      if (n.type === 'start' || n.type === 'end') {
+        drawStartEndToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'op_standard') {
+        drawOperationToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, false, alpha);
+      } else if (n.type === 'op_optimized') {
+        drawOperationToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, true, alpha);
+      } else if (n.type === 'dec') {
+        drawDecisionToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'doc_optimized') {
+        drawDocumentToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, n.reg, true, alpha);
+      } else if (n.type === 'delay_alert') {
+        drawDelayAlertToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'delay') {
+        drawDelayStandardToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      }
+    });
+
+    // Actualitzar comptador de caixes TO-BE
+    const visibleCount = activeStep.nodes.length;
+    if (asmeToBeStepBadge) {
+      if (p >= 0.99) {
+        asmeToBeStepBadge.textContent = 'Caixes: 13 / 13 (100%)';
+        asmeToBeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs';
+      } else {
+        asmeToBeStepBadge.textContent = `Caixes: ${visibleCount} / 13 (${Math.round((visibleCount / 13) * 100)}%)`;
+        asmeToBeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-600/10 text-emerald-800 border border-emerald-600/20 shadow-2xs';
+      }
+    }
+  };
+
+  let tobeAnimId = null;
+  let isToBePlaying = false;
+  window.currentToBeRatio = 0.0;
+
+  window.playAsmeToBeAnimation = function playAsmeToBeAnimation(duration = 6500) {
+    if (tobeAnimId) cancelAnimationFrame(tobeAnimId);
+    isToBePlaying = true;
+    window.currentToBeRatio = 0.0;
+    renderAsmeToBe(0.0);
+    const startTime = performance.now();
+
+    function step(now) {
+      if (!isToBePlaying) return;
+      const elapsed = now - startTime;
+      window.currentToBeRatio = Math.min(1.0, elapsed / duration);
+      renderAsmeToBe(window.currentToBeRatio);
+
+      if (window.currentToBeRatio < 1.0) {
+        tobeAnimId = requestAnimationFrame(step);
+      } else {
+        isToBePlaying = false;
+        tobeAnimId = null;
+        renderAsmeToBe(1.0);
+      }
+    }
+    tobeAnimId = requestAnimationFrame(step);
+  };
+
+  window.stopAsmeToBeAnimation = function stopAsmeToBeAnimation() {
+    isToBePlaying = false;
+    if (tobeAnimId) {
+      cancelAnimationFrame(tobeAnimId);
+      tobeAnimId = null;
+    }
+  };
+
+  window.descargarAsmeToBePNG = function() {
+    if (!asmeToBeCanvas) return;
+    renderAsmeToBe(1.0);
+    const link = document.createElement('a');
+    link.download = 'Diagrama_ASME_TO_BE_Subproces_Redissenyat.png';
+    link.href = asmeToBeCanvas.toDataURL('image/png');
+    link.click();
+  };
+
+  if (asmeToBeCanvas) {
+    asmeToBeCanvas.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.playAsmeToBeAnimation(6500);
+    });
+  }
+
 
   // --- 10. COMPONENTS INTERACTIUS DE L'ESTAT 5: SIMULADOR DE SEMÀFOR I DECISIONS ---
   const trafficLightBtns = document.querySelectorAll('.traffic-btn');
