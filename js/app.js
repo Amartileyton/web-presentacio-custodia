@@ -1497,65 +1497,45 @@ document.addEventListener('DOMContentLoaded', () => {
     asmeToBeCtx.scale(TOBE_SCALE, TOBE_SCALE);
   }
 
-  const TOBE_COLORS = {
-    laneHeaderBg: '#eaedf0',
-    gridBorder: '#b8c0c8',
-    startEndFill: '#e6f5ea',
-    startEndStroke: '#1a8836',
-    opStandardFill: '#edf3f8',
-    opStandardStroke: '#2a5679',
-    opOptimizedFill: '#ecfdf5',
-    opOptimizedStroke: '#059669',
-    decFill: '#fdeded',
-    decStroke: '#b92b27',
-    docFill: '#fff7e6',
-    docStroke: '#d48817',
-    docOptimizedFill: '#f0fdf4',
-    docOptimizedStroke: '#16a34a',
-    regBadge: '#059669',
-    waitFill: '#eff6ff',
-    waitStroke: '#2563eb',
-    arrowStandard: '#1c3b5e',
-    arrowOptimized: '#059669'
-  };
-
+  // Estructura de 13 Nodes del Procés Redissenyat TO-BE (Harmonitzat amb ASME AS-IS)
   const TOBE_NODES = {
-    TB1: { id: 'TB1', type: 'start', x: 175, y: 55, w: 145, h: 62, title: 'INICI', sub: 'Persona alterada o\nviolenta en garjola', lane: '1. ACD' },
-    TB2: { id: 'TB2', type: 'dec', x: 350, y: 44, w: 165, h: 84, title: 'DEC-1: Valoració\nResp. Custòdia', sub: 'Criteri reglat i homogeni', lane: '1. ACD' },
-    TB3: { id: 'TB3', type: 'op_standard', x: 545, y: 46, w: 175, h: 80, title: 'OP-1: Execució de la\ncontenció física', sub: 'Immobilització reglada\ni proporcional', lane: '1. ACD' },
-    TB4: { id: 'TB4', type: 'op_optimized', x: 750, y: 46, w: 185, h: 80, title: 'OP-2: Registre Únic\na Custòdia', sub: 'Formulari estructurat\n(Dada única normalitzada)', lane: '1. ACD' },
-    TB5: { id: 'TB5', type: 'delay_alert', x: 965, y: 48, w: 185, h: 76, title: 'ESP-1: Control de Temps\nAvís Automàtic ≤ 30 min', sub: 'Alerta visual preventiva\nper a l\'agent de custòdia', lane: '1. ACD' },
-    TB6: { id: 'TB6', type: 'op_standard', x: 1180, y: 46, w: 180, h: 80, title: 'OP-3: Retirada de\nla contenció física', sub: 'Cessament en termini\n(≤ 30 min) i supervisió', lane: '1. ACD' },
+    // CARRIL 1: ACD (Fila 1)
+    TB1: { id: 'TB1', type: 'start', x: 205, y: 55, w: 150, h: 62, title: 'INICI', sub: 'Persona alterada o\nviolenta en garjola', lane: '1. ACD' },
+    TB2: { id: 'TB2', type: 'dec', x: 410, y: 46, w: 175, h: 82, title: 'DEC-1: Valoració\nResp. Custòdia', sub: 'Criteri reglat i homogeni', lane: '1. ACD' },
+    TB3: { id: 'TB3', type: 'op', x: 640, y: 48, w: 185, h: 78, title: 'OP-1: Execució de la\ncontenció física', sub: 'Immobilització reglada\ni proporcional', lane: '1. ACD' },
+    TB4: { id: 'TB4', type: 'delay', x: 880, y: 50, w: 185, h: 74, title: 'ESP-1: Manteniment\n(Avís automàtic)', sub: 'Control visual preventiu\ntemps màxim ≤ 30 min', lane: '1. ACD' },
+    TB5: { id: 'TB5', type: 'op', x: 1120, y: 48, w: 185, h: 78, title: 'OP-2: Retirada de\nla contenció física', sub: 'Cessament en termini (≤ 30m)\ni avís de finalització', lane: '1. ACD' },
+
+    // CARRIL 1: ACD (Fila 2 - Registre Únic i Tancament)
+    TB6: { id: 'TB6', type: 'op', x: 640, y: 212, w: 185, h: 78, title: 'OP-3: Registre Únic\na Custòdia', sub: 'Formulari estructurat\n(Dada única normalitzada)', lane: '1. ACD' },
+    TB13: { id: 'TB13', type: 'end', x: 1300, y: 218, w: 175, h: 66, title: 'FI SUBPROCÉS TO-BE', sub: '100% Interoperabilitat,\nsense buits ni duplicitats', lane: '1. ACD' },
 
     // CARRIL 2: UNITAT INSTRUCTORA (OAC / UI)
-    TB7: { id: 'TB7', type: 'op_optimized', x: 545, y: 380, w: 200, h: 82, title: 'OP-4: Passarel·la SIP\nAutomàtica', sub: 'Injecció directa de dades\nsense reescriptura (0% error)', lane: '2. UNITAT INSTRUCTORA' },
-    TB8: { id: 'TB8', type: 'doc_optimized', reg: 'REG #1', x: 775, y: 382, w: 195, h: 78, title: 'DOC-1: Diligència en\nAtestat SIP Automàtica', sub: 'Generació automàtica\nvinculada a l\'atestat', lane: '2. UNITAT INSTRUCTORA' },
-    TB9: { id: 'TB9', type: 'doc_optimized', reg: '100% JUDICIAL', x: 1000, y: 382, w: 200, h: 78, title: 'DOC-2: Seguretat Jurídica\ni Traçabilitat 100%', sub: 'Constància judicial íntegra\ni rendició de comptes', lane: '2. UNITAT INSTRUCTORA' },
+    TB7: { id: 'TB7', type: 'op', x: 640, y: 382, w: 185, h: 80, title: 'OP-4: Passarel·la SIP\nAutomàtica', sub: 'Injecció directa de dades\nsense reescriptura (0% errors)', lane: '2. UNITAT INSTRUCTORA' },
+    TB8: { id: 'TB8', type: 'doc', reg: 'REG #1', x: 880, y: 384, w: 185, h: 78, title: 'DOC-1: Diligència en\nAtestat SIP Automàtica', sub: 'Generació automàtica\nvinculada a l\'atestat', lane: '2. UNITAT INSTRUCTORA' },
+    TB9: { id: 'TB9', type: 'doc', reg: '100% JUD', x: 1120, y: 384, w: 185, h: 78, title: 'DOC-2: Seguretat Jurídica\ni Traçabilitat 100%', sub: 'Constància judicial íntegra\ni rendició de comptes', lane: '2. UNITAT INSTRUCTORA' },
 
     // CARRIL 3: SERVEIS MÈDICS (SEM / CAP)
-    TB10: { id: 'TB10', type: 'op_optimized', x: 775, y: 595, w: 200, h: 80, title: 'OP-5: Petició Mèdica\nTelemàtica Integrada', sub: 'Sol·licitud digital immediata\nal SEM / CAP referent', lane: '3. SERVEIS MÈDICS' },
-    TB11: { id: 'TB11', type: 'delay', x: 1005, y: 599, w: 185, h: 72, title: 'ESP-2: Arribada i\nassistència facultatiu', sub: 'Temps de resposta\nmonitoritzat', lane: '3. SERVEIS MÈDICS' },
-    TB12: { id: 'TB12', type: 'doc_optimized', reg: 'CLÍN', x: 1220, y: 595, w: 195, h: 80, title: 'DOC-3: Formulari Mèdic\nIntegrat & Certificat', sub: 'Adjunció automàtica del\npart mèdic a l\'expedient', lane: '3. SERVEIS MÈDICS' },
-
-    // FI SUBPROCÉS TO-BE
-    TB13: { id: 'TB13', type: 'end', x: 1280, y: 215, w: 185, h: 68, title: 'FI SUBPROCÉS TO-BE', sub: '100% Interoperabilitat,\nsense buits ni duplicitats', lane: '1. ACD' }
+    TB10: { id: 'TB10', type: 'op', x: 840, y: 590, w: 185, h: 78, title: 'OP-5: Petició Mèdica\nTelemàtica Integrada', sub: 'Sol·licitud digital immediata\nal SEM / CAP referent', lane: '3. SERVEIS MÈDICS' },
+    TB11: { id: 'TB11', type: 'delay', x: 1070, y: 592, w: 185, h: 74, title: 'ESP-2: Arribada i\nassistència facultatiu', sub: 'Temps de resposta mèdica\nmonitoritzat', lane: '3. SERVEIS MÈDICS' },
+    TB12: { id: 'TB12', type: 'doc', reg: 'CLÍN', x: 1300, y: 590, w: 175, h: 78, title: 'DOC-3: Formulari Mèdic\nIntegrat & Certificat', sub: 'Adjunció digital del part\nmèdic a l\'expedient', lane: '3. SERVEIS MÈDICS' }
   };
 
+  // Traçat d'arrow sense solapaments amb marges amplis
   const TOBE_ARROWS = [
-    { id: 'TBA1', pts: [{x: 320, y: 86}, {x: 350, y: 86}], label: '', color: TOBE_COLORS.arrowStandard },
-    { id: 'TBA2', pts: [{x: 515, y: 86}, {x: 545, y: 86}], label: 'SÍ (Reglat)', color: TOBE_COLORS.arrowStandard },
-    { id: 'TBA3', pts: [{x: 720, y: 86}, {x: 750, y: 86}], label: 'Dada Única', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA4', pts: [{x: 935, y: 86}, {x: 965, y: 86}], label: 'Temporitzador', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA5', pts: [{x: 1150, y: 86}, {x: 1180, y: 86}], label: '≤ 30 min', color: TOBE_COLORS.arrowStandard },
-    { id: 'TBA6', pts: [{x: 842, y: 126}, {x: 842, y: 220}, {x: 645, y: 220}, {x: 645, y: 380}], label: 'Passarel·la SIP Automàtica', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA7', pts: [{x: 745, y: 421}, {x: 775, y: 421}], label: 'Injecció', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA8', pts: [{x: 970, y: 421}, {x: 1000, y: 421}], label: '100% Diligències', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA9', pts: [{x: 842, y: 126}, {x: 842, y: 220}, {x: 875, y: 220}, {x: 875, y: 595}], dashed: true, label: 'Petició Telemàtica SEM/CAP', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA10', pts: [{x: 975, y: 635}, {x: 1005, y: 635}], label: '', color: TOBE_COLORS.arrowStandard },
-    { id: 'TBA11', pts: [{x: 1190, y: 635}, {x: 1220, y: 635}], label: 'Part digital', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA12a', pts: [{x: 1270, y: 126}, {x: 1270, y: 170}, {x: 1372, y: 170}, {x: 1372, y: 215}], label: 'Retirada final', color: TOBE_COLORS.arrowStandard },
-    { id: 'TBA12b', pts: [{x: 1200, y: 421}, {x: 1372, y: 421}, {x: 1372, y: 283}], label: 'Seguretat Jurídica', color: TOBE_COLORS.arrowOptimized },
-    { id: 'TBA12c', pts: [{x: 1317, y: 595}, {x: 1317, y: 283}], dashed: true, label: 'Certificat mèdic', color: TOBE_COLORS.arrowOptimized }
+    { id: 'TBA1', pts: [{x: 355, y: 86}, {x: 410, y: 86}], label: '' },
+    { id: 'TBA2', pts: [{x: 585, y: 86}, {x: 640, y: 86}], label: 'SÍ' },
+    { id: 'TBA3', pts: [{x: 825, y: 86}, {x: 880, y: 86}], label: '' },
+    { id: 'TBA4', pts: [{x: 1065, y: 86}, {x: 1120, y: 86}], label: '≤ 30 min' },
+    { id: 'TBA5', pts: [{x: 1212, y: 126}, {x: 1212, y: 170}, {x: 732, y: 170}, {x: 732, y: 212}], label: 'Cessament' },
+    { id: 'TBA6', pts: [{x: 732, y: 290}, {x: 732, y: 382}], label: 'Passarel·la SIP' },
+    { id: 'TBA7', pts: [{x: 825, y: 423}, {x: 880, y: 423}], label: 'Atestat' },
+    { id: 'TBA8', pts: [{x: 1065, y: 423}, {x: 1120, y: 423}], label: 'Judicial' },
+    { id: 'TBA9', pts: [{x: 825, y: 251}, {x: 855, y: 251}, {x: 855, y: 535}, {x: 932, y: 535}, {x: 932, y: 590}], dashed: true, label: 'Avís SEM/CAP' },
+    { id: 'TBA10', pts: [{x: 1025, y: 629}, {x: 1070, y: 629}], label: 'Assistència' },
+    { id: 'TBA11', pts: [{x: 1255, y: 629}, {x: 1300, y: 629}], label: 'Part mèdic' },
+    { id: 'TBA12a', pts: [{x: 1305, y: 423}, {x: 1387, y: 423}, {x: 1387, y: 284}], label: 'Diligències' },
+    { id: 'TBA12b', pts: [{x: 1387, y: 590}, {x: 1387, y: 284}], dashed: true, label: 'Certificat' }
   ];
 
   const TOBE_STEPS = [
@@ -1571,169 +1551,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { target: 'TB10', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9'] },
     { target: 'TB11', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10'] },
     { target: 'TB12', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11', 'TB12'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10', 'TBA11'] },
-    { target: 'TB13', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11', 'TB12', 'TB13'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10', 'TBA11', 'TBA12a', 'TBA12b', 'TBA12c'] }
+    { target: 'TB13', nodes: ['TB1', 'TB2', 'TB3', 'TB4', 'TB5', 'TB6', 'TB7', 'TB8', 'TB9', 'TB10', 'TB11', 'TB12', 'TB13'], arrows: ['TBA1', 'TBA2', 'TBA3', 'TBA4', 'TBA5', 'TBA6', 'TBA7', 'TBA8', 'TBA9', 'TBA10', 'TBA11', 'TBA12a', 'TBA12b'] }
   ];
-
-  function drawStartEndToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, 20);
-    ctx.fillStyle = TOBE_COLORS.startEndFill;
-    ctx.fill();
-    ctx.lineWidth = 2.2;
-    ctx.strokeStyle = TOBE_COLORS.startEndStroke;
-    ctx.stroke();
-
-    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 8 : h / 2), 16, 'bold 13px "Segoe UI", sans-serif', '#166534');
-    if (sub) {
-      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 10, 13, '11px "Segoe UI", sans-serif', '#15803d');
-    }
-    ctx.restore();
-  }
-
-  function drawOperationToBe(ctx, x, y, w, h, title, sub, isOptimized = false, alpha = 1.0) {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-    ctx.beginPath();
-    ctx.roundRect(x, y, w, h, 8);
-    ctx.fillStyle = isOptimized ? TOBE_COLORS.opOptimizedFill : TOBE_COLORS.opStandardFill;
-    ctx.fill();
-    ctx.lineWidth = isOptimized ? 2.4 : 1.8;
-    ctx.strokeStyle = isOptimized ? TOBE_COLORS.opOptimizedStroke : TOBE_COLORS.opStandardStroke;
-    ctx.stroke();
-
-    if (isOptimized) {
-      ctx.fillStyle = '#059669';
-      ctx.beginPath();
-      ctx.roundRect(x + w - 74, y + 4, 68, 14, 4);
-      ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 8.5px "Segoe UI", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('OPTIMITZAT ✓', x + w - 40, y + 14);
-    }
-
-    const textColor = isOptimized ? '#065f46' : '#1e3a8a';
-    const subColor = isOptimized ? '#047857' : '#3b82f6';
-    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 10 : h / 2), 15, 'bold 12px "Segoe UI", sans-serif', textColor);
-    if (sub) {
-      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 12, 12, '10.5px "Segoe UI", sans-serif', subColor);
-    }
-    ctx.restore();
-  }
-
-  function drawDecisionToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-    ctx.beginPath();
-    ctx.moveTo(x + w / 2, y);
-    ctx.lineTo(x + w, y + h / 2);
-    ctx.lineTo(x + w / 2, y + h);
-    ctx.lineTo(x, y + h / 2);
-    ctx.closePath();
-    ctx.fillStyle = TOBE_COLORS.decFill;
-    ctx.fill();
-    ctx.lineWidth = 1.8;
-    ctx.strokeStyle = TOBE_COLORS.decStroke;
-    ctx.stroke();
-
-    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11px "Segoe UI", sans-serif', '#991b1b');
-    if (sub) {
-      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 10, 11, '9.5px "Segoe UI", sans-serif', '#dc2626');
-    }
-    ctx.restore();
-  }
-
-  function drawDocumentToBe(ctx, x, y, w, h, title, sub, regCode, isOptimized = true, alpha = 1.0) {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + w, y);
-    ctx.lineTo(x + w, y + h - 8);
-    ctx.quadraticCurveTo(x + w * 0.75, y + h - 16, x + w * 0.5, y + h - 8);
-    ctx.quadraticCurveTo(x + w * 0.25, y + h, x, y + h - 8);
-    ctx.closePath();
-    ctx.fillStyle = isOptimized ? TOBE_COLORS.docOptimizedFill : TOBE_COLORS.docFill;
-    ctx.fill();
-    ctx.lineWidth = 2.0;
-    ctx.strokeStyle = isOptimized ? TOBE_COLORS.docOptimizedStroke : TOBE_COLORS.docStroke;
-    ctx.stroke();
-
-    if (regCode) {
-      ctx.fillStyle = TOBE_COLORS.regBadge;
-      const bWidth = regCode.length > 6 ? 66 : 42;
-      ctx.beginPath();
-      ctx.roundRect(x + w - bWidth - 6, y + 4, bWidth, 14, 4);
-      ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 8.5px "Segoe UI", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(regCode, x + w - bWidth / 2 - 6, y + 14);
-    }
-
-    const textColor = isOptimized ? '#14532d' : '#9a3412';
-    const subColor = isOptimized ? '#166534' : '#c2410c';
-    drawTextMultiLine(ctx, title, x + w / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11.5px "Segoe UI", sans-serif', textColor);
-    if (sub) {
-      drawTextMultiLine(ctx, sub, x + w / 2, y + h / 2 + 10, 11, '10px "Segoe UI", sans-serif', subColor);
-    }
-    ctx.restore();
-  }
-
-  function drawDelayAlertToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + w - h / 2, y);
-    ctx.arc(x + w - h / 2, y + h / 2, h / 2, -Math.PI / 2, Math.PI / 2);
-    ctx.lineTo(x, y + h);
-    ctx.closePath();
-    ctx.fillStyle = '#eff6ff';
-    ctx.fill();
-    ctx.lineWidth = 2.2;
-    ctx.strokeStyle = '#2563eb';
-    ctx.stroke();
-
-    ctx.fillStyle = '#2563eb';
-    ctx.beginPath();
-    ctx.roundRect(x + w - 48, y + 4, 34, 14, 4);
-    ctx.fill();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 8.5px "Segoe UI", sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('AVÍS TIC', x + w - 31, y + 14);
-
-    drawTextMultiLine(ctx, title, x + (w - h / 4) / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11px "Segoe UI", sans-serif', '#1e3a8a');
-    if (sub) {
-      drawTextMultiLine(ctx, sub, x + (w - h / 4) / 2, y + h / 2 + 10, 11, '10px "Segoe UI", sans-serif', '#2563eb');
-    }
-    ctx.restore();
-  }
-
-  function drawDelayStandardToBe(ctx, x, y, w, h, title, sub, alpha = 1.0) {
-    ctx.save();
-    ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + w - h / 2, y);
-    ctx.arc(x + w - h / 2, y + h / 2, h / 2, -Math.PI / 2, Math.PI / 2);
-    ctx.lineTo(x, y + h);
-    ctx.closePath();
-    ctx.fillStyle = '#f4eafc';
-    ctx.fill();
-    ctx.lineWidth = 1.8;
-    ctx.strokeStyle = '#73299a';
-    ctx.stroke();
-
-    drawTextMultiLine(ctx, title, x + (w - h / 4) / 2, y + (sub ? h / 2 - 8 : h / 2), 14, 'bold 11px "Segoe UI", sans-serif', '#581c87');
-    if (sub) {
-      drawTextMultiLine(ctx, sub, x + (w - h / 4) / 2, y + h / 2 + 10, 11, '10px "Segoe UI", sans-serif', '#7e22ce');
-    }
-    ctx.restore();
-  }
 
   window.renderAsmeToBe = function renderAsmeToBe(progressRatio) {
     if (!asmeToBeCanvas || !asmeToBeCtx) return;
@@ -1743,7 +1562,7 @@ document.addEventListener('DOMContentLoaded', () => {
     asmeToBeCtx.fillStyle = '#ffffff';
     asmeToBeCtx.fillRect(0, 0, TOBE_WIDTH, TOBE_HEIGHT);
 
-    // 1. Swimlanes TO-BE
+    // 1. Swimlanes TO-BE (Harmonitzats al 100% amb l'ASME AS-IS)
     const tableLeft = 15;
     const tableTop = 15;
     const laneHeaderWidth = 145;
@@ -1751,44 +1570,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lanes = [
       { height: 310, title: '1. ACD' },
-      { height: 195, title: '2. UNITAT INSTRUCTORA (OAC / UI)' },
+      { height: 195, title: '2. UNITAT INSTRUCTORA' },
       { height: 215, title: '3. SERVEIS MÈDICS' }
     ];
 
     let currentY = tableTop;
     lanes.forEach((lane) => {
-      asmeToBeCtx.fillStyle = TOBE_COLORS.laneHeaderBg;
+      asmeToBeCtx.fillStyle = ASME_COLORS.laneHeaderBg;
       asmeToBeCtx.fillRect(tableLeft, currentY, laneHeaderWidth, lane.height);
 
-      asmeToBeCtx.strokeStyle = TOBE_COLORS.gridBorder;
+      asmeToBeCtx.strokeStyle = ASME_COLORS.gridBorder;
       asmeToBeCtx.lineWidth = 1.5;
       asmeToBeCtx.strokeRect(tableLeft, currentY, laneHeaderWidth, lane.height);
       asmeToBeCtx.strokeRect(tableLeft + laneHeaderWidth, currentY, tableWidth - laneHeaderWidth, lane.height);
 
-      drawTextMultiLine(asmeToBeCtx, lane.title, tableLeft + laneHeaderWidth / 2, currentY + lane.height / 2, 18, 'bold 13px "Segoe UI", sans-serif', '#1e293b');
+      drawTextMultiLine(asmeToBeCtx, lane.title, tableLeft + laneHeaderWidth / 2, currentY + lane.height / 2, 18, 'bold 13.5px "Segoe UI", sans-serif', '#1e293b');
       currentY += lane.height;
     });
 
-    // 2. Llegenda inferior TO-BE
+    // 2. Llegenda inferior TO-BE (Colors 100% idèntics a l'ASME AS-IS)
     const legY = 746;
     asmeToBeCtx.fillStyle = '#f8fafc';
     asmeToBeCtx.fillRect(tableLeft, legY, tableWidth, 48);
-    asmeToBeCtx.strokeStyle = TOBE_COLORS.gridBorder;
+    asmeToBeCtx.strokeStyle = ASME_COLORS.gridBorder;
     asmeToBeCtx.lineWidth = 1;
     asmeToBeCtx.strokeRect(tableLeft, legY, tableWidth, 48);
 
     asmeToBeCtx.fillStyle = '#0f172a';
     asmeToBeCtx.font = 'bold 11px "Segoe UI", sans-serif';
     asmeToBeCtx.textAlign = 'left';
-    asmeToBeCtx.fillText('LLEGENDA TO-BE:', tableLeft + 15, legY + 26);
+    asmeToBeCtx.fillText('LLEGENDA ASME TO-BE:', tableLeft + 15, legY + 26);
 
-    drawStartEndToBe(asmeToBeCtx, tableLeft + 130, legY + 10, 105, 28, 'Inici / Fi', null, 1);
-    drawOperationToBe(asmeToBeCtx, tableLeft + 245, legY + 10, 155, 28, 'Procés Automatitzat TIC', null, true, 1);
-    drawOperationToBe(asmeToBeCtx, tableLeft + 410, legY + 10, 135, 28, 'Operació Estàndard', null, false, 1);
-    drawDecisionToBe(asmeToBeCtx, tableLeft + 555, legY + 6, 90, 36, 'Decisió Reglada', null, 1);
-    drawDocumentToBe(asmeToBeCtx, tableLeft + 655, legY + 8, 145, 32, 'Diligència Automàtica SIP', null, 'REG', true, 1);
-    drawDelayAlertToBe(asmeToBeCtx, tableLeft + 810, legY + 9, 140, 30, 'Avís Visual ≤ 30 min', null, 1);
-    drawDelayStandardToBe(asmeToBeCtx, tableLeft + 960, legY + 9, 125, 30, 'Assistència Mèdica', null, 1);
+    drawStartEnd(asmeToBeCtx, tableLeft + 160, legY + 10, 110, 28, 'Inici / Fi', null, 1);
+    drawOperation(asmeToBeCtx, tableLeft + 290, legY + 10, 160, 28, 'Operació Redissenyada', null, false, 1);
+    drawDecision(asmeToBeCtx, tableLeft + 470, legY + 6, 95, 36, 'Decisió', null, 1);
+    drawDocument(asmeToBeCtx, tableLeft + 585, legY + 8, 160, 32, 'Diligència / Registre SIP', null, 'REG', 1);
+    drawDelay(asmeToBeCtx, tableLeft + 765, legY + 10, 160, 28, 'Temps / Avís ≤ 30 min', null, 1);
 
     if (p <= 0.001) {
       if (asmeToBeStepBadge) {
@@ -1821,13 +1638,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dibuixar fletxes progressives
     TOBE_ARROWS.forEach(arrow => {
       if (visibleArrows.has(arrow.id)) {
-        drawProgressiveArrow(asmeToBeCtx, arrow.pts, 1.0, arrow.label, arrow.dashed, arrow.color, '#10b981');
+        drawProgressiveArrow(asmeToBeCtx, arrow.pts, 1.0, arrow.label, arrow.dashed, ASME_COLORS.arrow, '#0284c7');
       } else if (arrow.id === drawingArrowId) {
-        drawProgressiveArrow(asmeToBeCtx, arrow.pts, drawingArrowProgress, arrow.label, arrow.dashed, arrow.color, '#10b981');
+        drawProgressiveArrow(asmeToBeCtx, arrow.pts, drawingArrowProgress, arrow.label, arrow.dashed, ASME_COLORS.arrow, '#0284c7');
       }
     });
 
-    // Dibuixar nodes TO-BE
+    // Dibuixar nodes TO-BE emprant les primitives d'estil de l'AS-IS
     activeStep.nodes.forEach(nodeId => {
       const n = TOBE_NODES[nodeId];
       if (!n) return;
@@ -1836,19 +1653,15 @@ document.addEventListener('DOMContentLoaded', () => {
         : 1.0;
 
       if (n.type === 'start' || n.type === 'end') {
-        drawStartEndToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
-      } else if (n.type === 'op_standard') {
-        drawOperationToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, false, alpha);
-      } else if (n.type === 'op_optimized') {
-        drawOperationToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, true, alpha);
+        drawStartEnd(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'op') {
+        drawOperation(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, false, alpha);
       } else if (n.type === 'dec') {
-        drawDecisionToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
-      } else if (n.type === 'doc_optimized') {
-        drawDocumentToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, n.reg, true, alpha);
-      } else if (n.type === 'delay_alert') {
-        drawDelayAlertToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+        drawDecision(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+      } else if (n.type === 'doc') {
+        drawDocument(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, n.reg, alpha);
       } else if (n.type === 'delay') {
-        drawDelayStandardToBe(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
+        drawDelay(asmeToBeCtx, n.x, n.y, n.w, n.h, n.title, n.sub, alpha);
       }
     });
 
@@ -1860,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', () => {
         asmeToBeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs';
       } else {
         asmeToBeStepBadge.textContent = `Caixes: ${visibleCount} / 13 (${Math.round((visibleCount / 13) * 100)}%)`;
-        asmeToBeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-600/10 text-emerald-800 border border-emerald-600/20 shadow-2xs';
+        asmeToBeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20 shadow-2xs';
       }
     }
   };
@@ -1901,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  window.descargarAsmeToBePNG = function() {
+    window.descargarAsmeToBePNG = function() {
     if (!asmeToBeCanvas) return;
     renderAsmeToBe(1.0);
     const link = document.createElement('a');
