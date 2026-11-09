@@ -1341,12 +1341,12 @@ body::-webkit-scrollbar,
                     <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 leading-tight">
                       Diagrama ASME AS-IS · Subprocés de Contenció en Garjola (ACD)
                     </h3>
-                    <span class="text-[10px] text-slate-500 block">Les caixes apareixen seqüencialment segons el progrés de l'scroll</span>
+                    <span class="text-[10px] text-slate-500 block">Animació seqüencial del subprocés (13 caixes operatives i 12 fluxos de contenció)</span>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <span id="asme-step-badge" class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20 shadow-2xs">
-                    Caixes: 1 / 13 (0%)
+                  <span id="asme-step-badge" class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200 shadow-2xs">
+                    Caixes: 0 / 13 (0%)
                   </span>
                   <button onclick="descargarAsmePNG()" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-pgme-blue text-slate-700 hover:text-white text-[11px] font-bold transition-all shadow-2xs flex items-center gap-1 border border-slate-200 cursor-pointer" title="Descarregar diagrama complet en alta resolució PNG">
                     <span>⬇ PNG</span>
@@ -1722,6 +1722,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let metricsAnimFrameId = null;
 
   // Canvas ASME de la Fase 2
+  // Animació dinàmica del Diagrama ASME Fase 2 (Subprocés Garjola)
+  let garjolaAnimId = null;
+  let isGarjolaPlaying = false;
+  window.isGarjolaPresentationControlled = false;
+  window.currentGarjolaRatio = 0.0;
+
   const asmeCanvas = document.getElementById('asmeCanvas');
   const asmeCtx = asmeCanvas ? asmeCanvas.getContext('2d') : null;
   const asmeStepBadge = document.getElementById('asme-step-badge');
@@ -2051,42 +2057,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // Totes les coordenades y s'han desplaçat -73px en retirar la capçalera
     let visibleSteps = 0;
 
-    // Pas 1 (>= 0.00): INICI (Persona alterada o violenta en garjola)
-    if (ratio >= 0.00) {
+    // Pas 1 (>= 0.05): INICI (Persona alterada o violenta en garjola)
+    if (ratio >= 0.05) {
       drawStartEnd(asmeCtx, 205, 57, 150, 62, 'INICI', 'Persona alterada o\nviolenta en garjola');
       visibleSteps = 1;
     }
 
-    // Pas 2 (>= 0.08): Fletxa 1 -> DEC-1 (Valoració Resp. Custòdia)
-    if (ratio >= 0.08) {
+    // Pas 2 (>= 0.12): Fletxa 1 -> DEC-1 (Valoració Resp. Custòdia)
+    if (ratio >= 0.12) {
       drawArrow(asmeCtx, [{x: 355, y: 88}, {x: 395, y: 88}]);
       drawDecision(asmeCtx, 395, 46, 175, 84, 'DEC-1: Valoració\nResp. Custòdia', 'Requereix contenció?');
       visibleSteps = 2;
     }
 
-    // Pas 3 (>= 0.16): Fletxa 2 (SÍ) -> OP-1 (Execució contenció física)
-    if (ratio >= 0.16) {
+    // Pas 3 (>= 0.20): Fletxa 2 (SÍ) -> OP-1 (Execució contenció física)
+    if (ratio >= 0.20) {
       drawArrow(asmeCtx, [{x: 570, y: 88}, {x: 615, y: 88}], false, 'SÍ', {x: 590, y: 76});
       drawOperation(asmeCtx, 615, 48, 190, 80, 'OP-1: Execució de la\ncontenció física', 'Immobilització reglada\nsegons protocol', false);
       visibleSteps = 3;
     }
 
-    // Pas 4 (>= 0.25): Fletxa 3 -> ESP-1 (Manteniment de la contenció <= 30 min)
-    if (ratio >= 0.25) {
+    // Pas 4 (>= 0.28): Fletxa 3 -> ESP-1 (Manteniment de la contenció <= 30 min)
+    if (ratio >= 0.28) {
       drawArrow(asmeCtx, [{x: 805, y: 88}, {x: 845, y: 88}]);
       drawDelay(asmeCtx, 845, 52, 190, 72, 'ESP-1: Manteniment\nde la contenció', 'Temps màxim ≤ 30 min');
       visibleSteps = 4;
     }
 
-    // Pas 5 (>= 0.33): Fletxa 4 (<= 30 min) -> OP-2 (Retirada de la contenció física)
-    if (ratio >= 0.33) {
+    // Pas 5 (>= 0.36): Fletxa 4 (<= 30 min) -> OP-2 (Retirada de la contenció física)
+    if (ratio >= 0.36) {
       drawArrow(asmeCtx, [{x: 1035, y: 88}, {x: 1075, y: 88}], false, '≤ 30 min', {x: 1055, y: 75});
       drawOperation(asmeCtx, 1075, 48, 195, 80, 'OP-2: Retirada de\nla contenció física', 'Cessament (≤ 30m), avís mèdic\ni sol·licitud a U. Instructora', false);
       visibleSteps = 5;
     }
 
-    // Pas 6 (>= 0.42): Fletxa 5 (Comunicació a U. Instructora) -> OP-3
-    if (ratio >= 0.42) {
+    // Pas 6 (>= 0.44): Fletxa 5 (Comunicació a U. Instructora) -> OP-3
+    if (ratio >= 0.44) {
       drawArrow(
         asmeCtx,
         [{x: 1100, y: 128}, {x: 1100, y: 202}, {x: 710, y: 202}, {x: 710, y: 382}],
@@ -2098,8 +2104,8 @@ document.addEventListener('DOMContentLoaded', () => {
       visibleSteps = 6;
     }
 
-    // Pas 7 (>= 0.50): Fletxes mèdiques 7a i 7b -> ESP-2 (Espera assistència mèdica)
-    if (ratio >= 0.50) {
+    // Pas 7 (>= 0.52): Fletxes mèdiques 7a i 7b -> ESP-2 (Espera assistència mèdica)
+    if (ratio >= 0.52) {
       drawArrow(
         asmeCtx,
         [{x: 915, y: 124}, {x: 915, y: 602}],
@@ -2118,15 +2124,15 @@ document.addEventListener('DOMContentLoaded', () => {
       visibleSteps = 7;
     }
 
-    // Pas 8 (>= 0.59): Fletxa 6 -> DOC-1 (Diligència de contenció en SIP/Atestat REG #1)
-    if (ratio >= 0.59) {
+    // Pas 8 (>= 0.60): Fletxa 6 -> DOC-1 (Diligència de contenció en SIP/Atestat REG #1)
+    if (ratio >= 0.60) {
       drawArrow(asmeCtx, [{x: 810, y: 423}, {x: 1075, y: 423}]);
       drawDocument(asmeCtx, 1075, 385, 190, 78, 'DOC-1: Diligència de\ncontenció (SIP/Atestat)', "Constància documental\nen l'atestat policial", 'REG #1');
       visibleSteps = 8;
     }
 
-    // Pas 9 (>= 0.67): Fletxa 10 -> OP-4 (Registre en l'aplicació Custòdia)
-    if (ratio >= 0.67) {
+    // Pas 9 (>= 0.68): Fletxa 10 -> OP-4 (Registre en l'aplicació Custòdia)
+    if (ratio >= 0.68) {
       drawArrow(
         asmeCtx,
         [{x: 1180, y: 128}, {x: 1180, y: 232}],
@@ -2138,8 +2144,8 @@ document.addEventListener('DOMContentLoaded', () => {
       visibleSteps = 9;
     }
 
-    // Pas 10 (>= 0.75): Fletxa 8 -> OP-5 (Avaluació mèdica facultatiu)
-    if (ratio >= 0.75) {
+    // Pas 10 (>= 0.76): Fletxa 8 -> OP-5 (Avaluació mèdica facultatiu)
+    if (ratio >= 0.76) {
       drawArrow(asmeCtx, [{x: 1035, y: 638}, {x: 1075, y: 638}]);
       drawOperation(asmeCtx, 1075, 598, 195, 80, 'OP-5: Avaluació mèdica\nde la persona agitada', 'Exploració física i\npsicològica post-contenció', false);
       visibleSteps = 10;
@@ -2152,15 +2158,15 @@ document.addEventListener('DOMContentLoaded', () => {
       visibleSteps = 11;
     }
 
-    // Pas 12 (>= 0.77): Fletxa 9 -> DOC-2 (Informe / Part d'assistència mèdica)
-    if (ratio >= 0.77) {
+    // Pas 12 (>= 0.90): Fletxa 9 -> DOC-2 (Informe / Part d'assistència mèdica)
+    if (ratio >= 0.90) {
       drawArrow(asmeCtx, [{x: 1270, y: 638}, {x: 1310, y: 638}]);
       drawDocument(asmeCtx, 1310, 601, 170, 76, "DOC-2: Informe\nd'assistència mèdica", "Facultatiu adjunta\npart a l'expedient", null);
       visibleSteps = 12;
     }
 
-    // Pas 13 (>= 0.85): Fletxes 12a, 12b, 12c -> FI SUBPROCÉS + Llegenda ASME
-    if (ratio >= 0.85) {
+    // Pas 13 (>= 0.96): Fletxes 12a, 12b, 12c -> FI SUBPROCÉS + Llegenda ASME
+    if (ratio >= 0.96) {
       // 12a. DOC-3 -> FI
       drawArrow(asmeCtx, [{x: 1395, y: 235}, {x: 1395, y: 119}], false, 'Registre custòdia', {x: 1445, y: 177});
       // 12b. DOC-1 -> FI
@@ -2194,11 +2200,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Actualitzar el comptador de caixes de la fase
     if (asmeStepBadge) {
-      asmeStepBadge.textContent = `Caixes: ${visibleSteps} / 13 (${Math.round((visibleSteps / 13) * 100)}%)`;
-      if (visibleSteps === 13) {
-        asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs';
+      if (visibleSteps === 0) {
+        asmeStepBadge.textContent = 'Caixes: 0 / 13 (0%)';
+        asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200 shadow-2xs';
       } else {
-        asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20 shadow-2xs';
+        asmeStepBadge.textContent = `Caixes: ${visibleSteps} / 13 (${Math.round((visibleSteps / 13) * 100)}%)`;
+        if (visibleSteps === 13) {
+          asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20 shadow-2xs';
+        } else {
+          asmeStepBadge.className = 'px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20 shadow-2xs';
+        }
       }
     }
   }
@@ -2264,17 +2275,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Progrés per al diagrama de la secció actual
 
-      // SINCRONITZACIÓ AMB LA FASE 2: Diagrama ASME (La caixa 13 s'integra abans d'arribar al final)
+      // SINCRONITZACIÓ AMB LA FASE 2: Diagrama ASME
       if (i === 2) {
-        // Mapegem 0%..85% d'scroll a 0..1.0 del diagrama per garantir que la caixa 13 s'integra completament
-        // mentre la pantalla roman 100% fixada i congelada!
-        const diagramProgress = Math.min(1.0, (percent / 85));
-        if (scrollY < start) {
-          renderAsmeProgress(0);
-        } else if (scrollY >= end || percent >= 85) {
-          renderAsmeProgress(1.0);
-        } else {
-          renderAsmeProgress(diagramProgress);
+        if (!isGarjolaPlaying && !window.isGarjolaPresentationControlled) {
+          const diagramProgress = Math.min(1.0, (percent / 85));
+          if (scrollY < start) {
+            renderAsmeProgress(0.0);
+          } else if (scrollY >= end || percent >= 85) {
+            renderAsmeProgress(1.0);
+          } else {
+            renderAsmeProgress(diagramProgress);
+          }
         }
       }
     }
@@ -2628,6 +2639,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // --- REPRODUCCIÓ FLUIDA DEL SUBPROCÉS ASME GARJOLA (FASE 2) ---
+  window.playAsmeGarjolaAnimation = function playAsmeGarjolaAnimation(duration = 6500) {
+    if (garjolaAnimId) cancelAnimationFrame(garjolaAnimId);
+    isGarjolaPlaying = true;
+    window.isGarjolaPresentationControlled = true;
+    window.currentGarjolaRatio = 0.0;
+    renderAsmeProgress(0.0);
+    const startTime = performance.now();
+
+    function step(now) {
+      if (!isGarjolaPlaying) return;
+      const elapsed = now - startTime;
+      window.currentGarjolaRatio = Math.min(1.0, elapsed / duration);
+      renderAsmeProgress(window.currentGarjolaRatio);
+
+      if (window.currentGarjolaRatio < 1.0) {
+        garjolaAnimId = requestAnimationFrame(step);
+      } else {
+        isGarjolaPlaying = false;
+        garjolaAnimId = null;
+        renderAsmeProgress(1.0);
+      }
+    }
+    garjolaAnimId = requestAnimationFrame(step);
+  };
+
+  window.stopAsmeGarjolaAnimation = function stopAsmeGarjolaAnimation() {
+    isGarjolaPlaying = false;
+    if (garjolaAnimId) {
+      cancelAnimationFrame(garjolaAnimId);
+      garjolaAnimId = null;
+    }
+  };
+
+  // Clic al canvas de Garjola per tornar a reproduir l'animació
+  if (asmeCanvas) {
+    asmeCanvas.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.playAsmeGarjolaAnimation(6500);
+    });
+  }
+
   // Animació suau del Diagrama ASME entre ratios de progrés
   let asmeAnimFrame = null;
   window.currentAsmeRatio = 0.0;
@@ -2667,6 +2720,8 @@ document.addEventListener('DOMContentLoaded', () => {
       name: "1. Abast Territorial & 97 ACDs",
       desc: "Mapa de Catalunya amb 97 ACDs i senyals sonar actives",
       action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         navigateToSection(0);
         activateStage(0);
       }
@@ -2677,9 +2732,8 @@ document.addEventListener('DOMContentLoaded', () => {
       name: "2. Procés ASME General PG-ME (Estructura)",
       desc: "Identificació d'actors policials (USC, OAC, Custòdia, UI)",
       action: () => {
-        if (typeof window.stopAsmeGeneralAnimation === 'function') {
-          window.stopAsmeGeneralAnimation();
-        }
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         navigateToSection(1);
         activateStage(1);
         if (typeof window.renderAsmeGeneral === 'function') {
@@ -2693,6 +2747,7 @@ document.addEventListener('DOMContentLoaded', () => {
       name: "3. Animació Procés ASME General PG-ME",
       desc: "Dibuix dinàmic de les 16 caixes i fletxes a través dels 4 carrils",
       action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         navigateToSection(1);
         activateStage(1);
         if (typeof window.playAsmeGeneralAnimation === 'function') {
@@ -2703,54 +2758,50 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 3,
       sectionIndex: 2,
-      name: "4. ASME Garjola: Bloc ACD (1-5)",
-      desc: "Inici, valoració, immobilització reglada i límit ≤ 30 min",
+      name: "4. Subprocés ASME Garjola (Estructura)",
+      desc: "Estructura inicial buida de 3 carrils (ACD, Unitat Instructora, Serveis Mèdics)",
       action: () => {
-        if (typeof window.stopAsmeGeneralAnimation === 'function') {
-          window.stopAsmeGeneralAnimation();
-        }
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        window.isGarjolaPresentationControlled = true;
         navigateToSection(2);
         activateStage(2);
-        animateAsmeTo(0.35, 450);
+        if (typeof window.renderAsmeProgress === 'function') {
+          window.renderAsmeProgress(0.0);
+        }
       }
     },
     {
       step: 4,
       sectionIndex: 2,
-      name: "5. ASME Garjola: Ruptura TIC & Atestats (6-9)",
-      desc: "Diligència atestat SIP i registre manual Custòdia",
+      name: "5. Animació Subprocés ASME Garjola",
+      desc: "Dibuix fluid de les 13 caixes operatives i 12 fluxos de contenció",
       action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        window.isGarjolaPresentationControlled = true;
         navigateToSection(2);
         activateStage(2);
-        animateAsmeTo(0.68, 450);
+        if (typeof window.playAsmeGarjolaAnimation === 'function') {
+          window.playAsmeGarjolaAnimation(6500);
+        }
       }
     },
     {
       step: 5,
-      sectionIndex: 2,
-      name: "6. ASME Garjola: Mèdics & Tancament (10-13)",
-      desc: "Avaluació facultatiu, part mèdic i fi de subprocés (13/13)",
-      action: () => {
-        navigateToSection(2);
-        activateStage(2);
-        animateAsmeTo(1.0, 500);
-      }
-    },
-    {
-      step: 6,
       sectionIndex: 3,
-      name: "7. Proposta de Valor: Diagnosi AS-IS",
+      name: "6. Proposta de Valor: Diagnosi AS-IS",
       desc: "Deficiències operatives, paper extraviable i manca d'alertes",
       action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         navigateToSection(3);
         activateStage(3);
         setAsIsToBeMode('asis');
       }
     },
     {
-      step: 7,
+      step: 6,
       sectionIndex: 3,
-      name: "8. Proposta de Valor: Model TO-BE Redissenyat",
+      name: "7. Proposta de Valor: Model TO-BE Redissenyat",
       desc: "Passarel·la única TIC, avís > 30 min i integració 100%",
       action: () => {
         navigateToSection(3);
@@ -2759,9 +2810,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 8,
+      step: 7,
       sectionIndex: 4,
-      name: "9. Pla Implantació: Gantt F1 Organització (M1-M2)",
+      name: "8. Pla Implantació: Gantt F1 Organització (M1-M2)",
       desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
       action: () => {
         navigateToSection(4);
@@ -2772,9 +2823,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 9,
+      step: 8,
       sectionIndex: 4,
-      name: "10. Pla Implantació: Gantt F2 TIC (M3-M5)",
+      name: "9. Pla Implantació: Gantt F2 TIC (M3-M5)",
       desc: "Accions 6 a 8: Connectar Custòdia i Atestats (Font única de dades)",
       action: () => {
         navigateToSection(4);
@@ -2785,9 +2836,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 10,
+      step: 9,
       sectionIndex: 4,
-      name: "11. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
+      name: "10. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
       desc: "Accions 9 a 14: Fita Clau Prova Pilot ACD Badalona (Mes 7)",
       action: () => {
         navigateToSection(4);
@@ -2798,9 +2849,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 11,
+      step: 10,
       sectionIndex: 5,
-      name: "12. Governança: Semàfor Verd (En termini)",
+      name: "11. Governança: Semàfor Verd (En termini)",
       desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
       action: () => {
         navigateToSection(5);
@@ -2810,9 +2861,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 12,
+      step: 11,
       sectionIndex: 5,
-      name: "13. Governança: Resposta a Riscos & Conclusió",
+      name: "12. Governança: Resposta a Riscos & Conclusió",
       desc: "Mesures correctores, decisió executiva i tancament",
       action: () => {
         navigateToSection(5);
