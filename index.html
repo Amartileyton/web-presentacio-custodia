@@ -739,31 +739,7 @@
                =============================================================== -->
           <div id="visual-stage-1" class="stage-panel flex-1 flex flex-col justify-between">
             <div class="flex-1 flex flex-col h-full">
-              <!-- Barra de control de l'Animació ASME PG-ME -->
-              <div class="flex flex-wrap items-center justify-between gap-3 p-3 mb-2.5 rounded-xl bg-slate-50 border border-slate-200">
-                <div class="flex items-center gap-2 sm:gap-3">
-                  <button id="btn-play-asme-general" type="button" class="inline-flex items-center px-3.5 py-2 rounded-lg bg-pgme-blue text-white font-bold text-xs hover:bg-pgme-blue-light shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-pgme-blue/50">
-                    <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path>
-                    </svg>
-                    <span>Reproduir Procés</span>
-                  </button>
-                  <button id="btn-reset-asme-general" type="button" class="inline-flex items-center px-3 py-2 rounded-lg bg-white text-slate-700 font-semibold text-xs border border-slate-300 hover:bg-slate-100 transition-all focus:outline-none">
-                    <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                    </svg>
-                    Reiniciar
-                  </button>
-                  <div class="hidden md:flex items-center gap-2 pl-2 border-l border-slate-300">
-                    <input type="range" id="asme-general-slider" min="0" max="100" value="0" class="w-36 lg:w-48 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-pgme-blue" title="Desplaça per recórrer el procés">
-                  </div>
-                </div>
-                <div class="flex items-center gap-2">
-                  <span id="asme-general-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300 transition-all">
-                    Preparat per iniciar (0/15)
-                  </span>
-                </div>
-              </div>
+
 
               <!-- Targeta de Lectura de Text en Temps Real (Lector de Detall Operatiu) -->
               <div id="asme-reader-card" class="mb-2.5 p-2.5 px-3.5 rounded-lg bg-blue-50/70 border border-blue-200/90 flex items-center justify-between gap-3 text-xs transition-all">
@@ -780,7 +756,7 @@
 
               <!-- Contenidor Gràfic Canvas per a l'Animació Suau del Diagrama ASME PG-ME -->
               <div class="relative w-full flex-1 rounded-xl bg-white border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center p-1.5 min-h-[380px]">
-                <canvas id="asmeGeneralCanvas" class="w-full h-full max-h-[calc(100vh-13rem)] rounded-lg object-contain shadow-sm cursor-pointer block" title="Clica per reproduir / pausar l'animació"></canvas>
+                <canvas id="asmeGeneralCanvas" class="w-full h-full max-h-[calc(100vh-9.5rem)] rounded-lg object-contain shadow-sm cursor-pointer block" title="Clica per reproduir / pausar l'animació"></canvas>
               </div>
 
               <!-- Peu informatiu tècnic -->
@@ -822,7 +798,7 @@
 
               <!-- Contenidor Canvas d'Alta Resolució -->
               <div class="asme-canvas-container relative w-full flex-1 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-hidden">
-                <canvas id="asmeCanvas" class="w-full h-auto max-h-[calc(100vh-13rem)] object-contain block"></canvas>
+                <canvas id="asmeCanvas" class="w-full h-auto max-h-[calc(100vh-9.5rem)] object-contain block"></canvas>
               </div>
             </div>
           </div>

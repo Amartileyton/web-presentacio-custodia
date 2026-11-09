@@ -988,28 +988,50 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 1,
       sectionIndex: 1,
-      name: "2. Procés ASME General PG-ME",
-      desc: "Identificació d'actors (USC, OAC, Custòdia, UI)",
+      name: "2. Procés ASME General PG-ME (Estructura)",
+      desc: "Identificació d'actors policials (USC, OAC, Custòdia, UI)",
       action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') {
+          window.stopAsmeGeneralAnimation();
+        }
         navigateToSection(1);
         activateStage(1);
+        if (typeof window.renderAsmeGeneral === 'function') {
+          window.renderAsmeGeneral(0.0);
+        }
       }
     },
     {
       step: 2,
+      sectionIndex: 1,
+      name: "3. Animació Procés ASME General PG-ME",
+      desc: "Dibuix dinàmic de les 16 caixes i fletxes a través dels 4 carrils",
+      action: () => {
+        navigateToSection(1);
+        activateStage(1);
+        if (typeof window.playAsmeGeneralAnimation === 'function') {
+          window.playAsmeGeneralAnimation(6500);
+        }
+      }
+    },
+    {
+      step: 3,
       sectionIndex: 2,
-      name: "3. ASME Garjola: Bloc ACD (1-5)",
+      name: "4. ASME Garjola: Bloc ACD (1-5)",
       desc: "Inici, valoració, immobilització reglada i límit ≤ 30 min",
       action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') {
+          window.stopAsmeGeneralAnimation();
+        }
         navigateToSection(2);
         activateStage(2);
         animateAsmeTo(0.35, 450);
       }
     },
     {
-      step: 3,
+      step: 4,
       sectionIndex: 2,
-      name: "4. ASME Garjola: Ruptura TIC & Atestats (6-9)",
+      name: "5. ASME Garjola: Ruptura TIC & Atestats (6-9)",
       desc: "Diligència atestat SIP i registre manual Custòdia",
       action: () => {
         navigateToSection(2);
@@ -1018,9 +1040,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 4,
+      step: 5,
       sectionIndex: 2,
-      name: "5. ASME Garjola: Mèdics & Tancament (10-13)",
+      name: "6. ASME Garjola: Mèdics & Tancament (10-13)",
       desc: "Avaluació facultatiu, part mèdic i fi de subprocés (13/13)",
       action: () => {
         navigateToSection(2);
@@ -1029,9 +1051,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 5,
+      step: 6,
       sectionIndex: 3,
-      name: "6. Proposta de Valor: Diagnosi AS-IS",
+      name: "7. Proposta de Valor: Diagnosi AS-IS",
       desc: "Deficiències operatives, paper extraviable i manca d'alertes",
       action: () => {
         navigateToSection(3);
@@ -1040,9 +1062,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 6,
+      step: 7,
       sectionIndex: 3,
-      name: "7. Proposta de Valor: Model TO-BE Redissenyat",
+      name: "8. Proposta de Valor: Model TO-BE Redissenyat",
       desc: "Passarel·la única TIC, avís > 30 min i integració 100%",
       action: () => {
         navigateToSection(3);
@@ -1051,10 +1073,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 7,
+      step: 8,
       sectionIndex: 4,
-      name: "8. Pla Implantació: Gantt F1 Organització",
-      desc: "Accions 1 a 5 (Mesos 1-2): Redisseny TO-BE i funcions",
+      name: "9. Pla Implantació: Gantt F1 Organització (M1-M2)",
+      desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
       action: () => {
         navigateToSection(4);
         activateStage(4);
@@ -1064,10 +1086,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 8,
+      step: 9,
       sectionIndex: 4,
-      name: "9. Pla Implantació: Gantt F2 TIC",
-      desc: "Accions 6 a 8 (Mesos 3-5): Connectar Custòdia i Atestats",
+      name: "10. Pla Implantació: Gantt F2 TIC (M3-M5)",
+      desc: "Accions 6 a 8: Connectar Custòdia i Atestats (Font única de dades)",
       action: () => {
         navigateToSection(4);
         activateStage(4);
@@ -1077,10 +1099,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 9,
+      step: 10,
       sectionIndex: 4,
-      name: "10. Pla Implantació: Gantt F3 Pilot Badalona",
-      desc: "Accions 9 a 14 (Mesos 1-7): Fita Pilot ACD Badalona M7",
+      name: "11. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
+      desc: "Accions 9 a 14: Fita Clau Prova Pilot ACD Badalona (Mes 7)",
       action: () => {
         navigateToSection(4);
         activateStage(4);
@@ -1090,9 +1112,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 10,
+      step: 11,
       sectionIndex: 5,
-      name: "11. Governança: Semàfor Verd (En termini)",
+      name: "12. Governança: Semàfor Verd (En termini)",
       desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
       action: () => {
         navigateToSection(5);
@@ -1102,9 +1124,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 11,
+      step: 12,
       sectionIndex: 5,
-      name: "12. Governança: Resposta a Riscos & Conclusió",
+      name: "13. Governança: Resposta a Riscos & Conclusió",
       desc: "Mesures correctores, decisió executiva i tancament",
       action: () => {
         navigateToSection(5);
@@ -1854,19 +1876,47 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    window.playAsmeGeneralAnimation = function playAsmeGeneralAnimation(duration = 6500) {
+      if (genAnimId) cancelAnimationFrame(genAnimId);
+      isGenPlaying = true;
+      genProgress = 0.0;
+      renderAsmeGeneral(0.0);
+      const startTime = performance.now();
+
+      function step(now) {
+        if (!isGenPlaying) return;
+        const elapsed = now - startTime;
+        genProgress = Math.min(1.0, elapsed / duration);
+        renderAsmeGeneral(genProgress);
+
+        if (genProgress < 1.0) {
+          genAnimId = requestAnimationFrame(step);
+        } else {
+          isGenPlaying = false;
+          genAnimId = null;
+        }
+      }
+      genAnimId = requestAnimationFrame(step);
+    };
+
+    window.stopAsmeGeneralAnimation = function stopAsmeGeneralAnimation() {
+      isGenPlaying = false;
+      if (genAnimId) {
+        cancelAnimationFrame(genAnimId);
+        genAnimId = null;
+      }
+    };
+
     function genAnimLoop(time) {
       if (!genLastTime) genLastTime = time;
       const dt = (time - genLastTime) / 1000;
       genLastTime = time;
 
       if (isGenPlaying) {
-        genProgress += dt * (1 / 18.0);
+        genProgress += dt * (1 / 10.0);
         if (genProgress >= 1.0) {
           genProgress = 1.0;
           isGenPlaying = false;
-          if (btnPlayAsmeGen) {
-            btnPlayAsmeGen.innerHTML = `<svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg><span>Reiniciar Procés</span>`;
-          }
         }
         renderAsmeGeneral(genProgress);
       }
@@ -1921,6 +1971,11 @@ document.addEventListener('DOMContentLoaded', () => {
         isUserScrubbing = false;
       });
     }
+
+    asmeGenCanvas.addEventListener('click', (e) => {
+      e.stopPropagation();
+      window.playAsmeGeneralAnimation(6500);
+    });
 
     asmeGenCanvas.addEventListener('mousemove', (e) => {
       const rect = asmeGenCanvas.getBoundingClientRect();
