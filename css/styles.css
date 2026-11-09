@@ -184,8 +184,7 @@ body::-webkit-scrollbar,
 /* Secció amb Pinned Scroll / Scrollytelling Pinned Stage (Fase 2) */
 .pinned-scroll-section {
   position: relative;
-  height: 340vh;
-  min-height: 340vh;
+  min-height: 100vh;
   display: block;
   padding: 1.5rem 1.5rem 2rem 2rem;
   scroll-margin-top: 5rem;
@@ -219,10 +218,11 @@ body::-webkit-scrollbar,
   border-left-color: var(--color-pgme-blue);
 }
 
-/* Estils de les etapes visuals (Columna Dreta Sticky) */
+/* Estils de les etapes visuals (Columna Dreta Sticky) - Transicions suaus Keynote */
 .stage-panel {
   display: none !important;
   opacity: 0;
+  transform: translateY(8px);
 }
 
 .stage-panel.active-stage {
@@ -230,15 +230,36 @@ body::-webkit-scrollbar,
   flex-direction: column;
   justify-content: space-between;
   opacity: 1;
-  animation: stageCrossFade 0.15s ease-out forwards;
+  transform: translateY(0);
+  animation: stageSmoothFade 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes stageCrossFade {
+@keyframes stageSmoothFade {
   0% {
     opacity: 0;
+    transform: translateY(8px);
   }
   100% {
     opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Transicions suaus per als subpanells de la Fase 3 (AS-IS, Resum TO-BE, Diagrama TO-BE) */
+#view-asis-content:not(.hidden),
+#view-tobe-summary:not(.hidden),
+#view-tobe-diagram:not(.hidden) {
+  animation: subviewSmoothFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes subviewSmoothFade {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

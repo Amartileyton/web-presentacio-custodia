@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentSectionIndex = 0;
   const totalSections = sections.length;
+  let isPresentationNavigating = false;
+  let navLockTimeout = null;
 
   // --- 1. HEADER RETRÀCTIL I FLOATING LOGO PILL AL FER SCROLL ---
   function handleHeaderScroll() {
@@ -691,7 +693,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (activeSectionIdx !== currentSectionIndex) {
+    // Només activar etapa i sincronitzar si l'usuari fa scroll manual lliure (NO durant navegació per clics de presentació)
+    if (!isPresentationNavigating && activeSectionIdx !== currentSectionIndex) {
       activateStage(activeSectionIdx);
       if (window.presentationController) {
         window.presentationController.syncToSection(activeSectionIdx);
@@ -981,8 +984,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Si s'activa la Secció 2 (ASME Pinned), s'assegura el renderitzat inicial
-    if (stageIndex === 2) {
+    // Si s'activa la Secció 2 (ASME Pinned) en navegació lliure, s'assegura el renderitzat inicial
+    if (stageIndex === 2 && !window.isGarjolaPresentationControlled) {
       if (typeof renderAsmeProgress === 'function') renderAsmeProgress(0.0);
     }
 
@@ -1018,7 +1021,12 @@ document.addEventListener('DOMContentLoaded', () => {
   waypointItems.forEach((item) => {
     item.addEventListener('click', () => {
       const targetStep = parseInt(item.dataset.targetStep, 10);
-      navigateToSection(targetStep);
+      const stepIdx = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === targetStep);
+      if (stepIdx !== -1 && window.presentationController) {
+        window.presentationController.goToStep(stepIdx);
+      } else {
+        navigateToSection(targetStep);
+      }
     });
   });
 
@@ -1026,7 +1034,21 @@ document.addEventListener('DOMContentLoaded', () => {
   function navigateToSection(index) {
     if (index >= 0 && index < totalSections) {
       const targetSection = sections[index];
-      if (targetSection) {
+      if (!targetSection) return;
+
+      // Comprovar si ja estem posicionats en aquesta secció (evita micro-scrolls innecessaris i pampallugues)
+      const currentY = window.scrollY || document.documentElement.scrollTop;
+      const targetY = targetSection.offsetTop;
+      const isAlreadyAtSection = Math.abs(currentY - targetY) < 30;
+
+      // Bloqueig de navegació perquè els esdeveniments d'scroll no interfereixin ni canviïn d'etapa a mig camí
+      isPresentationNavigating = true;
+      if (navLockTimeout) clearTimeout(navLockTimeout);
+      navLockTimeout = setTimeout(() => {
+        isPresentationNavigating = false;
+      }, 750);
+
+      if (!isAlreadyAtSection) {
         targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
