@@ -3038,8 +3038,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (asmeGenCanvas) {
     const genCtx = asmeGenCanvas.getContext('2d');
-    const GEN_WIDTH = 1480;
-    const GEN_HEIGHT = 800;
+    const GEN_WIDTH = 1660;
+    const GEN_HEIGHT = 820;
     const GEN_SCALE = 2; // Retina / Ultra HD 2x vector resolution
 
     asmeGenCanvas.width = GEN_WIDTH * GEN_SCALE;
@@ -3072,53 +3072,53 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const NODES = {
-      // CARRIL 1: USC
-      N1: { id: 'N1', type: 'start', x: 165, y: 65, w: 185, h: 64, title: "INICI: Detenció al carrer", sub: "Patrulla USC (Seguretat Ciutadana)", lane: "1. USC", detail: "Inici de la custòdia policial arran de detenció en flagrant delicte o ordre judicial." },
-      N2: { id: 'N2', type: 'op', x: 410, y: 65, w: 225, h: 64, title: "OP-1: Lectura drets i trasllat", sub: "Trasllat a ABP i verbal", lane: "1. USC", detail: "Lectura de drets in situ i trasllat del detingut a dependències policials (ABP)." },
-      N3: { id: 'N3', type: 'doc', reg: 'REG #1', x: 695, y: 65, w: 220, h: 64, title: "DOC-1: Minuta i drets inicials", sub: "Diligència policial en paper", lane: "1. USC", detail: "Redacció de la minuta policial i acta de drets en format paper físic." },
+      // CARRIL 1: USC (Seguretat Ciutadana)
+      N1: { id: 'N1', type: 'start', x: 175, y: 68, w: 180, h: 64, title: "INICI: Detenció al carrer", sub: "Patrulla USC (Seguretat Ciutadana)", lane: "1. USC", detail: "Inici de la custòdia policial arran de detenció en flagrant delicte o ordre judicial." },
+      N2: { id: 'N2', type: 'op', x: 405, y: 68, w: 200, h: 64, title: "OP-1: Lectura drets i trasllat", sub: "Trasllat a ABP i verbal", lane: "1. USC", detail: "Lectura de drets in situ i trasllat del detingut a dependències policials (ABP)." },
+      N3: { id: 'N3', type: 'doc', reg: 'REG #1', x: 655, y: 68, w: 205, h: 64, title: "DOC-1: Minuta i drets inicials", sub: "Diligència policial en paper", lane: "1. USC", detail: "Redacció de la minuta policial i acta de drets en format paper físic." },
 
-      // CARRIL 2: OAC
-      N4: { id: 'N4', type: 'op_orange', x: 410, y: 200, w: 225, h: 66, title: "OP-2: Obertura d'atestat a OAC", sub: "Reintroducció manual SIP/SGIT", lane: "2. OAC", detail: "PUNT CRÍTIC: Reintroducció manual de dades de la minuta a les aplicacions." },
-      N5: { id: 'N5', type: 'alert', x: 165, y: 310, w: 225, h: 62, title: "DISFUNCIÓ AS-IS (OAC)", sub: "Criteris dispars entre 60 ABP", lane: "2. OAC", detail: "Falta d'estandardització entre unitats que genera protocols diferents i duplicats." },
-      N6: { id: 'N6', type: 'doc', reg: 'REG #2', x: 695, y: 200, w: 220, h: 66, title: "DOC-2: Atestat SIP / SGIT", sub: "Full Excel control torn (duplicitat)", lane: "2. OAC", detail: "Atestat policial + gestió paral·lela en fulls Excel per al control del torn de guàrdia." },
-      N7: { id: 'N7', type: 'dec', x: 965, y: 196, w: 160, h: 74, title: "DEC-1: ¿Requereix UI?", sub: "Investigació o Jutjat", lane: "2. OAC", detail: "Avaluació de si cal traspassar l'atestat a Unitat d'Investigació o passar directe a jutjat." },
-      N8: { id: 'N8', type: 'op', x: 1175, y: 200, w: 215, h: 66, title: "OP-5: Tancament atestat", sub: "Verificació formal manual", lane: "2. OAC", detail: "Revisió manual i comprovació de diligències abans de la remissió judicial." },
-      N9: { id: 'N9', type: 'doc', reg: 'REG #5', x: 1345, y: 200, w: 115, h: 66, title: "DOC-5: Oficis judicials", sub: "Atestat imprès paper", lane: "2. OAC", detail: "Impressió física de l'atestat per ser lliurat al Jutjat de Guàrdia en el traspàs." },
+      // CARRIL 2: OAC (Oficina d'Atenció al Ciutadà)
+      N4: { id: 'N4', type: 'op_orange', x: 405, y: 215, w: 200, h: 66, title: "OP-2: Obertura d'atestat a OAC", sub: "Reintroducció manual SIP/SGIT", lane: "2. OAC", detail: "PUNT CRÍTIC: Reintroducció manual de dades de la minuta a les aplicacions." },
+      N5: { id: 'N5', type: 'alert', x: 175, y: 315, w: 200, h: 60, title: "DISFUNCIÓ AS-IS (OAC)", sub: "Criteris dispars entre 60 ABP", lane: "2. OAC", detail: "Falta d'estandardització entre unitats que genera protocols diferents i duplicats." },
+      N6: { id: 'N6', type: 'doc', reg: 'REG #2', x: 655, y: 215, w: 205, h: 66, title: "DOC-2: Atestat SIP / SGIT", sub: "Full Excel control torn (duplicitat)", lane: "2. OAC", detail: "Atestat policial + gestió paral·lela en fulls Excel per al control del torn de guàrdia." },
+      N7: { id: 'N7', type: 'dec', x: 910, y: 211, w: 155, h: 74, title: "DEC-1: ¿Requereix UI?", sub: "Investigació o Jutjat", lane: "2. OAC", detail: "Avaluació de si cal traspassar l'atestat a Unitat d'Investigació o passar directe a jutjat." },
+      N8: { id: 'N8', type: 'op', x: 1125, y: 215, w: 200, h: 66, title: "OP-5: Tancament atestat", sub: "Verificació formal manual", lane: "2. OAC", detail: "Revisió manual i comprovació de diligències abans de la remissió judicial." },
+      N9: { id: 'N9', type: 'doc', reg: 'REG #5', x: 1380, y: 215, w: 200, h: 66, title: "DOC-5: Oficis judicials", sub: "Atestat imprès paper", lane: "2. OAC", detail: "Impressió física de l'atestat per ser lliurat al Jutjat de Guàrdia en el traspàs." },
 
       // CARRIL 3: CUSTÒDIA / GARJOLA
-      N10: { id: 'N10', type: 'op_orange', x: 410, y: 420, w: 225, h: 66, title: "OP-3: Ingrés i pertinences", sub: "3r registre manual de la dada", lane: "3. CUSTÒDIA / GARJOLA", detail: "PUNT CRÍTIC: Registre redundant de filiació i inventari de pertinences en paper i aplicació." },
-      N11: { id: 'N11', type: 'doc', reg: 'REG #3', x: 695, y: 420, w: 220, h: 66, title: "DOC-3: Llibre de garjola", sub: "Llibre físic de paper", lane: "3. CUSTÒDIA / GARJOLA", detail: "Anotacions manuals en llibres en paper (alimentació, visites, medicació i incidències)." },
-      N12: { id: 'N12', type: 'delay', x: 960, y: 420, w: 175, h: 66, title: "ESP-1: Estada en calabós", sub: "Espera de designació lletrat", lane: "3. CUSTÒDIA / GARJOLA", detail: "Temps d'espera passiva fins a la compareixença de l'advocat d'ofici o particular." },
-      N13: { id: 'N13', type: 'op', x: 1175, y: 420, w: 215, h: 66, title: "Control manual terminis", sub: "Límit legal 72h / 24h garjola", lane: "3. CUSTÒDIA / GARJOLA", detail: "Vigilància manual dels terminis màxims de detenció preventiva (art. 520 LECrim)." },
-      N14: { id: 'N14', type: 'delay', x: 1175, y: 518, w: 215, h: 62, title: "ESP-2: Immobilització", sub: "1,6h a 6,5h sense sistema", lane: "3. CUSTÒDIA / GARJOLA", detail: "Subprocés crític de contenció física i immobilització mecànica de persones agitades." },
-      N15: { id: 'N15', type: 'op', x: 1345, y: 420, w: 115, h: 66, title: "OP-6: Conducció Jutjat", sub: "16.177 trasllats/any", lane: "3. CUSTÒDIA / GARJOLA", detail: "Organització de la custòdia dinàmica i conducció policial al Jutjat de Guàrdia." },
-      N16: { id: 'N16', type: 'end', x: 1345, y: 518, w: 115, h: 62, title: "FI: Disposició Judicial", sub: "Lliurament o Llibertat", lane: "3. CUSTÒDIA / GARJOLA", detail: "Posada a disposició de l'Autoritat Judicial o posada en llibertat des de comissaria." },
+      N10: { id: 'N10', type: 'op_orange', x: 405, y: 435, w: 200, h: 66, title: "OP-3: Ingrés i pertinences", sub: "3r registre manual de la dada", lane: "3. CUSTÒDIA / GARJOLA", detail: "PUNT CRÍTIC: Registre redundant de filiació i inventari de pertinences en paper i aplicació." },
+      N11: { id: 'N11', type: 'doc', reg: 'REG #3', x: 655, y: 435, w: 205, h: 66, title: "DOC-3: Llibre de garjola", sub: "Llibre físic de paper", lane: "3. CUSTÒDIA / GARJOLA", detail: "Anotacions manuals en llibres en paper (alimentació, visites, medicació i incidències)." },
+      N12: { id: 'N12', type: 'delay', x: 900, y: 435, w: 175, h: 66, title: "ESP-1: Estada en calabós", sub: "Espera de designació lletrat", lane: "3. CUSTÒDIA / GARJOLA", detail: "Temps d'espera passiva fins a la compareixença de l'advocat d'ofici o particular." },
+      N13: { id: 'N13', type: 'op', x: 1125, y: 435, w: 200, h: 66, title: "Control manual terminis", sub: "Límit legal 72h / 24h garjola", lane: "3. CUSTÒDIA / GARJOLA", detail: "Vigilància manual dels terminis màxims de detenció preventiva (art. 520 LECrim)." },
+      N14: { id: 'N14', type: 'delay', x: 1125, y: 535, w: 200, h: 64, title: "ESP-2: Immobilització", sub: "1,6h a 6,5h sense sistema", lane: "3. CUSTÒDIA / GARJOLA", detail: "Subprocés crític de contenció física i immobilització mecànica de persones agitades." },
+      N15: { id: 'N15', type: 'op', x: 1380, y: 435, w: 200, h: 66, title: "OP-6: Conducció Jutjat", sub: "16.177 trasllats/any", lane: "3. CUSTÒDIA / GARJOLA", detail: "Organització de la custòdia dinàmica i conducció policial al Jutjat de Guàrdia." },
+      N16: { id: 'N16', type: 'end', x: 1380, y: 535, w: 200, h: 64, title: "FI: Disposició Judicial", sub: "Lliurament o Llibertat", lane: "3. CUSTÒDIA / GARJOLA", detail: "Posada a disposició de l'Autoritat Judicial o posada en llibertat des de comissaria." },
 
-      // CARRIL 4: UI
-      N17: { id: 'N17', type: 'delay', x: 695, y: 642, w: 220, h: 66, title: "ESP-3: Espera avís manual", sub: "Traspàs d'expedient OAC a UI", lane: "4. UI", detail: "Espera de notificació verbal o física que hi ha un detingut a garjola per a instrucció." },
-      N18: { id: 'N18', type: 'op', x: 960, y: 642, w: 175, h: 66, title: "OP-4: Diligències UI", sub: "Càmeres, declaració i peritatges", lane: "4. UI", detail: "Pràctica de diligències d'investigació, presa de declaració i visualització de càmeres." },
-      N19: { id: 'N19', type: 'doc', reg: 'REG #4', x: 1175, y: 642, w: 215, h: 66, title: "DOC-4: Informe tècnic i actes", sub: "Declaracions a atestat global", lane: "4. UI", detail: "Incorporació dels informes pericials i declaracions policials a l'atestat global." }
+      // CARRIL 4: UI (Unitat d'Investigació)
+      N17: { id: 'N17', type: 'delay', x: 655, y: 660, w: 205, h: 66, title: "ESP-3: Espera avís manual", sub: "Traspàs d'expedient OAC a UI", lane: "4. UI", detail: "Espera de notificació verbal o física que hi ha un detingut a garjola per a instrucció." },
+      N18: { id: 'N18', type: 'op', x: 900, y: 660, w: 175, h: 66, title: "OP-4: Diligències UI", sub: "Càmeres, declaració i peritatges", lane: "4. UI", detail: "Pràctica de diligències d'investigació, presa de declaració i visualització de càmeres." },
+      N19: { id: 'N19', type: 'doc', reg: 'REG #4', x: 1125, y: 660, w: 200, h: 66, title: "DOC-4: Informe tècnic i actes", sub: "Declaracions a atestat global", lane: "4. UI", detail: "Incorporació dels informes pericials i declaracions policials a l'atestat global." }
     };
 
     const ARROWS = [
-      { id: 'A1', from: 'N1', to: 'N2', pts: [{x: 350, y: 97}, {x: 410, y: 97}] },
-      { id: 'A2', from: 'N2', to: 'N3', pts: [{x: 635, y: 97}, {x: 695, y: 97}] },
-      { id: 'A3', from: 'N2', to: 'N4', pts: [{x: 522, y: 129}, {x: 522, y: 200}], label: 'Traspàs OAC' },
-      { id: 'A4', from: 'N2', to: 'N10', pts: [{x: 450, y: 129}, {x: 450, y: 420}], label: 'Ingrés garjola' },
-      { id: 'A5', from: 'N4', to: 'N6', pts: [{x: 635, y: 233}, {x: 695, y: 233}] },
-      { id: 'A6', from: 'N10', to: 'N11', pts: [{x: 635, y: 453}, {x: 695, y: 453}] },
-      { id: 'A7', from: 'N6', to: 'N7', pts: [{x: 915, y: 233}, {x: 965, y: 233}] },
-      { id: 'A8', from: 'N11', to: 'N12', pts: [{x: 915, y: 453}, {x: 960, y: 453}] },
-      { id: 'A9', from: 'N7', to: 'N17', pts: [{x: 1045, y: 270}, {x: 1045, y: 615}, {x: 805, y: 615}, {x: 805, y: 642}], label: 'SÍ (Requereix UI)' },
-      { id: 'A10', from: 'N17', to: 'N18', pts: [{x: 915, y: 675}, {x: 960, y: 675}] },
-      { id: 'A11', from: 'N18', to: 'N19', pts: [{x: 1135, y: 675}, {x: 1175, y: 675}] },
-      { id: 'A12', from: 'N19', to: 'N8', pts: [{x: 1282, y: 642}, {x: 1282, y: 266}], label: 'Retorn informe UI' },
-      { id: 'A13', from: 'N7', to: 'N8', pts: [{x: 1125, y: 233}, {x: 1175, y: 233}], label: 'NO' },
-      { id: 'A14', from: 'N12', to: 'N13', pts: [{x: 1135, y: 453}, {x: 1175, y: 453}] },
-      { id: 'A15', from: 'N12', to: 'N14', pts: [{x: 1047, y: 486}, {x: 1047, y: 549}, {x: 1175, y: 549}], label: 'Contenció' },
-      { id: 'A16', from: 'N8', to: 'N9', pts: [{x: 1390, y: 233}, {x: 1410, y: 233}, {x: 1410, y: 200}, {x: 1402, y: 200}] },
-      { id: 'A17', from: 'N9', to: 'N15', pts: [{x: 1402, y: 266}, {x: 1402, y: 420}], label: 'Tramesa' },
-      { id: 'A18', from: 'N15', to: 'N16', pts: [{x: 1402, y: 486}, {x: 1402, y: 518}] }
+      { id: 'A1', from: 'N1', to: 'N2', pts: [{x: 355, y: 100}, {x: 405, y: 100}] },
+      { id: 'A2', from: 'N2', to: 'N3', pts: [{x: 605, y: 100}, {x: 655, y: 100}] },
+      { id: 'A3', from: 'N2', to: 'N4', pts: [{x: 505, y: 132}, {x: 505, y: 215}], label: 'Traspàs OAC' },
+      { id: 'A4', from: 'N2', to: 'N10', pts: [{x: 440, y: 132}, {x: 440, y: 435}], label: 'Ingrés garjola' },
+      { id: 'A5', from: 'N4', to: 'N6', pts: [{x: 605, y: 248}, {x: 655, y: 248}] },
+      { id: 'A6', from: 'N10', to: 'N11', pts: [{x: 605, y: 468}, {x: 655, y: 468}] },
+      { id: 'A7', from: 'N6', to: 'N7', pts: [{x: 860, y: 248}, {x: 910, y: 248}] },
+      { id: 'A8', from: 'N11', to: 'N12', pts: [{x: 860, y: 468}, {x: 900, y: 468}] },
+      { id: 'A9', from: 'N7', to: 'N17', pts: [{x: 987, y: 285}, {x: 987, y: 635}, {x: 757, y: 635}, {x: 757, y: 660}], label: 'SÍ (Requereix UI)' },
+      { id: 'A10', from: 'N17', to: 'N18', pts: [{x: 860, y: 693}, {x: 900, y: 693}] },
+      { id: 'A11', from: 'N18', to: 'N19', pts: [{x: 1075, y: 693}, {x: 1125, y: 693}] },
+      { id: 'A12', from: 'N19', to: 'N8', pts: [{x: 1225, y: 660}, {x: 1225, y: 281}], label: 'Retorn informe UI' },
+      { id: 'A13', from: 'N7', to: 'N8', pts: [{x: 1065, y: 248}, {x: 1125, y: 248}], label: 'NO' },
+      { id: 'A14', from: 'N12', to: 'N13', pts: [{x: 1075, y: 468}, {x: 1125, y: 468}] },
+      { id: 'A15', from: 'N12', to: 'N14', pts: [{x: 1045, y: 501}, {x: 1045, y: 567}, {x: 1125, y: 567}], label: 'Contenció' },
+      { id: 'A16', from: 'N8', to: 'N9', pts: [{x: 1325, y: 248}, {x: 1380, y: 248}] },
+      { id: 'A17', from: 'N9', to: 'N15', pts: [{x: 1480, y: 281}, {x: 1480, y: 435}], label: 'Tramesa' },
+      { id: 'A18', from: 'N15', to: 'N16', pts: [{x: 1480, y: 501}, {x: 1480, y: 535}] }
     ];
 
     // Seqüència de 16 passos perfectament coordinats (DOC-4 té el seu pas autònom 11)
@@ -3407,15 +3407,15 @@ document.addEventListener('DOMContentLoaded', () => {
       genCtx.fillRect(0, 0, GEN_WIDTH, GEN_HEIGHT);
 
       // Sense banner ni títol superior per aprofitar el 100% de l'espai útil vertical
-      const tableLeft = 14;
-      const tableTop = 14;
-      const laneHeaderWidth = 135;
-      const tableWidth = GEN_WIDTH - 28;
+      const tableLeft = 15;
+      const tableTop = 15;
+      const laneHeaderWidth = 145;
+      const tableWidth = GEN_WIDTH - 30;
 
       const lanes = [
-        { height: 165, title: '1. USC' },
-        { height: 220, title: '2. OAC' },
-        { height: 205, title: '3. CUSTÒDIA / GARJOLA' },
+        { height: 170, title: '1. USC' },
+        { height: 225, title: '2. OAC' },
+        { height: 220, title: '3. CUSTÒDIA / GARJOLA' },
         { height: 140, title: '4. UI' }
       ];
 
@@ -3435,24 +3435,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // Llegenda inferior
-      const legY = 748;
+      const legY = 772;
       genCtx.fillStyle = '#f8fafc';
-      genCtx.fillRect(tableLeft, legY, tableWidth, 44);
+      genCtx.fillRect(tableLeft, legY, tableWidth, 42);
       genCtx.strokeStyle = GEN_COLORS.gridBorder;
       genCtx.lineWidth = 1;
-      genCtx.strokeRect(tableLeft, legY, tableWidth, 44);
+      genCtx.strokeRect(tableLeft, legY, tableWidth, 42);
 
       genCtx.fillStyle = '#0f172a';
       genCtx.font = 'bold 11px "Segoe UI", sans-serif';
       genCtx.textAlign = 'left';
       genCtx.fillText('LLEGENDA ASME:', tableLeft + 15, legY + 24);
 
-      drawStartEndGen(tableLeft + 125, legY + 8, 105, 28, 'Inici / Fi', null, 1, false);
-      drawOperationGen(tableLeft + 245, legY + 8, 150, 28, 'Operació Estàndard', null, false, 1, false);
-      drawOperationGen(tableLeft + 410, legY + 8, 160, 28, 'Tasques Duplicades', null, true, 1, false);
-      drawDecisionGen(tableLeft + 585, legY + 4, 85, 36, 'Decisió', null, 1, false);
-      drawDocumentGen(tableLeft + 685, legY + 6, 140, 32, 'Document / Registre', null, 'REG', 1, false);
-      drawDelayGen(tableLeft + 840, legY + 8, 135, 28, 'Espera / Demora', null, 1, false);
+      drawStartEndGen(tableLeft + 130, legY + 7, 110, 28, 'Inici / Fi', null, 1, false);
+      drawOperationGen(tableLeft + 260, legY + 7, 155, 28, 'Operació Estàndard', null, false, 1, false);
+      drawOperationGen(tableLeft + 435, legY + 7, 165, 28, 'Tasques Duplicades', null, true, 1, false);
+      drawDecisionGen(tableLeft + 620, legY + 4, 90, 34, 'Decisió', null, 1, false);
+      drawDocumentGen(tableLeft + 730, legY + 6, 145, 30, 'Document / Registre', null, 'REG', 1, false);
+      drawDelayGen(tableLeft + 895, legY + 7, 140, 28, 'Espera / Demora', null, 1, false);
 
       const totalSteps = STEPS.length;
       const currentStepFloat = p * (totalSteps - 1);
