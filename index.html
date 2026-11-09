@@ -299,10 +299,10 @@
 
             <div class="p-2.5 bg-blue-50/60 rounded-xl border border-blue-200/80 flex items-center justify-between text-xs">
               <div>
-                <strong class="text-pgme-blue block text-[11px]">Diagrama ASME General (Dreta)</strong>
-                <span class="text-slate-500 text-[10px]">Procés global: Des de la detenció fins a la posada a disposició judicial.</span>
+                <strong class="text-pgme-blue block text-[11px]">Mapa Territorial d'ACDs (Dreta)</strong>
+                <span class="text-slate-500 text-[10px]">97 Àrees de Custòdia de Detinguts actives i monitoritzades a tot Catalunya.</span>
               </div>
-              <span class="text-[10px] font-bold text-pgme-blue bg-white px-2 py-0.5 rounded border border-blue-200 shrink-0 ml-2">ASME PG-ME</span>
+              <span class="text-[10px] font-bold text-pgme-blue bg-white px-2 py-0.5 rounded border border-blue-200 shrink-0 ml-2">97 ACDs PG-ME</span>
             </div>
           </div>
         </section>
@@ -713,9 +713,67 @@
           </div>
 
           <!-- ===============================================================
+               ESTAT VISUAL 0: MAPA TERRITORIAL DE CATALUNYA (ACDs I SONAR) (#visual-stage-0)
+               =============================================================== -->
+          <div id="visual-stage-0" class="stage-panel active-stage flex-1 flex flex-col justify-between">
+            <div class="flex-1 flex flex-col h-full">
+              <!-- Barra de control del Mapa de Catalunya -->
+              <div class="flex flex-wrap items-center justify-between gap-3 p-3 mb-2 rounded-xl bg-slate-50 border border-slate-200 shrink-0">
+                <div class="flex items-center gap-2 sm:gap-3">
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-pgme-blue text-white shadow-2xs">
+                    🗺️ Mapa Territorial PG-ME
+                  </span>
+                  <div class="relative">
+                    <input type="text" id="map-search-input" placeholder="🔍 Cercar comissaria / municipi..." class="px-3 py-1.5 text-xs rounded-lg border border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-pgme-blue/50 w-44 sm:w-56" />
+                    <button id="map-search-clear" class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold">×</button>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span id="map-sonar-count-badge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-pgme-blue border border-blue-200">
+                    97 ACDs Actives &bull; Cobertura 100%
+                  </span>
+                  <span class="hidden md:inline-flex px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                    BCN: ACD Les Corts
+                  </span>
+                </div>
+              </div>
+
+              <!-- Targeta de Detall Ràpid (Tooltip Dinàmic al fer Hover/Clic) -->
+              <div id="map-station-card" class="mb-2 p-2.5 px-3.5 rounded-lg bg-blue-50/80 border border-blue-200/90 flex items-center justify-between gap-3 text-xs transition-all shrink-0">
+                <div class="flex items-center gap-2 overflow-hidden">
+                  <span class="w-2.5 h-2.5 rounded-full bg-pgme-blue animate-pulse flex-shrink-0"></span>
+                  <strong id="station-card-title" class="text-slate-900 truncate font-bold">Selecciona o passa el cursor per qualsevol comissaria</strong>
+                  <span class="text-slate-400 hidden sm:inline">|</span>
+                  <span id="station-card-detail" class="text-slate-600 truncate hidden sm:inline">97 Àrees de Custòdia de Detinguts actives amb senyal dinàmica de sonar</span>
+                </div>
+                <a id="station-card-gmaps" href="#" target="_blank" rel="noopener noreferrer" class="hidden text-[11px] font-bold text-pgme-blue hover:text-pgme-blue-light bg-white px-2.5 py-1 rounded border border-blue-200 shadow-2xs items-center gap-1 shrink-0">
+                  <span>Google Maps ↗</span>
+                </a>
+              </div>
+
+              <!-- Contenidor Gràfic SVG del Mapa de Catalunya amb Coordenades i Sonar -->
+              <div id="map-svg-container" class="relative w-full flex-1 rounded-xl bg-slate-50/50 border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center p-1.5 min-h-[380px]">
+                <svg id="catalunyaMapSvg" viewBox="0 0 900 750" class="w-full h-full max-h-[calc(100vh-13rem)] object-contain block">
+                  <g id="map-comarques-group"></g>
+                  <g id="map-sonar-group"></g>
+                </svg>
+              </div>
+
+              <!-- Peu informatiu tècnic -->
+              <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 px-1 shrink-0">
+                <span class="flex items-center gap-1.5 font-medium">
+                  <span class="w-2 h-2 rounded-full bg-pgme-blue inline-block"></span>
+                  Xarxa Integral d'Àrees de Custòdia de Detinguts (Senyals de Sonar Homogènies)
+                </span>
+                <span class="font-mono text-[10px] text-slate-400">Projecció Geodèsica WGS84 &bull; PG-ME</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===============================================================
                ESTAT VISUAL 1: IDENTIFICACIÓ I ABAST (#visual-stage-1)
                =============================================================== -->
-          <div id="visual-stage-1" class="stage-panel active-stage flex-1 flex flex-col justify-between">
+          <div id="visual-stage-1" class="stage-panel flex-1 flex flex-col justify-between">
             <div class="flex-1 flex flex-col h-full">
               <!-- Barra de control de l'Animació ASME PG-ME -->
               <div class="flex flex-wrap items-center justify-between gap-3 p-3 mb-2.5 rounded-xl bg-slate-50 border border-slate-200">
@@ -770,6 +828,7 @@
                 <span class="font-mono text-[10px] text-slate-400">Resolució Vectorial Retina 2x HD</span>
               </div>
             </div>
+          </div>
 
           <!-- ===============================================================
                ESTAT VISUAL 2: DIAGNOSI I XOC DE DADES (#visual-stage-2)
