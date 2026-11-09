@@ -957,102 +957,70 @@
           </div>
 
           <!-- ===============================================================
-               ESTAT VISUAL 4: PLA D'IMPLANTACIÓ I PROVA PILOT (#visual-stage-4)
+               ESTAT VISUAL 4: PLA D'IMPLANTACIÓ I CRONOGRAMA GANTT (#visual-stage-4)
                =============================================================== -->
-          <div id="visual-stage-4" class="stage-panel flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
-                  Cronograma d'Execució de les 14 Accions (Mes 1 a Mes 7)
-                </h3>
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-50 text-purple-800 border border-purple-200">
-                  Horizon 7 Mesos
-                </span>
-              </div>
-
-              <!-- Representació Visual del Gantt en 3 Fases -->
-              <div class="space-y-2 mb-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <!-- Fase 1 Gantt -->
-                <div class="text-xs">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-slate-900">FASE 1: Millores Organitzatives (AINSP / AORG)</span>
-                    <span class="font-mono text-[11px] text-pgme-blue font-semibold">Mesos 1 - 2</span>
-                  </div>
-                  <div class="w-full bg-slate-200 rounded-full h-3 flex overflow-hidden">
-                    <div class="bg-pgme-blue h-full w-[28.5%] rounded-l-full flex items-center justify-center text-[9px] text-white font-bold">M1-M2</div>
-                    <div class="w-[71.5%] h-full"></div>
-                  </div>
+          <div id="visual-stage-4" class="stage-panel flex-1 flex flex-col justify-between h-full w-full overflow-hidden">
+            <div class="flex-1 flex flex-col h-full overflow-hidden">
+              <!-- Encapçalament del Cronograma Oficial (Imatge 3 docx) -->
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-2 mb-2 border-b border-slate-200 shrink-0">
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-pgme-blue animate-pulse"></span>
+                    Cronograma d'Implantació de la Millora de Gestió de Contencions
+                  </h3>
+                  <span class="text-[10px] text-slate-500 block">Horitzó: 7 mesos &bull; Prova pilot a l'ACD Badalona (Mes 7) un cop validades les accions prèvies.</span>
                 </div>
-
-                <!-- Fase 2 Gantt -->
-                <div class="text-xs">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-slate-900">FASE 2: Desenvolupament TIC Passarel·la (CGTIC)</span>
-                    <span class="font-mono text-[11px] text-purple-700 font-semibold">Mesos 3 - 5</span>
-                  </div>
-                  <div class="w-full bg-slate-200 rounded-full h-3 flex overflow-hidden">
-                    <div class="w-[28.5%] h-full"></div>
-                    <div class="bg-purple-600 h-full w-[43%] flex items-center justify-center text-[9px] text-white font-bold">M3-M5 (1 Dev Full-time)</div>
-                    <div class="w-[28.5%] h-full"></div>
-                  </div>
-                </div>
-
-                <!-- Fase 3 Gantt -->
-                <div class="text-xs">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="font-bold text-slate-900">FASE 3: Gestió del Canvi, Formació (AORG) & Pilot</span>
-                    <span class="font-mono text-[11px] text-emerald-700 font-semibold">Mesos 1 - 7</span>
-                  </div>
-                  <div class="w-full bg-slate-200 rounded-full h-3 flex overflow-hidden">
-                    <div class="bg-emerald-600 h-full w-[85.7%] rounded-l-full flex items-center justify-center text-[9px] text-white font-bold">M1-M6 Formació (3 agents)</div>
-                    <div class="bg-pgme-red h-full w-[14.3%] rounded-r-full flex items-center justify-center text-[9px] text-white font-bold animate-pulse">M7 Pilot</div>
-                  </div>
+                <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-semibold">
+                  <button id="gantt-filter-all" class="gantt-tab-btn is-active px-2 py-0.5 rounded cursor-pointer">Totes (14)</button>
+                  <button id="gantt-filter-f1" class="gantt-tab-btn px-2 py-0.5 rounded text-slate-600 hover:text-slate-900 cursor-pointer">F1: Organització (5)</button>
+                  <button id="gantt-filter-f2" class="gantt-tab-btn px-2 py-0.5 rounded text-slate-600 hover:text-slate-900 cursor-pointer">F2: TIC (3)</button>
+                  <button id="gantt-filter-f3" class="gantt-tab-btn px-2 py-0.5 rounded text-slate-600 hover:text-slate-900 cursor-pointer">F3: Canvi & Pilot (6)</button>
                 </div>
               </div>
 
-              <!-- ZOOM DESTACAT: PROVA PILOT ACD BADALONA (MES 7) -->
-              <div class="p-4 rounded-xl bg-gradient-to-r from-slate-900 to-pgme-blue-dark text-white shadow-md">
-                <div class="flex items-center justify-between mb-2">
-                  <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-pgme-red animate-ping"></span>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-amber-300">
-                      Zoom a la Prova Pilot: ACD Badalona (Mes 7)
-                    </h4>
-                  </div>
-                  <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/20 text-white">
-                    Condició Resolutòria
-                  </span>
+              <!-- Taula Gantt Dinàmica amb Scroll Vertical Intern -->
+              <div class="flex-1 overflow-y-auto pr-1 space-y-1 rounded-xl border border-slate-200/90 bg-white shadow-2xs p-1.5 min-h-[300px]">
+                <!-- Capçalera de Columnes Mes 1 a Mes 7 -->
+                <div class="gantt-grid-header py-1.5 px-2 bg-slate-100/90 rounded-lg text-[10px] font-bold text-slate-700 border-b border-slate-200 sticky top-0 z-20 backdrop-blur-xs">
+                  <div class="text-[10px] font-extrabold text-slate-900">Acció Estratègica & Responsable</div>
+                  <div class="text-center font-mono">M1</div>
+                  <div class="text-center font-mono">M2</div>
+                  <div class="text-center font-mono">M3</div>
+                  <div class="text-center font-mono">M4</div>
+                  <div class="text-center font-mono">M5</div>
+                  <div class="text-center font-mono">M6</div>
+                  <div class="text-center font-mono text-red-700 font-extrabold bg-red-100/80 rounded py-0.5 border border-red-200">M7 PILOT</div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mt-3">
-                  <div class="p-2.5 rounded-lg bg-white/10 backdrop-blur-xs">
-                    <span class="text-slate-300 text-[10px] block font-mono">Càrrega de Treball</span>
-                    <strong class="text-sm font-bold text-white font-mono">10 Detinguts / dia</strong>
-                    <span class="text-[10px] text-slate-300 block">Mitjana representativa</span>
-                  </div>
+                <!-- Contenidor dinàmic de les files del Gantt -->
+                <div id="gantt-rows-container" class="space-y-0.5 text-xs">
+                  <!-- S'injecten les 14 accions via JS -->
+                </div>
+              </div>
 
-                  <div class="p-2.5 rounded-lg bg-white/10 backdrop-blur-xs">
-                    <span class="text-slate-300 text-[10px] block font-mono">Cadena de Supervisió</span>
-                    <strong class="text-sm font-bold text-white">Permanent & Robusta</strong>
-                    <span class="text-[10px] text-slate-300 block">Dimensionament òptim</span>
+              <!-- Targeta Inspectora de Detall de l'Acció Seleccionada -->
+              <div id="gantt-inspector-card" class="mt-2 p-2.5 rounded-xl bg-blue-50/70 border border-blue-200/90 text-xs transition-all shrink-0">
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <div class="flex items-center gap-1.5 overflow-hidden">
+                    <span id="gantt-detail-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-pgme-blue text-white shrink-0">Acció 1</span>
+                    <strong id="gantt-detail-title" class="text-slate-900 truncate font-semibold">Recollir les necessitats i incidències detectades pels efectius d'ACD, OAC i unitats instructores.</strong>
                   </div>
-
-                  <div class="p-2.5 rounded-lg bg-white/10 backdrop-blur-xs">
-                    <span class="text-slate-300 text-[10px] block font-mono">Inici Condicionat</span>
-                    <strong class="text-sm font-bold text-emerald-400">Validació Prèvia 100%</strong>
-                    <span class="text-[10px] text-slate-300 block">TIC i formació culminades</span>
+                  <div class="flex items-center gap-2 shrink-0">
+                    <span id="gantt-detail-resp" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white border border-blue-200 text-pgme-blue">AINSP-CGIA</span>
+                    <span id="gantt-detail-months" class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Mes 1 (1 mes)</span>
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-slate-600 mt-1.5 pt-1.5 border-t border-blue-100">
+                  <div>
+                    <strong class="text-slate-800 font-medium">Dependència / Fita:</strong>
+                    <span id="gantt-detail-dep" class="text-slate-600 block truncate">Inici immediat</span>
+                  </div>
+                  <div>
+                    <strong class="text-slate-800 font-medium">Recursos Necessaris:</strong>
+                    <span id="gantt-detail-rec" class="text-slate-600 block truncate">Grup de treball amb responsables d'ACD i unitats instructores; enquestes internes.</span>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- MODULAR CONTAINER: INJECT CHART HERE (STAGE 4) -->
-            <div id="chart-slot-stage-4" class="modular-chart-container p-3 text-center mt-3">
-              <div class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-600">
-                <span class="w-2 h-2 rounded-full bg-purple-600"></span>
-                <span>Contenidor Gràfic: Diagrama de Gantt Detallat de les 14 Accions i Rutes Crítiques</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Component modular preparat per a la injecció del cronograma d'activitats interactiu amb fites.</p>
             </div>
           </div>
 
