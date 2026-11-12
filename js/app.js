@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startTime = performance.now();
 
     function step(now) {
-      const elapsed = now - startTime;
+      const elapsed = Math.max(0, now - startTime);
       const progress = Math.min(1, elapsed / duration);
       // Easing cubic easeInOut
       const eased = progress < 0.5 
@@ -739,8 +739,11 @@ document.addEventListener('DOMContentLoaded', () => {
       percent = Math.min(100, Math.max(0, percent));
 
       // Actualitzar alçada de la barretina allargada
+      const displayPercent = coverVisible
+        ? 0
+        : (i === activeSectionIdx ? Math.max(25, percent) : percent);
       if (waypointFills[i]) {
-        waypointFills[i].style.height = `${percent.toFixed(1)}%`;
+        waypointFills[i].style.height = `${displayPercent.toFixed(1)}%`;
       }
 
       // Marcar classes d'estat (un únic punt actiu en tot moment)
@@ -1141,6 +1144,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- 8. CONTROLADOR EXECUTIU DE PRESENTACIÓ PER CLICS & TECLAT ---
+  let navLockId = 0;
   function navigateToSection(index) {
     if (index >= 0 && index < totalSections) {
       hideCoverOverlay();
@@ -1148,20 +1152,31 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!targetSection) return;
 
       // Bloqueig de navegació perquè els esdeveniments d'scroll no interfereixin ni canviïn d'etapa a mig camí
+      const myNavId = ++navLockId;
       isPresentationNavigating = true;
       if (navLockTimeout) clearTimeout(navLockTimeout);
-      navLockTimeout = setTimeout(() => {
+      const releaseNavLock = () => {
+        if (myNavId !== navLockId) return;
         isPresentationNavigating = false;
+        if (navLockTimeout) {
+          clearTimeout(navLockTimeout);
+          navLockTimeout = null;
+        }
         updateWaypointFillProgress();
-      }, 780);
+      };
+      navLockTimeout = setTimeout(releaseNavLock, 1250);
 
       // Diferim al següent frame perquè activateStage() hagi estabilitzat les alçades abans de calcular el scroll
       requestAnimationFrame(() => {
+        if (myNavId !== navLockId) return;
         const currentY = window.scrollY || document.documentElement.scrollTop;
         const targetY = (index === 0) ? 0 : Math.max(0, getSectionDocTop(targetSection) - 80);
         const isAlreadyAtSection = Math.abs(currentY - targetY) < 24;
         if (!isAlreadyAtSection) {
+          window.addEventListener('scrollend', releaseNavLock, { once: true });
           window.scrollTo({ top: targetY, behavior: 'smooth' });
+        } else {
+          releaseNavLock();
         }
         updateWaypointFillProgress();
       });
@@ -1179,7 +1194,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function step(now) {
       if (!isGarjolaPlaying) return;
-      const elapsed = now - startTime;
+      const elapsed = Math.max(0, now - startTime);
       window.currentGarjolaRatio = Math.min(1.0, elapsed / duration);
       renderAsmeProgress(window.currentGarjolaRatio);
 
@@ -1219,7 +1234,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const startTime = performance.now();
 
     function step(now) {
-      const elapsed = now - startTime;
+      const elapsed = Math.max(0, now - startTime);
       const t = Math.min(1, elapsed / duration);
       // easeOutCubic
       const eased = 1 - Math.pow(1 - t, 3);
@@ -1543,7 +1558,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. ESDEVENIMENT GLOBAL DE CLIC PER AVANÇAR LA PRESENTACIÓ
   document.addEventListener('click', (e) => {
     // Si l'usuari fa clic en un control interactiu específic, deixem que actuï lliurement
-    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .stage5-tab-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance, #asme-gen-zoom-btn, #asme-asis-zoom-btn, #asme-zoom-modal');
+    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .stage5-tab-btn, #waypoint-rail, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance, #asme-gen-zoom-btn, #asme-asis-zoom-btn, #asme-zoom-modal');
     if (interactive) return;
 
     // Qualsevol clic a la diapositiva avança un pas/animació!
@@ -1878,7 +1893,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function step(now) {
       if (!isToBePlaying) return;
-      const elapsed = now - startTime;
+      const elapsed = Math.max(0, now - startTime);
       window.currentToBeRatio = Math.min(1.0, elapsed / duration);
       renderAsmeToBe(window.currentToBeRatio);
 
@@ -2417,9 +2432,10 @@ document.addEventListener('DOMContentLoaded', () => {
       drawDocumentGen(tableLeft + 560, legY + 6, 155, 30, 'Document / Registre', null, 'REG', 1, false);
       drawDelayGen(tableLeft + 735, legY + 7, 145, 28, 'Espera / Demora', null, 1, false);
 
+      const safeP = Math.max(0, Math.min(1.0, Number.isFinite(p) ? p : 0));
       const totalSteps = STEPS.length;
-      const currentStepFloat = p * (totalSteps - 1);
-      const currentStepIdx = Math.min(totalSteps - 1, Math.floor(currentStepFloat));
+      const currentStepFloat = safeP * (totalSteps - 1);
+      const currentStepIdx = Math.max(0, Math.min(totalSteps - 1, Math.floor(currentStepFloat)));
       const stepProgress = currentStepFloat - currentStepIdx;
 
       const activeStep = STEPS[currentStepIdx];
@@ -2602,7 +2618,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       function step(now) {
         if (!isGenPlaying) return;
-        const elapsed = now - startTime;
+        const elapsed = Math.max(0, now - startTime);
         genProgress = Math.min(1.0, elapsed / duration);
         renderAsmeGeneral(genProgress);
 

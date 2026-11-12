@@ -152,7 +152,8 @@ body *::-webkit-scrollbar {
 }
 
 .waypoint-item.is-active .waypoint-pill-track {
-  box-shadow: 0 0 0 2px rgba(1, 59, 117, 0.25);
+  background-color: rgba(1, 59, 117, 0.22);
+  box-shadow: 0 0 0 2px rgba(1, 59, 117, 0.32);
 }
 
 /* Barra d'ompliment que puja de 0% a 100% a mesura que es fa scroll */
