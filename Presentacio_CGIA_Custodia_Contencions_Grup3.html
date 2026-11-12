@@ -420,6 +420,14 @@ body *::-webkit-scrollbar {
   box-shadow: 0 2px 6px rgba(1, 59, 117, 0.25);
 }
 
+@media (min-width: 1024px) {
+  #section-3.story-section {
+    justify-content: flex-start;
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
+  }
+}
+
 @media (max-width: 1023px) {
   .story-section,
   .pinned-scroll-section {
@@ -1594,8 +1602,8 @@ body *::-webkit-scrollbar {
       <!-- =====================================================================
            COLUMNA DRETA (64%): Contenidor Sticky per als 5 Estats Visuals
            ===================================================================== -->
-      <div class="w-full lg:w-[64%] lg:sticky lg:top-20 lg:h-[calc(100vh-6rem)] h-auto min-h-[420px] flex flex-col justify-between py-2">
-        <div class="w-full h-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-6 overflow-y-auto relative flex flex-col justify-between">
+      <div class="w-full lg:w-[64%] min-w-0 lg:sticky lg:top-20 lg:h-[calc(100vh-6rem)] h-auto min-h-[420px] flex flex-col justify-between py-2">
+        <div class="w-full min-w-0 h-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-6 overflow-y-auto relative flex flex-col justify-between">
 
           <!-- Encapçalament del Panell Fix -->
           <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between shrink-0">
@@ -1635,17 +1643,17 @@ body *::-webkit-scrollbar {
           <!-- ===============================================================
                ESTAT VISUAL 1: IDENTIFICACIÓ I ABAST (#visual-stage-1)
                =============================================================== -->
-          <div id="visual-stage-1" class="stage-panel flex-1 flex flex-col justify-between">
-            <div class="flex-1 flex flex-col h-full">
+          <div id="visual-stage-1" class="stage-panel flex-1 flex flex-col justify-between h-full w-full min-h-0 min-w-0">
+            <div class="flex-1 flex flex-col h-full w-full min-h-0 min-w-0">
 
 
               <!-- Targeta de Lectura de Text en Temps Real (Lector de Detall Operatiu) -->
-              <div id="asme-reader-card" class="mb-2.5 p-2.5 px-3.5 rounded-lg bg-blue-50/70 border border-blue-200/90 flex items-center justify-between gap-3 text-xs transition-all">
-                <div class="flex items-center gap-2 overflow-x-auto">
-                  <span class="w-2 h-2 rounded-full bg-pgme-blue animate-pulse flex-shrink-0"></span>
-                  <span id="asme-reader-title" class="font-bold text-slate-900 truncate">Pas 1: INICI &mdash; Detenció al carrer</span>
-                  <span class="text-slate-400 hidden sm:inline">|</span>
-                  <span id="asme-reader-desc" class="text-slate-600 truncate hidden sm:inline">Patrulla USC (Seguretat Ciutadana) &bull; Inici del procediment policial</span>
+              <div id="asme-reader-card" class="mb-2.5 h-10 w-full min-w-0 px-3.5 rounded-lg bg-blue-50/70 border border-blue-200/90 flex items-center justify-between gap-3 text-xs shrink-0">
+                <div class="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
+                  <span class="w-2 h-2 rounded-full bg-pgme-blue flex-shrink-0"></span>
+                  <span id="asme-reader-title" class="font-bold text-slate-900 truncate min-w-0 max-w-[45%]">Pas 1: INICI &mdash; Detenció al carrer</span>
+                  <span class="text-slate-400 hidden sm:inline shrink-0">|</span>
+                  <span id="asme-reader-desc" class="text-slate-600 truncate hidden sm:inline min-w-0">Patrulla USC (Seguretat Ciutadana) &bull; Inici del procediment policial</span>
                 </div>
                 <span id="asme-reader-lane" class="text-[11px] font-semibold text-pgme-blue bg-white px-2 py-0.5 rounded border border-blue-200 whitespace-nowrap flex-shrink-0">
                   1. USC (Seguretat Ciutadana)
@@ -1664,7 +1672,7 @@ body *::-webkit-scrollbar {
               </div>
 
               <!-- Peu informatiu tècnic -->
-              <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 px-1">
+              <div class="mt-2 flex items-center justify-between text-[11px] text-slate-500 px-1 shrink-0">
                 <span class="flex items-center gap-1.5 font-medium">
                   <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
                   Diagrama ASME Oficial PG-ME &mdash; 4 Carrils Swimlane (Model Vectorial 100% Nítid)
@@ -4380,6 +4388,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let genAnimId = null;
     let genLastTime = 0;
     let hoveredNodeId = null;
+    let lastGenBadgeKey = '';
+    let lastInspectedNodeId = '';
 
     // Helper exclusiu per a ASME General que reutilitza la funció global drawTextMultiLine
     const drawGenText = (text, x, y, lh, font, color, align) => drawTextMultiLine(genCtx, text, x, y, lh, font, color, align);
@@ -4696,15 +4706,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetNode = NODES[activeStep.target];
 
       if (badgeAsmeGen) {
-        if (p >= 0.99) {
-          badgeAsmeGen.textContent = `Procés Desenvolupat (${totalSteps}/${totalSteps})`;
-          badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 transition-all";
-        } else if (p > 0.01) {
-          badgeAsmeGen.textContent = `Pas ${currentStepIdx + 1}/${totalSteps}`;
-          badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-pgme-blue border border-blue-300 transition-all";
-        } else {
-          badgeAsmeGen.textContent = `Preparat per iniciar (0/${totalSteps})`;
-          badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300 transition-all";
+        const nextBadgeKey = p >= 0.99 ? `done:${totalSteps}` : (p > 0.01 ? `step:${currentStepIdx + 1}` : 'idle');
+        if (nextBadgeKey !== lastGenBadgeKey) {
+          lastGenBadgeKey = nextBadgeKey;
+          if (p >= 0.99) {
+            badgeAsmeGen.textContent = `Procés Desenvolupat (${totalSteps}/${totalSteps})`;
+            badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+          } else if (p > 0.01) {
+            badgeAsmeGen.textContent = `Pas ${currentStepIdx + 1}/${totalSteps}`;
+            badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-pgme-blue border border-blue-300";
+          } else {
+            badgeAsmeGen.textContent = `Preparat per iniciar (0/${totalSteps})`;
+            badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300";
+          }
         }
       }
 
@@ -4713,7 +4727,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const inspectedNode = hoveredNodeId ? NODES[hoveredNodeId] : targetNode;
-      if (inspectedNode && readerTitle && readerDesc && readerLane) {
+      if (inspectedNode && readerTitle && readerDesc && readerLane && inspectedNode.id !== lastInspectedNodeId) {
+        lastInspectedNodeId = inspectedNode.id;
         readerTitle.textContent = inspectedNode.title;
         readerDesc.textContent = inspectedNode.detail || inspectedNode.sub;
         readerLane.textContent = inspectedNode.lane;

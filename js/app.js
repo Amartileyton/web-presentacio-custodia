@@ -2134,6 +2134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let genAnimId = null;
     let genLastTime = 0;
     let hoveredNodeId = null;
+    let lastGenBadgeKey = '';
+    let lastInspectedNodeId = '';
 
     // Helper exclusiu per a ASME General que reutilitza la funció global drawTextMultiLine
     const drawGenText = (text, x, y, lh, font, color, align) => drawTextMultiLine(genCtx, text, x, y, lh, font, color, align);
@@ -2450,15 +2452,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetNode = NODES[activeStep.target];
 
       if (badgeAsmeGen) {
-        if (p >= 0.99) {
-          badgeAsmeGen.textContent = `Procés Desenvolupat (${totalSteps}/${totalSteps})`;
-          badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 transition-all";
-        } else if (p > 0.01) {
-          badgeAsmeGen.textContent = `Pas ${currentStepIdx + 1}/${totalSteps}`;
-          badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-pgme-blue border border-blue-300 transition-all";
-        } else {
-          badgeAsmeGen.textContent = `Preparat per iniciar (0/${totalSteps})`;
-          badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300 transition-all";
+        const nextBadgeKey = p >= 0.99 ? `done:${totalSteps}` : (p > 0.01 ? `step:${currentStepIdx + 1}` : 'idle');
+        if (nextBadgeKey !== lastGenBadgeKey) {
+          lastGenBadgeKey = nextBadgeKey;
+          if (p >= 0.99) {
+            badgeAsmeGen.textContent = `Procés Desenvolupat (${totalSteps}/${totalSteps})`;
+            badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+          } else if (p > 0.01) {
+            badgeAsmeGen.textContent = `Pas ${currentStepIdx + 1}/${totalSteps}`;
+            badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-pgme-blue border border-blue-300";
+          } else {
+            badgeAsmeGen.textContent = `Preparat per iniciar (0/${totalSteps})`;
+            badgeAsmeGen.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300";
+          }
         }
       }
 
@@ -2467,7 +2473,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const inspectedNode = hoveredNodeId ? NODES[hoveredNodeId] : targetNode;
-      if (inspectedNode && readerTitle && readerDesc && readerLane) {
+      if (inspectedNode && readerTitle && readerDesc && readerLane && inspectedNode.id !== lastInspectedNodeId) {
+        lastInspectedNodeId = inspectedNode.id;
         readerTitle.textContent = inspectedNode.title;
         readerDesc.textContent = inspectedNode.detail || inspectedNode.sub;
         readerLane.textContent = inspectedNode.lane;
