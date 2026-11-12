@@ -436,6 +436,56 @@ body *::-webkit-scrollbar {
   }
 }
 
+.asme-zoom-sonar-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  border: 2.5px solid rgba(228, 5, 31, 0.85);
+  transform: translate(-50%, -50%) scale(1);
+  animation: asmeZoomSonarPulse 1.7s linear infinite;
+}
+
+.asme-zoom-sonar-ring-2 {
+  animation-delay: 0.85s;
+}
+
+.asme-zoom-sonar-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 19px;
+  height: 19px;
+  border-radius: 9999px;
+  background: rgba(228, 5, 31, 0.22);
+  transform: translate(-50%, -50%);
+}
+
+.asme-zoom-sonar-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+  background: #E4051F;
+  border: 1.8px solid #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes asmeZoomSonarPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+  }
+}
+
 .comarca-path {
   fill: #f1f5f9;
   stroke: #cbd5e1;

@@ -484,6 +484,56 @@ body *::-webkit-scrollbar {
   }
 }
 
+.asme-zoom-sonar-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  border: 2.5px solid rgba(228, 5, 31, 0.85);
+  transform: translate(-50%, -50%) scale(1);
+  animation: asmeZoomSonarPulse 1.7s linear infinite;
+}
+
+.asme-zoom-sonar-ring-2 {
+  animation-delay: 0.85s;
+}
+
+.asme-zoom-sonar-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 19px;
+  height: 19px;
+  border-radius: 9999px;
+  background: rgba(228, 5, 31, 0.22);
+  transform: translate(-50%, -50%);
+}
+
+.asme-zoom-sonar-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border-radius: 9999px;
+  background: #E4051F;
+  border: 1.8px solid #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes asmeZoomSonarPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(5);
+    opacity: 0;
+  }
+}
+
 .comarca-path {
   fill: #f1f5f9;
   stroke: #cbd5e1;
@@ -1170,7 +1220,6 @@ body *::-webkit-scrollbar {
             <div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200/80">
               <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center justify-between">
                 <span>Símptomes Crítics Observats</span>
-                <span class="text-[10px] text-pgme-red font-semibold">Gravetat Oficial</span>
               </h3>
 
               <div class="p-2.5 bg-white rounded-lg border border-red-200 shadow-2xs">
@@ -2145,7 +2194,15 @@ body *::-webkit-scrollbar {
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
           </svg>
         </button>
-        <img id="asme-zoom-img" alt="Diagrama ASME General PG-ME complet" class="max-w-full max-h-[82vh] w-auto h-auto object-contain rounded-lg select-none shadow-sm" />
+        <div id="asme-zoom-img-wrap" class="relative inline-flex items-center justify-center">
+          <img id="asme-zoom-img" alt="Diagrama ASME General PG-ME complet" class="max-w-full max-h-[82vh] w-auto h-auto object-contain rounded-lg select-none shadow-sm block" />
+          <span id="asme-zoom-sonar" class="hidden pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 z-10" style="left: 78.976%; top: 66.951%;">
+            <span class="asme-zoom-sonar-ring"></span>
+            <span class="asme-zoom-sonar-ring asme-zoom-sonar-ring-2"></span>
+            <span class="asme-zoom-sonar-halo"></span>
+            <span class="asme-zoom-sonar-core"></span>
+          </span>
+        </div>
         <button id="asme-zoom-next-btn" type="button" class="hidden absolute right-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-300 hover:border-pgme-blue shadow-lg flex items-center justify-center transition-all cursor-pointer" title="Tornar al diagrama ASME TO-BE" aria-label="Tornar al diagrama ASME TO-BE">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
@@ -4910,6 +4967,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const asmeZoomPrevBtn = document.getElementById('asme-zoom-prev-btn');
     const asmeZoomNextBtn = document.getElementById('asme-zoom-next-btn');
     const asmeZoomCompareHint = document.getElementById('asme-zoom-compare-hint');
+    const asmeZoomSonar = document.getElementById('asme-zoom-sonar');
 
     let zoomCompareSlides = null;
     let zoomCompareIndex = 0;
@@ -4949,6 +5007,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevProgress = genProgress;
         renderAsmeGeneral(1.0, false);
         asmeZoomImg.src = asmeGenCanvas.toDataURL('image/png');
+        asmeZoomSonar?.classList.remove('hidden');
         if (asmeZoomTitle) {
           asmeZoomTitle.textContent = 'Diagrama ASME General PG-ME · Vista Completa Desenvolupada';
         }
@@ -4965,6 +5024,7 @@ document.addEventListener('DOMContentLoaded', () => {
         asmeAsisZoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           clearZoomCompareMode();
+          asmeZoomSonar?.classList.add('hidden');
           const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
             ? window.__lastAsmeAsIsProgress
             : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
@@ -4984,6 +5044,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (asmeTobeZoomBtn && asmeToBeCanvas && typeof renderAsmeToBe === 'function') {
         asmeTobeZoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          asmeZoomSonar?.classList.add('hidden');
           const prevToBeProgress = typeof window.currentToBeRatio === 'number' ? window.currentToBeRatio : 1.0;
           renderAsmeToBe(1.0);
           const toBeDataUrl = asmeToBeCanvas.toDataURL('image/png');

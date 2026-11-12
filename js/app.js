@@ -2737,6 +2737,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const asmeZoomPrevBtn = document.getElementById('asme-zoom-prev-btn');
     const asmeZoomNextBtn = document.getElementById('asme-zoom-next-btn');
     const asmeZoomCompareHint = document.getElementById('asme-zoom-compare-hint');
+    const asmeZoomSonar = document.getElementById('asme-zoom-sonar');
 
     let zoomCompareSlides = null;
     let zoomCompareIndex = 0;
@@ -2776,6 +2777,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevProgress = genProgress;
         renderAsmeGeneral(1.0, false);
         asmeZoomImg.src = asmeGenCanvas.toDataURL('image/png');
+        asmeZoomSonar?.classList.remove('hidden');
         if (asmeZoomTitle) {
           asmeZoomTitle.textContent = 'Diagrama ASME General PG-ME · Vista Completa Desenvolupada';
         }
@@ -2792,6 +2794,7 @@ document.addEventListener('DOMContentLoaded', () => {
         asmeAsisZoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           clearZoomCompareMode();
+          asmeZoomSonar?.classList.add('hidden');
           const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
             ? window.__lastAsmeAsIsProgress
             : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
@@ -2811,6 +2814,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (asmeTobeZoomBtn && asmeToBeCanvas && typeof renderAsmeToBe === 'function') {
         asmeTobeZoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          asmeZoomSonar?.classList.add('hidden');
           const prevToBeProgress = typeof window.currentToBeRatio === 'number' ? window.currentToBeRatio : 1.0;
           renderAsmeToBe(1.0);
           const toBeDataUrl = asmeToBeCanvas.toDataURL('image/png');
