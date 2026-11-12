@@ -579,7 +579,7 @@ body::-webkit-scrollbar,
 }
 
 /* ==========================================================================
-   CARÀTULA NORMALITZADA PG-ME (OVERLAY KEYNOTE DE PORTADA)
+   CARÀTULA NORMALITZADA PG-ME (MATEIX FONS #f8fafc I LOGO ANCORAT)
    Paleta calibrada a NORMALITZACIÓ CARÀTULES (motor_caratulas.py)
    ========================================================================== */
 .cover-overlay {
@@ -591,110 +591,114 @@ body::-webkit-scrollbar,
   position: fixed;
   inset: 0;
   z-index: 45;
-  background-color: #0f172a;
+  background-color: #f8fafc;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(0.75rem, 2.2vw, 2rem);
-  padding-bottom: 4.5rem;
+  flex-direction: column;
+  justify-content: space-between;
   opacity: 1;
-  transform: translateY(0) scale(1);
   pointer-events: auto;
-  will-change: transform, opacity;
-  transition: opacity 0.58s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  font-family: Calibri, Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--pgme-cover-black);
+  will-change: opacity;
+  transition: opacity 0.56s cubic-bezier(0.22, 1, 0.36, 1) 0.14s;
 }
 
 .cover-overlay.is-hidden-cover {
   opacity: 0;
-  transform: translateY(-28px) scale(0.985);
   pointer-events: none;
 }
 
-.cover-sheet {
-  position: relative;
+/* Quan torna cap enrere a la caràtula, el fons apareix sense retard */
+.cover-overlay:not(.is-hidden-cover) {
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0s;
+}
+
+.cover-header-anchor {
   width: 100%;
-  max-width: 1220px;
-  height: 100%;
-  max-height: 760px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.15);
-  padding: clamp(1.75rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem) clamp(1.4rem, 3vh, 2.25rem) clamp(2.2rem, 5vw, 4.5rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden;
-  cursor: pointer;
-  font-family: Calibri, Arial, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: var(--pgme-cover-black);
+  flex-shrink: 0;
 }
 
-.cover-top-row {
+.cover-main-area {
+  flex: 1 1 auto;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.mossos-logo {
-  width: clamp(150px, 16.5vw, 205px);
-  height: auto;
-  display: block;
+  align-items: center;
+  width: 100%;
 }
 
 /* Bloc Principal amb la Sangria Oficial (144.9 pt proporcional) */
 .cover-indented-block {
-  margin-left: clamp(1rem, 9.5vw, 8.2rem);
+  margin-left: clamp(1rem, 9.5vw, 9.5rem);
   margin-right: clamp(0.5rem, 3vw, 2rem);
+  max-width: 1040px;
   display: flex;
   flex-direction: column;
-  gap: clamp(0.65rem, 1.6vh, 1.15rem);
+  gap: clamp(0.7rem, 1.8vh, 1.2rem);
+  will-change: transform, opacity;
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.4s ease;
+}
+
+.cover-overlay.is-hidden-cover .cover-indented-block {
+  transform: translateY(-42px) scale(0.985);
+  opacity: 0;
 }
 
 .doc-type-kicker {
   font-family: Arial, sans-serif;
-  font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
   font-weight: 700;
   color: var(--pgme-cover-title-blue);
   letter-spacing: 0.02em;
+  animation: coverSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
 }
 
 .cover-title {
   font-family: Arial, sans-serif;
-  font-size: clamp(1.6rem, 2.85vw, 2.45rem);
+  font-size: clamp(1.8rem, 3.1vw, 2.75rem);
   font-weight: 700;
   color: var(--pgme-cover-title-blue);
-  line-height: 1.15;
+  line-height: 1.14;
   letter-spacing: -0.015em;
   margin: 0;
+  animation: coverSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.12s both;
 }
 
 .cover-subtitle {
   font-family: Arial, sans-serif;
-  font-size: clamp(1.08rem, 1.75vw, 1.5rem);
+  font-size: clamp(1.15rem, 1.85vw, 1.6rem);
   font-weight: 700;
   color: var(--pgme-cover-title-blue);
   line-height: 1.25;
   margin-top: -0.25rem;
+  animation: coverSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.19s both;
 }
 
 .corp-divider {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  margin: 0.45rem 0 0.65rem 0;
+  gap: 0.38rem;
+  margin: 0.55rem 0 0.75rem 0;
+  transform-origin: left center;
+  animation: coverRuleDraw 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+}
+
+.cover-overlay.is-hidden-cover .corp-divider {
+  transform: scaleX(0.35);
+  opacity: 0;
 }
 
 .corp-divider-blue {
-  width: 76px;
-  height: 3.5px;
+  width: 82px;
+  height: 4px;
   background: var(--pgme-cover-brand-blue);
   border-radius: 2px;
 }
 
 .corp-divider-red {
-  width: 24px;
-  height: 3.5px;
+  width: 26px;
+  height: 4px;
   background: var(--pgme-cover-brand-red);
   border-radius: 2px;
 }
@@ -702,15 +706,16 @@ body::-webkit-scrollbar,
 .meta-grid {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  gap: clamp(1.2rem, 3vw, 2.75rem);
+  gap: clamp(1.2rem, 3vw, 3rem);
   align-items: start;
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
+  animation: coverSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 }
 
 @media (max-width: 768px) {
   .meta-grid {
     grid-template-columns: 1fr;
-    gap: 0.85rem;
+    gap: 0.9rem;
   }
 }
 
@@ -718,8 +723,8 @@ body::-webkit-scrollbar,
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
-  font-size: clamp(0.84rem, 1vw, 0.95rem);
-  line-height: 1.45;
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
+  line-height: 1.48;
   color: var(--pgme-cover-black);
 }
 
@@ -727,7 +732,7 @@ body::-webkit-scrollbar,
   font-family: Arial, sans-serif;
   font-weight: 700;
   color: var(--pgme-cover-title-blue);
-  font-size: clamp(0.9rem, 1.1vw, 1.02rem);
+  font-size: clamp(0.95rem, 1.15vw, 1.06rem);
   margin-bottom: 0.35rem;
 }
 
@@ -745,24 +750,35 @@ body::-webkit-scrollbar,
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.16rem;
+  gap: 0.18rem;
   font-family: Calibri, Arial, sans-serif;
   color: var(--pgme-cover-black);
 }
 
 .cover-footer {
   width: 100%;
+  flex-shrink: 0;
+  padding-bottom: 4.75rem;
+  will-change: transform, opacity;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.35s ease;
+}
+
+.cover-overlay.is-hidden-cover .cover-footer {
+  transform: translateY(20px);
+  opacity: 0;
 }
 
 .footer-top-row {
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
+  animation: coverSlideUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both;
 }
 
 .generalitat-logo {
-  width: clamp(115px, 12.5vw, 155px);
+  width: clamp(120px, 12.5vw, 160px);
   height: auto;
   display: block;
 }
@@ -770,20 +786,41 @@ body::-webkit-scrollbar,
 .official-footer-rule {
   border-top: 1px solid var(--pgme-cover-black);
   width: 100%;
+  transform-origin: left center;
+  animation: coverRuleDraw 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.36s both;
 }
 
-.stagger-in {
-  animation: fadeUpClean 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.stagger-1 { animation-delay: 0.04s; }
-.stagger-2 { animation-delay: 0.11s; }
-.stagger-3 { animation-delay: 0.18s; }
-
-@keyframes fadeUpClean {
+@keyframes coverSlideUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes coverRuleDraw {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* Entrada suau de la primera diapositiva en retirar-se la caràtula */
+.is-entering-from-cover {
+  animation: stageEnterFromCover 0.62s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+@keyframes stageEnterFromCover {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
   }
   to {
     opacity: 1;

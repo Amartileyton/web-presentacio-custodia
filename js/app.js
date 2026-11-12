@@ -29,8 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function hideCoverOverlay() {
-    if (coverOverlay) {
+    if (coverOverlay && !coverOverlay.classList.contains('is-hidden-cover')) {
       coverOverlay.classList.add('is-hidden-cover');
+      const sec1Card = document.querySelector('#section-1 .story-card');
+      const stage0 = document.getElementById('visual-stage-0');
+      [sec1Card, stage0].forEach((el) => {
+        if (!el) return;
+        el.classList.remove('is-entering-from-cover');
+        void el.offsetWidth;
+        el.classList.add('is-entering-from-cover');
+        setTimeout(() => el.classList.remove('is-entering-from-cover'), 780);
+      });
     }
   }
 
