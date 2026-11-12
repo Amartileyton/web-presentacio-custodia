@@ -43,12 +43,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  let coverWheelLockUntil = 0;
+  let coverTouchStartY = null;
+
+  function dismissCoverDownFromGesture() {
+    const now = Date.now();
+    if (now < coverWheelLockUntil) return;
+    coverWheelLockUntil = now + 750;
+    if (window.presentationController) {
+      window.presentationController.goToStep(1);
+    } else {
+      hideCoverOverlay();
+    }
+  }
+
+  window.addEventListener('wheel', (e) => {
+    const coverVisible = coverOverlay && !coverOverlay.classList.contains('is-hidden-cover');
+    if (coverVisible) {
+      e.preventDefault();
+      if (e.deltaY > 4) {
+        dismissCoverDownFromGesture();
+      }
+      return;
+    }
+    if (Date.now() < coverWheelLockUntil) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
   if (coverOverlay) {
-    coverOverlay.addEventListener('wheel', (e) => {
-      e.preventDefault();
-    }, { passive: false });
+    coverOverlay.addEventListener('touchstart', (e) => {
+      coverTouchStartY = e.touches && e.touches[0] ? e.touches[0].clientY : null;
+    }, { passive: true });
     coverOverlay.addEventListener('touchmove', (e) => {
+      if (coverOverlay.classList.contains('is-hidden-cover')) return;
       e.preventDefault();
+      if (coverTouchStartY !== null && e.touches && e.touches[0]) {
+        const dy = coverTouchStartY - e.touches[0].clientY;
+        if (dy > 20) {
+          coverTouchStartY = null;
+          dismissCoverDownFromGesture();
+        }
+      }
     }, { passive: false });
   }
 
@@ -651,23 +687,43 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // --- 4. PROGRESSIÓ DINÀMICA D'OMPLIMENT DELS PUNTS ALLARGATS & DIAGRAMA ASME ---
+  function getSectionDocTop(el) {
+    if (!el) return 0;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    return Math.round(el.getBoundingClientRect().top + scrollTop);
+  }
+
   let isUpdatingWaypoints = false;
   function updateWaypointFillProgress() {
     if (isUpdatingWaypoints) return;
     isUpdatingWaypoints = true;
     const scrollY = window.scrollY || document.documentElement.scrollTop;
     const viewportHeight = window.innerHeight;
-    const scrollOffset = 100;
+    const scrollOffset = 96;
+
+    // Si l'usuari arrossega el scroll lateral natiu cap avall des de la portada, retirem la caràtula automàticament
+    const coverVisible = coverOverlay && !coverOverlay.classList.contains('is-hidden-cover');
+    if (!isPresentationNavigating && coverVisible && scrollY > 20) {
+      hideCoverOverlay();
+    }
 
     let activeSectionIdx = 0;
+    const sectionTops = Array.from(sections, (s) => getSectionDocTop(s));
+
+    // Detecció focal estrictament monòtona per evitar parpelleig (pampalluga)
+    const focalY = scrollY + (viewportHeight * 0.38);
+    for (let sIdx = 0; sIdx < totalSections; sIdx++) {
+      if (focalY >= sectionTops[sIdx]) {
+        activeSectionIdx = sIdx;
+      }
+    }
 
     for (let i = 0; i < totalSections; i++) {
-      const section = sections[i];
-      const nextSection = sections[i + 1];
+      const nextTop = sectionTops[i + 1];
 
-      const start = (i === 0) ? 0 : section.offsetTop - scrollOffset;
-      const end = nextSection 
-        ? nextSection.offsetTop - scrollOffset 
+      const start = (i === 0) ? 0 : sectionTops[i] - scrollOffset;
+      const end = nextTop !== undefined
+        ? nextTop - scrollOffset
         : (document.documentElement.scrollHeight - viewportHeight);
 
       let percent = 0;
@@ -687,12 +743,14 @@ document.addEventListener('DOMContentLoaded', () => {
         waypointFills[i].style.height = `${percent.toFixed(1)}%`;
       }
 
-      // Marcar classes d'estat
+      // Marcar classes d'estat (un únic punt actiu en tot moment)
       if (waypointItems[i]) {
-        if (percent >= 100) {
+        if (coverVisible) {
+          waypointItems[i].classList.remove('is-active', 'is-passed');
+        } else if (i < activeSectionIdx || percent >= 100) {
           waypointItems[i].classList.add('is-passed');
           waypointItems[i].classList.remove('is-active');
-        } else if (percent > 0) {
+        } else if (i === activeSectionIdx) {
           waypointItems[i].classList.add('is-active');
           waypointItems[i].classList.remove('is-passed');
         } else {
@@ -717,19 +775,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Detecció focal estrictament monòtona per evitar parpelleig (pampalluga)
-    const focalY = scrollY + (viewportHeight * 0.38);
-    for (let sIdx = 0; sIdx < totalSections; sIdx++) {
-      if (focalY >= sections[sIdx].offsetTop) {
-        activeSectionIdx = sIdx;
-      }
-    }
-
     // Només activar etapa i sincronitzar si l'usuari fa scroll manual lliure (NO durant navegació per clics de presentació)
-    if (!isPresentationNavigating && activeSectionIdx !== currentSectionIndex) {
+    if (!isPresentationNavigating && (activeSectionIdx !== currentSectionIndex || (coverVisible && scrollY > 20))) {
       activateStage(activeSectionIdx);
       if (window.presentationController) {
-        window.presentationController.syncToSection(activeSectionIdx);
+        window.presentationController.syncToSection(activeSectionIdx, scrollY > 20);
       }
     }
     isUpdatingWaypoints = false;
@@ -1050,17 +1100,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   sections.forEach((section) => observer.observe(section));
 
-  // --- 7. NAVEGACIÓ EN CLICAR ELS WAYPOINTS DEL LATERAL DRET ---
+  // --- 7. NAVEGACIÓ EN CLICAR O ARROSSEGAR ELS WAYPOINTS DEL LATERAL DRET ---
+  function jumpToWaypointItem(item) {
+    if (!item) return;
+    const targetStep = parseInt(item.dataset.targetStep, 10);
+    const stepIdx = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === targetStep);
+    if (stepIdx !== -1 && window.presentationController) {
+      window.presentationController.goToStep(stepIdx);
+    } else {
+      navigateToSection(targetStep);
+    }
+  }
+
+  let isRailScrubbing = false;
+  let lastScrubTarget = null;
   waypointItems.forEach((item) => {
-    item.addEventListener('click', () => {
-      const targetStep = parseInt(item.dataset.targetStep, 10);
-      const stepIdx = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === targetStep);
-      if (stepIdx !== -1 && window.presentationController) {
-        window.presentationController.goToStep(stepIdx);
-      } else {
-        navigateToSection(targetStep);
-      }
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      jumpToWaypointItem(item);
     });
+    item.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      isRailScrubbing = true;
+      lastScrubTarget = item.dataset.targetStep;
+    });
+  });
+
+  window.addEventListener('pointermove', (e) => {
+    if (!isRailScrubbing) return;
+    const hovered = document.elementFromPoint(e.clientX, e.clientY)?.closest?.('.waypoint-item');
+    if (hovered && hovered.dataset.targetStep !== lastScrubTarget) {
+      lastScrubTarget = hovered.dataset.targetStep;
+      jumpToWaypointItem(hovered);
+    }
+  });
+
+  window.addEventListener('pointerup', () => {
+    isRailScrubbing = false;
+    lastScrubTarget = null;
   });
 
   // --- 8. CONTROLADOR EXECUTIU DE PRESENTACIÓ PER CLICS & TECLAT ---
@@ -1070,21 +1147,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const targetSection = sections[index];
       if (!targetSection) return;
 
-      // Comprovar si ja estem posicionats en aquesta secció (evita micro-scrolls innecessaris i pampallugues)
-      const currentY = window.scrollY || document.documentElement.scrollTop;
-      const targetY = targetSection.offsetTop;
-      const isAlreadyAtSection = Math.abs(currentY - targetY) < 30;
-
       // Bloqueig de navegació perquè els esdeveniments d'scroll no interfereixin ni canviïn d'etapa a mig camí
       isPresentationNavigating = true;
       if (navLockTimeout) clearTimeout(navLockTimeout);
       navLockTimeout = setTimeout(() => {
         isPresentationNavigating = false;
-      }, 750);
+        updateWaypointFillProgress();
+      }, 780);
 
-      if (!isAlreadyAtSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      // Diferim al següent frame perquè activateStage() hagi estabilitzat les alçades abans de calcular el scroll
+      requestAnimationFrame(() => {
+        const currentY = window.scrollY || document.documentElement.scrollTop;
+        const targetY = (index === 0) ? 0 : Math.max(0, getSectionDocTop(targetSection) - 80);
+        const isAlreadyAtSection = Math.abs(currentY - targetY) < 24;
+        if (!isAlreadyAtSection) {
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+        updateWaypointFillProgress();
+      });
     }
   }
 
@@ -1447,8 +1527,8 @@ document.addEventListener('DOMContentLoaded', () => {
         this.goToStep(currentPresStep - 1);
       }
     },
-    syncToSection(sectionIdx) {
-      if (currentPresStep === 0) return;
+    syncToSection(sectionIdx, forceFromScroll = false) {
+      if (currentPresStep === 0 && !forceFromScroll) return;
       const cur = PRESENTATION_STEPS[currentPresStep];
       if (cur && cur.sectionIndex !== sectionIdx) {
         const matchingStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === sectionIdx);
