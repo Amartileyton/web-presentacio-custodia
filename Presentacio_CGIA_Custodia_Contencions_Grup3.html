@@ -1963,8 +1963,8 @@ body *::-webkit-scrollbar {
           <!-- ===============================================================
                ESTAT VISUAL 5: SEGUIMENT PDCA I CONCLUSIÓ (#visual-stage-5)
                =============================================================== -->
-          <div id="visual-stage-5" class="stage-panel flex-1 flex flex-col justify-between">
-            <div class="flex flex-col h-full justify-between">
+          <div id="visual-stage-5" class="stage-panel flex-1 flex flex-col justify-start">
+            <div class="flex flex-col h-full justify-start">
               <!-- Capçalera + Selector de Subvista (Pas 12 / Pas 13) -->
               <div class="flex items-center justify-end mb-3 pb-2 border-b border-slate-100 shrink-0">
                 <div class="inline-flex p-0.5 rounded-lg bg-slate-100 border border-slate-200">
@@ -1980,7 +1980,7 @@ body *::-webkit-scrollbar {
               <!-- ============================================================
                    SUBVISTA 1 (PAS 12): TAULA 1 INDICADORS SMART & CICLE PDCA
                    ============================================================ -->
-              <div id="view-stage5-monitoring" class="flex-1 flex flex-col justify-between gap-2.5">
+              <div id="view-stage5-monitoring" class="flex-1 flex flex-col justify-start gap-5">
                 <!-- Taula 1: Pla de Seguiment Oficial (4 Indicadors Clau) -->
                 <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
                   <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between">
@@ -2058,56 +2058,54 @@ body *::-webkit-scrollbar {
               <!-- ============================================================
                    SUBVISTA 2 (PAS 13): RISCOS, CONDICIONS DE VIABILITAT & EFECTES
                    ============================================================ -->
-              <div id="view-stage5-conclusion" class="hidden flex-1 flex flex-col justify-between gap-2.5">
+              <div id="view-stage5-conclusion" class="hidden flex-1 flex flex-col justify-start pt-1">
                 <!-- Riscos i Limitacions + Condicions de Viabilitat -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                   <!-- Riscos i Limitacions -->
-                  <div class="bg-red-50/40 rounded-xl border border-red-200/80 p-3 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-red-200/60">
+                  <div class="bg-red-50/40 rounded-xl border border-red-200/80 p-3.5 flex flex-col justify-start gap-2.5">
+                    <div class="pb-1.5 border-b border-red-200/60">
                       <h4 class="text-xs font-bold uppercase tracking-wider text-pgme-red">4 Riscos i Limitacions</h4>
-                      <span class="text-[10px] font-mono text-red-700 bg-white px-1.5 py-0.5 rounded border border-red-200">Gestió Preventiva</span>
                     </div>
-                    <div class="space-y-2 text-xs">
-                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">1. Recursos tècnics i coordinació</strong>
+                    <div class="space-y-2.5 text-xs">
+                      <div class="p-2.5 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">1. Recursos tècnics i coordinació</strong>
                         <span class="text-slate-600 text-[11px]">Disponibilitat de desenvolupadors especialitzats i coordinació efectiva entre unitats funcionals i CGTIC.</span>
                       </div>
-                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">2. Resistències organitzatives al canvi</strong>
+                      <div class="p-2.5 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">2. Resistències organitzatives al canvi</strong>
                         <span class="text-slate-600 text-[11px]">Modificació de rutines consolidades o percepció inicial d'un increment d'obligacions de registre.</span>
                       </div>
-                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">3. Qualitat de les dades en origen</strong>
+                      <div class="p-2.5 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">3. Qualitat de les dades en origen</strong>
                         <span class="text-slate-600 text-[11px]">L'automatització perd eficàcia si la informació introduïda inicialment pels usuaris a l'ACD és incompleta.</span>
                       </div>
-                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">4. Evolució normativa o aplicativa</strong>
+                      <div class="p-2.5 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">4. Evolució normativa o aplicativa</strong>
                         <span class="text-slate-600 text-[11px]">Canvis futurs en legislació processal o aplicacions corporatives que requereixin ajustos addicionals.</span>
                       </div>
                     </div>
                   </div>
 
                   <!-- Condicions Imprescindibles de Viabilitat -->
-                  <div class="bg-blue-50/40 rounded-xl border border-blue-200/80 p-3 flex flex-col justify-between">
-                    <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-blue-200/60">
+                  <div class="bg-blue-50/40 rounded-xl border border-blue-200/80 p-3.5 flex flex-col justify-start gap-2.5">
+                    <div class="pb-1.5 border-b border-blue-200/60">
                       <h4 class="text-xs font-bold uppercase tracking-wider text-pgme-blue">4 Condicions Imprescindibles</h4>
-                      <span class="text-[10px] font-mono text-pgme-blue bg-white px-1.5 py-0.5 rounded border border-blue-200">Viabilitat d'Èxit</span>
                     </div>
-                    <div class="space-y-2 text-xs">
-                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">1. Suport explícit de la Direcció</strong>
+                    <div class="space-y-2.5 text-xs">
+                      <div class="p-2.5 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">1. Suport explícit de la Direcció</strong>
                         <span class="text-slate-600 text-[11px]">Implicació ferma dels comandaments de custòdia per impulsar els canvis organitzatius i normatius.</span>
                       </div>
-                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">2. Participació dels usuaris finals</strong>
+                      <div class="p-2.5 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">2. Participació dels usuaris finals</strong>
                         <span class="text-slate-600 text-[11px]">Co-disseny funcional, prova pilot a l'ACD Badalona i desplegament adaptat a les necessitats reals.</span>
                       </div>
-                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">3. Recursos TIC i formació adequada</strong>
+                      <div class="p-2.5 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">3. Recursos TIC i formació adequada</strong>
                         <span class="text-slate-600 text-[11px]">Capacitat per executar la passarel·la i pla formatiu (Intranet, Teams i càpsules multimèdia).</span>
                       </div>
-                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
-                        <strong class="text-slate-900 block text-[11px]">4. Seguiment estable PDCA</strong>
+                      <div class="p-2.5 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px] mb-0.5">4. Seguiment estable PDCA</strong>
                         <span class="text-slate-600 text-[11px]">Manteniment permanent del sistema d'indicadors per detectar desviacions i consolidar millores.</span>
                       </div>
                     </div>
