@@ -267,6 +267,7 @@ body *::-webkit-scrollbar {
   position: sticky;
   top: 5.5rem;
   max-height: calc(100vh - 7rem);
+  overflow-y: auto;
   z-index: 20;
   margin-bottom: 0;
 }
@@ -275,7 +276,7 @@ body *::-webkit-scrollbar {
   background: #ffffff;
   border-radius: 1rem;
   border: 1px solid var(--color-border-subtle);
-  padding: 2rem;
+  padding: clamp(1rem, 2vw, 2rem);
   transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: 0.35;
   transform: translateY(12px) scale(0.98);
@@ -417,6 +418,19 @@ body *::-webkit-scrollbar {
   background-color: var(--color-pgme-blue);
   color: #ffffff;
   box-shadow: 0 2px 6px rgba(1, 59, 117, 0.25);
+}
+
+@media (max-width: 1023px) {
+  .story-section,
+  .pinned-scroll-section {
+    min-height: auto;
+    padding: 1.5rem 1rem;
+  }
+  .story-card-pinned {
+    position: relative;
+    top: auto;
+    max-height: none;
+  }
 }
 
 /* Suport de projecció 16:9 */
@@ -718,6 +732,8 @@ body *::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow-y: auto;
+  overflow-x: hidden;
   opacity: 1;
   pointer-events: auto;
   cursor: pointer;
@@ -1578,8 +1594,8 @@ body *::-webkit-scrollbar {
       <!-- =====================================================================
            COLUMNA DRETA (64%): Contenidor Sticky per als 5 Estats Visuals
            ===================================================================== -->
-      <div class="w-full lg:w-[64%] sticky top-20 h-[calc(100vh-6rem)] flex flex-col justify-between py-2">
-        <div class="w-full h-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-7 overflow-y-auto relative flex flex-col justify-between">
+      <div class="w-full lg:w-[64%] lg:sticky lg:top-20 lg:h-[calc(100vh-6rem)] h-auto min-h-[420px] flex flex-col justify-between py-2">
+        <div class="w-full h-full bg-white rounded-2xl border border-slate-200/90 shadow-sm p-4 sm:p-6 overflow-y-auto relative flex flex-col justify-between">
 
           <!-- Encapçalament del Panell Fix -->
           <div class="border-b border-slate-100 pb-3 mb-4 flex items-center justify-between shrink-0">
@@ -1597,10 +1613,10 @@ body *::-webkit-scrollbar {
           <!-- ===============================================================
                ESTAT VISUAL 0: MAPA TERRITORIAL DE CATALUNYA (ACDs I SONAR) (#visual-stage-0)
                =============================================================== -->
-          <div id="visual-stage-0" class="stage-panel active-stage flex-1 flex flex-col justify-between h-full w-full overflow-hidden select-none">
+          <div id="visual-stage-0" class="stage-panel active-stage flex-1 flex flex-col justify-between h-full w-full min-h-0 overflow-auto select-none">
             <!-- Contenidor Gràfic a Pantalla Completa del Mapa de Catalunya -->
-            <div id="map-svg-container" class="relative w-full flex-1 flex items-center justify-center p-0 m-0 overflow-hidden bg-slate-50/30 rounded-xl border border-slate-200/80 shadow-2xs">
-              <svg id="catalunyaMapSvg" viewBox="0 0 900 800" class="w-full h-full max-h-[calc(100vh-9.5rem)] object-contain block pointer-events-none">
+            <div id="map-svg-container" class="relative w-full flex-1 min-h-0 flex items-center justify-center p-1 m-0 overflow-auto bg-slate-50/30 rounded-xl border border-slate-200/80 shadow-2xs">
+              <svg id="catalunyaMapSvg" viewBox="0 0 900 800" preserveAspectRatio="xMidYMid meet" class="w-auto h-auto max-w-full max-h-full object-contain block pointer-events-none">
                 <g id="map-comarques-group"></g>
                 <g id="map-sonar-group"></g>
               </svg>
@@ -1625,7 +1641,7 @@ body *::-webkit-scrollbar {
 
               <!-- Targeta de Lectura de Text en Temps Real (Lector de Detall Operatiu) -->
               <div id="asme-reader-card" class="mb-2.5 p-2.5 px-3.5 rounded-lg bg-blue-50/70 border border-blue-200/90 flex items-center justify-between gap-3 text-xs transition-all">
-                <div class="flex items-center gap-2 overflow-hidden">
+                <div class="flex items-center gap-2 overflow-x-auto">
                   <span class="w-2 h-2 rounded-full bg-pgme-blue animate-pulse flex-shrink-0"></span>
                   <span id="asme-reader-title" class="font-bold text-slate-900 truncate">Pas 1: INICI &mdash; Detenció al carrer</span>
                   <span class="text-slate-400 hidden sm:inline">|</span>
@@ -1637,14 +1653,14 @@ body *::-webkit-scrollbar {
               </div>
 
               <!-- Contenidor Gràfic Canvas per a l'Animació Suau del Diagrama ASME PG-ME -->
-              <div class="relative w-full flex-1 rounded-xl bg-white border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center p-1.5 min-h-[380px]">
+              <div class="relative w-full flex-1 min-h-0 rounded-xl bg-white border border-slate-200 shadow-inner overflow-auto flex items-center justify-center p-1.5">
                 <button id="asme-gen-zoom-btn" type="button" class="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-lg bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-sm hover:shadow-md flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama ASME complet" aria-label="Ampliar diagrama ASME complet">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="7"></circle>
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
                   </svg>
                 </button>
-                <canvas id="asmeGeneralCanvas" class="w-full h-full max-h-[calc(100vh-9.5rem)] rounded-lg object-contain shadow-sm cursor-pointer block" title="Clica per reproduir / pausar l'animació"></canvas>
+                <canvas id="asmeGeneralCanvas" class="w-auto h-auto max-w-full max-h-full rounded-lg object-contain shadow-sm cursor-pointer block" title="Clica per reproduir / pausar l'animació"></canvas>
               </div>
 
               <!-- Peu informatiu tècnic -->
@@ -1786,14 +1802,14 @@ body *::-webkit-scrollbar {
               </div>
 
               <!-- Contenidor Canvas d'Alta Resolució -->
-              <div class="asme-canvas-container relative w-full flex-1 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-hidden">
+              <div class="asme-canvas-container relative w-full flex-1 min-h-0 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-auto">
                 <button id="asme-asis-zoom-btn" type="button" class="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-lg bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-sm hover:shadow-md flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama ASME AS-IS complet" aria-label="Ampliar diagrama ASME AS-IS complet">
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="7"></circle>
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
                   </svg>
                 </button>
-                <canvas id="asmeCanvas" class="w-full h-auto max-h-[calc(100vh-9.5rem)] object-contain block"></canvas>
+                <canvas id="asmeCanvas" class="w-auto h-auto max-w-full max-h-full object-contain block"></canvas>
               </div>
             </div>
           </div>
@@ -1897,14 +1913,14 @@ body *::-webkit-scrollbar {
                 </div>
 
                 <!-- Contenidor Canvas d'Alta Resolució TO-BE -->
-                <div class="asme-canvas-container relative w-full flex-1 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-hidden">
+                <div class="asme-canvas-container relative w-full flex-1 min-h-0 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-auto">
                   <button id="asme-tobe-zoom-btn" type="button" class="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-lg bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-sm hover:shadow-md flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama ASME TO-BE complet" aria-label="Ampliar diagrama ASME TO-BE complet">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                       <circle cx="11" cy="11" r="7"></circle>
                       <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
                     </svg>
                   </button>
-                  <canvas id="asmeToBeCanvas" class="w-full h-auto max-h-[calc(100vh-10rem)] object-contain block"></canvas>
+                  <canvas id="asmeToBeCanvas" class="w-auto h-auto max-w-full max-h-full object-contain block"></canvas>
                 </div>
               </div>
 
@@ -1945,12 +1961,12 @@ body *::-webkit-scrollbar {
           <!-- ===============================================================
                ESTAT VISUAL 4: PLA D'IMPLANTACIÓ I CRONOGRAMA GANTT (#visual-stage-4)
                =============================================================== -->
-          <div id="visual-stage-4" class="stage-panel flex-1 flex flex-col justify-between h-full w-full overflow-hidden">
-            <div class="flex-1 flex flex-col h-full overflow-hidden">
+          <div id="visual-stage-4" class="stage-panel flex-1 flex flex-col justify-between h-full w-full min-h-0 overflow-auto">
+            <div class="flex-1 flex flex-col h-full min-h-0 overflow-auto">
 
 
               <!-- Taula Gantt Dinàmica amb Scroll Vertical Intern -->
-              <div class="flex-1 overflow-y-auto pr-1 space-y-1 rounded-xl border border-slate-200/90 bg-white shadow-2xs p-2 min-h-[300px]">
+              <div class="flex-1 overflow-y-auto pr-1 space-y-1 rounded-xl border border-slate-200/90 bg-white shadow-2xs p-2 min-h-[160px]">
                 <!-- Capçalera de Columnes Mes 1 a Mes 7 -->
                 <div class="gantt-grid-header py-2 px-2 bg-slate-100/90 rounded-lg text-[10.5px] font-bold text-slate-700 border-b border-slate-200 sticky top-0 z-20 backdrop-blur-xs">
                   <div class="text-[10.5px] font-extrabold text-slate-900">Acció Estratègica & Responsable</div>
@@ -1972,7 +1988,7 @@ body *::-webkit-scrollbar {
               <!-- Targeta Inspectora de Detall de l'Acció Seleccionada -->
               <div id="gantt-inspector-card" class="mt-2 p-2.5 rounded-xl bg-blue-50/70 border border-blue-200/90 text-xs transition-all shrink-0">
                 <div class="flex items-center justify-between gap-2 mb-1">
-                  <div class="flex items-center gap-1.5 overflow-hidden">
+                  <div class="flex items-center gap-1.5 overflow-x-auto">
                     <span id="gantt-detail-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-pgme-blue text-white shrink-0">Acció 1</span>
                     <strong id="gantt-detail-title" class="text-slate-900 truncate font-semibold">Recollir les necessitats i incidències detectades pels efectius d'ACD, OAC i unitats instructores.</strong>
                   </div>
@@ -2017,7 +2033,7 @@ body *::-webkit-scrollbar {
                    ============================================================ -->
               <div id="view-stage5-monitoring" class="flex-1 flex flex-col justify-start gap-5">
                 <!-- Taula 1: Pla de Seguiment Oficial (4 Indicadors Clau) -->
-                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+                <div class="bg-white rounded-xl border border-slate-200 overflow-x-auto shadow-2xs">
                   <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between">
                     <span class="text-[11px] font-bold text-slate-800 uppercase tracking-wider">Taula 1 · Pla de Seguiment dels Indicadors (SMART)</span>
                     <span class="text-[10px] font-mono text-emerald-700 font-semibold">Línia Base ➔ Objectiu · Alerta</span>
@@ -2215,7 +2231,7 @@ body *::-webkit-scrollbar {
     <!-- =========================================================================
        BARRA FLOTANT DE CONTROL DE PRESENTACIÓ (PAS A PAS PER CLIC)
        ========================================================================= -->
-  <aside id="presentation-clicker-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700/80 shadow-2xl flex items-center gap-3 text-xs font-medium select-none transition-all hover:scale-102">
+  <aside id="presentation-clicker-bar" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 max-w-[95vw] bg-slate-900/95 text-white backdrop-blur-md px-3.5 py-1.5 rounded-full border border-slate-700/80 shadow-2xl flex items-center gap-3 text-xs font-medium select-none transition-all hover:scale-102">
     <button id="pres-btn-prev" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white cursor-pointer" title="Pas Anterior (o Fletxa Esquerra)">◀</button>
     <div class="flex items-center gap-2 cursor-pointer" id="pres-click-advance" title="Clic per avançar el següent pas / diapositiva">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -4265,8 +4281,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     asmeGenCanvas.width = GEN_WIDTH * GEN_SCALE;
     asmeGenCanvas.height = GEN_HEIGHT * GEN_SCALE;
-    asmeGenCanvas.style.width = '100%';
-    asmeGenCanvas.style.height = 'auto';
     genCtx.scale(GEN_SCALE, GEN_SCALE);
 
     const GEN_COLORS = {

@@ -2035,8 +2035,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     asmeGenCanvas.width = GEN_WIDTH * GEN_SCALE;
     asmeGenCanvas.height = GEN_HEIGHT * GEN_SCALE;
-    asmeGenCanvas.style.width = '100%';
-    asmeGenCanvas.style.height = 'auto';
     genCtx.scale(GEN_SCALE, GEN_SCALE);
 
     const GEN_COLORS = {
