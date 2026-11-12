@@ -1981,7 +1981,7 @@ body *::-webkit-scrollbar {
                    SUBVISTA 1 (PAS 12): TAULA 1 INDICADORS SMART & CICLE PDCA
                    ============================================================ -->
               <div id="view-stage5-monitoring" class="flex-1 flex flex-col justify-between gap-2.5">
-                <!-- Taula 1: Pla de Seguiment Oficial (7 Indicadors) -->
+                <!-- Taula 1: Pla de Seguiment Oficial (4 Indicadors Clau) -->
                 <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
                   <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between">
                     <span class="text-[11px] font-bold text-slate-800 uppercase tracking-wider">Taula 1 · Pla de Seguiment dels Indicadors (SMART)</span>
@@ -2027,27 +2027,6 @@ body *::-webkit-scrollbar {
                           <td class="py-1.5 px-2 text-center font-mono text-[10px]">AEE (CGIA)</td>
                           <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&gt; 25%</span></td>
                         </tr>
-                        <tr class="hover:bg-blue-50/30 transition-colors bg-blue-50/20">
-                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">5. Coincidència Custòdia &harr; Atestats</td>
-                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-slate-400">N/D</span> ➔ <span class="text-pgme-blue font-bold">&ge; 98%</span></td>
-                          <td class="py-1.5 px-2 text-center">Mensual</td>
-                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AAE (CGIA)</td>
-                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 95%</span></td>
-                        </tr>
-                        <tr class="hover:bg-blue-50/30 transition-colors bg-blue-50/20">
-                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">6. Tramitació pel procediment estandarditzat</td>
-                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-slate-400">0%</span> ➔ <span class="text-pgme-blue font-bold">100%</span></td>
-                          <td class="py-1.5 px-2 text-center">Trimestral</td>
-                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AORG (CGIA)</td>
-                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 85%</span></td>
-                        </tr>
-                        <tr class="hover:bg-blue-50/30 transition-colors bg-blue-50/20">
-                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">7. Usuaris formats sobre el nou procediment</td>
-                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-slate-400">0%</span> ➔ <span class="text-pgme-blue font-bold">100%</span></td>
-                          <td class="py-1.5 px-2 text-center">Trimestral (imp.)</td>
-                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AORG (CGIA)</td>
-                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 90%</span></td>
-                        </tr>
                       </tbody>
                     </table>
                   </div>
@@ -2071,7 +2050,7 @@ body *::-webkit-scrollbar {
                   </div>
 
                   <div id="traffic-status-msg" class="p-2.5 rounded-lg border text-xs leading-relaxed bg-emerald-50 border-emerald-300 text-emerald-900 transition-all">
-                    <strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 7 indicadors es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle de millora contínua PDCA.
+                    <strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 4 indicadors es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle de millora contínua PDCA.
                   </div>
                 </div>
               </div>
@@ -3663,7 +3642,7 @@ document.addEventListener('DOMContentLoaded', () => {
       step: 13,
       sectionIndex: 6,
       name: "13. Fase 5: Pla de Seguiment & Indicadors PDCA",
-      desc: "Taula oficial de 7 indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
+      desc: "Taula oficial d'indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
       action: () => {
         navigateToSection(6);
         activateStage(6);
@@ -4173,7 +4152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const trafficMessages = {
     green: {
-      html: "<strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 7 indicadors SMART i els 4 operatius es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.",
+      html: "<strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 4 indicadors SMART es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.",
       classes: "bg-emerald-50 border-emerald-300 text-emerald-900"
     },
     amber: {

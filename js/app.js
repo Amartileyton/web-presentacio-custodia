@@ -1464,7 +1464,7 @@ document.addEventListener('DOMContentLoaded', () => {
       step: 13,
       sectionIndex: 6,
       name: "13. Fase 5: Pla de Seguiment & Indicadors PDCA",
-      desc: "Taula oficial de 7 indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
+      desc: "Taula oficial d'indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
       action: () => {
         navigateToSection(6);
         activateStage(6);
@@ -1974,7 +1974,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const trafficMessages = {
     green: {
-      html: "<strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 7 indicadors SMART i els 4 operatius es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.",
+      html: "<strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 4 indicadors SMART es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.",
       classes: "bg-emerald-50 border-emerald-300 text-emerald-900"
     },
     amber: {
