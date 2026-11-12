@@ -1019,6 +1019,182 @@ document.addEventListener('DOMContentLoaded', () => {
     // Renderitzar les 14 accions d'una sola tongada
     renderGanttRows();
     updateInspector(GANTT_ACTIONS[0]);
+
+    // --- MODAL PANTALLA COMPLETA DEL GANTT AMB ANIMACIÓ DE LES 3 FITES ---
+    const ganttZoomBtn = document.getElementById('gantt-zoom-btn');
+    const ganttZoomModal = document.getElementById('gantt-zoom-modal');
+    const ganttZoomClose = document.getElementById('gantt-zoom-close');
+    const ganttZoomReplay = document.getElementById('gantt-zoom-replay');
+    const ganttZoomRows = document.getElementById('gantt-zoom-rows');
+    const ganttZoomPills = document.querySelectorAll('.gantt-zoom-fase-pill');
+    let ganttZoomTimers = [];
+
+    function clearGanttZoomTimers() {
+      ganttZoomTimers.forEach(id => clearTimeout(id));
+      ganttZoomTimers = [];
+    }
+
+    function renderGanttZoomRows() {
+      if (!ganttZoomRows) return;
+      ganttZoomRows.innerHTML = '';
+      let lastFase = null;
+
+      GANTT_ACTIONS.forEach((action) => {
+        if (action.fase !== lastFase) {
+          lastFase = action.fase;
+          const faseHeader = document.createElement('div');
+          const faseColorCls = action.fase === 1
+            ? 'bg-emerald-50/90 text-emerald-900 border-emerald-200'
+            : action.fase === 2
+              ? 'bg-blue-50/90 text-blue-900 border-blue-200'
+              : 'bg-amber-50/90 text-amber-900 border-amber-200';
+          faseHeader.className = `px-3 py-1.5 text-[10.5px] font-extrabold rounded-md border flex items-center justify-between my-1 tracking-tight ${faseColorCls}`;
+          faseHeader.innerHTML = `
+            <span class="tracking-wide">${action.faseNom.toUpperCase()}</span>
+            <span class="font-mono text-[10px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
+          `;
+          ganttZoomRows.appendChild(faseHeader);
+        }
+
+        const row = document.createElement('div');
+        row.className = 'gantt-row py-1.5 px-2.5 rounded-lg border border-slate-100 hover:border-slate-200';
+        row.dataset.actionNum = action.num;
+
+        const leftPct = ((action.inici - 1) / 7 * 100).toFixed(2);
+        const widthPct = ((action.fi - action.inici + 1) / 7 * 100).toFixed(2);
+        const barClass = action.num === 13
+          ? 'gantt-bar-pilot'
+          : action.fase === 1
+            ? 'gantt-bar-fase1'
+            : action.fase === 2
+              ? 'gantt-bar-fase2'
+              : 'gantt-bar-fase3';
+        const labelText = action.num === 13
+          ? 'M7 PILOT BADALONA'
+          : action.inici === action.fi
+            ? `M${action.inici}`
+            : `M${action.inici}-M${action.fi}`;
+
+        row.innerHTML = `
+          <div class="flex items-start gap-2.5 pr-3">
+            <span class="w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center shrink-0 mt-0.5 ${
+              action.fase === 1 ? 'bg-emerald-100 text-emerald-800' : action.fase === 2 ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
+            }">${action.num}</span>
+            <span class="text-[11.5px] text-slate-800 font-medium leading-snug flex-1 whitespace-normal">${action.accio}</span>
+            <span class="text-[9.5px] font-mono font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0 mt-0.5">${action.responsable}</span>
+          </div>
+          <div class="gantt-timeline-area">
+            <div class="gantt-grid-lines">
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col is-pilot-month"></div>
+            </div>
+            <div class="gantt-bar ${barClass}" style="left: ${leftPct}%; width: 0%;" data-target-width="${widthPct}%" data-fase="${action.fase}" data-action-num="${action.num}">
+              <span class="truncate px-1">${labelText}</span>
+            </div>
+          </div>
+        `;
+        ganttZoomRows.appendChild(row);
+      });
+    }
+
+    function applyGanttZoomPhase(fase) {
+      if (!ganttZoomRows) return;
+      ganttZoomPills.forEach(pill => {
+        const pf = parseInt(pill.dataset.ganttZoomFase, 10);
+        if (pf === fase) {
+          pill.classList.add('ring-2', 'ring-pgme-blue', 'scale-105');
+        } else {
+          pill.classList.remove('ring-2', 'ring-pgme-blue', 'scale-105');
+        }
+      });
+
+      ganttZoomRows.querySelectorAll('.gantt-row').forEach(row => {
+        const actionNum = parseInt(row.dataset.actionNum, 10);
+        const action = GANTT_ACTIONS.find(a => a.num === actionNum);
+        if (!action) return;
+        if (action.fase <= fase) {
+          row.classList.remove('is-dimmed');
+          row.classList.add('is-highlighted');
+        } else {
+          row.classList.add('is-dimmed');
+          row.classList.remove('is-highlighted');
+        }
+      });
+
+      ganttZoomRows.querySelectorAll('.gantt-bar').forEach(bar => {
+        const barFase = parseInt(bar.dataset.fase, 10);
+        const actionNum = parseInt(bar.dataset.actionNum, 10);
+        const targetW = bar.dataset.targetWidth || '14.28%';
+        if (barFase <= fase) {
+          if (barFase === fase) {
+            bar.style.width = '0%';
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                bar.style.width = targetW;
+              }, (actionNum % 6) * 55);
+            });
+          } else {
+            bar.style.width = targetW;
+          }
+        } else {
+          bar.style.width = '0%';
+        }
+      });
+    }
+
+    function playGanttZoomSequence() {
+      clearGanttZoomTimers();
+      renderGanttZoomRows();
+      applyGanttZoomPhase(1);
+      ganttZoomTimers.push(setTimeout(() => applyGanttZoomPhase(2), 1400));
+      ganttZoomTimers.push(setTimeout(() => applyGanttZoomPhase(3), 2800));
+    }
+
+    function closeGanttZoomModal() {
+      clearGanttZoomTimers();
+      ganttZoomModal?.classList.add('hidden');
+    }
+
+    window.closeGanttZoomModal = closeGanttZoomModal;
+
+    if (ganttZoomBtn && ganttZoomModal) {
+      ganttZoomBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        ganttZoomModal.classList.remove('hidden');
+        playGanttZoomSequence();
+      });
+
+      ganttZoomReplay?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playGanttZoomSequence();
+      });
+
+      ganttZoomPills.forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          clearGanttZoomTimers();
+          const f = parseInt(pill.dataset.ganttZoomFase, 10);
+          applyGanttZoomPhase(f);
+        });
+      });
+
+      ganttZoomClose?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeGanttZoomModal();
+      });
+
+      ganttZoomModal.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (e.target === ganttZoomModal) {
+          closeGanttZoomModal();
+        }
+      });
+    }
   }
 
   // Inicialitzar el Gantt
@@ -1595,6 +1771,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. NAVEGACIÓ PER TECLAT I CLICKER DE PRESENTACIÓ
   document.addEventListener('keydown', (e) => {
     if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+    const ganttZoomModalEl = document.getElementById('gantt-zoom-modal');
+    if (ganttZoomModalEl && !ganttZoomModalEl.classList.contains('hidden')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (typeof window.closeGanttZoomModal === 'function') {
+          window.closeGanttZoomModal();
+        } else {
+          ganttZoomModalEl.classList.add('hidden');
+        }
+      }
+      return;
+    }
 
     const zoomModalEl = document.getElementById('asme-zoom-modal');
     if (zoomModalEl && !zoomModalEl.classList.contains('hidden')) {

@@ -421,7 +421,8 @@ body *::-webkit-scrollbar {
 }
 
 @media (min-width: 1024px) {
-  #section-3.story-section {
+  #section-3.story-section,
+  #section-4.story-section {
     justify-content: flex-start;
     padding-top: 0.5rem;
     padding-bottom: 2rem;
@@ -582,6 +583,12 @@ body *::-webkit-scrollbar {
   transition: background-color 0.12s ease;
   position: relative;
   min-height: 30px;
+}
+
+#gantt-zoom-modal .gantt-grid-header,
+#gantt-zoom-modal .gantt-row {
+  grid-template-columns: minmax(420px, 54%) repeat(7, minmax(48px, 1fr));
+  min-height: 34px;
 }
 
 .gantt-row:hover {
@@ -1503,60 +1510,60 @@ body *::-webkit-scrollbar {
              SECCIÓ 4: PLA D'IMPLANTACIÓ I PROVA PILOT
              ========================================== -->
         <section id="section-4" class="story-section" data-step-index="5">
-          <div class="story-card">
-            <div class="flex items-center justify-between gap-2 mb-4">
+          <div class="story-card p-4 sm:p-5">
+            <div class="flex items-center justify-between gap-2 mb-2.5">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-purple-500/10 text-purple-800 border border-purple-500/20">
                 FASE 4 · IMPLEMENTAR MILLORES EN EL PROCÉS
               </span>
             </div>
 
-            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug mb-3">
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug mb-2">
               Pla d'Implantació en 3 Fases (Horitzó 7 Mesos)
             </h2>
 
-            <p class="text-sm text-slate-600 leading-relaxed mb-4">
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3">
               Un desplegament realista, seqüencial i progressiu que sincronitza adaptacions organitzatives, evolutius TIC i un pla intensiu de gestió del canvi abans d'iniciar la prova pilot.
             </p>
 
             <!-- Fases del Cronograma -->
-            <div class="space-y-3 mb-6">
-              <div class="p-3 bg-white rounded-lg border border-slate-200">
-                <div class="flex justify-between items-center mb-1">
+            <div class="space-y-2 mb-3">
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <div class="flex justify-between items-center mb-0.5">
                   <span class="text-xs font-bold text-slate-900">Fase 1: Millores Organitzatives</span>
-                  <span class="text-xs font-mono font-semibold text-pgme-blue bg-blue-50 px-2 py-0.5 rounded">Mesos 1 - 2</span>
+                  <span class="text-[11px] font-mono font-semibold text-pgme-blue bg-blue-50 px-2 py-0.5 rounded shrink-0">Mesos 1 - 2</span>
                 </div>
-                <p class="text-xs text-slate-600">
+                <p class="text-[11.5px] text-slate-600 leading-snug">
                   Sense requerir TIC complexes: redisseny TO-BE, definició de rols i estandardització de registres per DIG-CGIA i AORG-CGIA.
                 </p>
               </div>
 
-              <div class="p-3 bg-white rounded-lg border border-slate-200">
-                <div class="flex justify-between items-center mb-1">
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <div class="flex justify-between items-center mb-0.5">
                   <span class="text-xs font-bold text-slate-900">Fase 2: Desenvolupament Tecnològic</span>
-                  <span class="text-xs font-mono font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded">Mesos 3 - 5</span>
+                  <span class="text-[11px] font-mono font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded shrink-0">Mesos 3 - 5</span>
                 </div>
-                <p class="text-xs text-slate-600">
+                <p class="text-[11.5px] text-slate-600 leading-snug">
                   Desenvolupament de la passarel·la Custòdia-Atestats i formularis normalitzats per CGTIC (1 desenvolupador informàtic 8h x 5 dies durant 3 mesos).
                 </p>
               </div>
 
-              <div class="p-3 bg-white rounded-lg border border-slate-200">
-                <div class="flex justify-between items-center mb-1">
+              <div class="p-2.5 bg-white rounded-lg border border-slate-200">
+                <div class="flex justify-between items-center mb-0.5">
                   <span class="text-xs font-bold text-slate-900">Fase 3: Gestió del Canvi & Formació</span>
-                  <span class="text-xs font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Mesos 1 - 7</span>
+                  <span class="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded shrink-0">Mesos 1 - 7</span>
                 </div>
-                <p class="text-xs text-slate-600">
+                <p class="text-[11.5px] text-slate-600 leading-snug">
                   Modificació de PRO 006 i IO 002, pla de formació integral (3 efectius AORG x 5 mesos: vídeo, comunicats i Teams), quadre de comandament i prova pilot.
                 </p>
               </div>
             </div>
 
             <!-- Crida d'atenció Prova Pilot -->
-            <div class="p-3.5 bg-pgme-blue/5 border border-pgme-blue/20 rounded-xl">
-              <span class="text-xs font-bold text-pgme-blue uppercase tracking-wider block mb-1">
+            <div class="p-3 bg-pgme-blue/5 border border-pgme-blue/20 rounded-xl">
+              <span class="text-[11px] font-bold text-pgme-blue uppercase tracking-wider block mb-0.5">
                 Fita Crítica: Prova Pilot a l'ACD Badalona (Mes 7)
               </span>
-              <p class="text-xs text-slate-700 leading-relaxed">
+              <p class="text-[11.5px] text-slate-700 leading-snug">
                 L'inici de la prova pilot està <strong>condicionat estrictament a la culminació de totes les accions prèvies</strong> tècniques i formatives, assegurant una avaluació en un entorn real controlat i d'alta representativitat.
               </p>
             </div>
@@ -1971,7 +1978,19 @@ body *::-webkit-scrollbar {
                =============================================================== -->
           <div id="visual-stage-4" class="stage-panel flex-1 flex flex-col justify-between h-full w-full min-h-0 overflow-auto">
             <div class="flex-1 flex flex-col h-full min-h-0 overflow-auto">
-
+              <!-- Barra superior amb lupa per a pantalla completa del Gantt -->
+              <div class="flex items-center justify-between pb-1.5 mb-1.5 border-b border-slate-200/80 shrink-0">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-pgme-blue"></span>
+                  <span class="text-[11px] font-bold uppercase tracking-wider text-slate-700">Cronograma Gantt · 14 Accions (7 Mesos)</span>
+                </div>
+                <button id="gantt-zoom-btn" type="button" class="w-8 h-8 rounded-lg bg-white hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-2xs flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama Gantt complet amb animació de les 3 fites" aria-label="Ampliar diagrama Gantt complet">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
+                  </svg>
+                </button>
+              </div>
 
               <!-- Taula Gantt Dinàmica amb Scroll Vertical Intern -->
               <div class="flex-1 overflow-y-auto pr-1 space-y-1 rounded-xl border border-slate-200/90 bg-white shadow-2xs p-2 min-h-[160px]">
@@ -2232,6 +2251,42 @@ body *::-webkit-scrollbar {
             <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
           </svg>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal d'ampliació a pantalla completa del Diagrama Gantt (14 accions + animació 3 fites) -->
+  <div id="gantt-zoom-modal" class="fixed inset-0 z-[70] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true" aria-label="Vista ampliada del diagrama Gantt complet">
+    <div class="relative w-full max-w-[96vw] max-h-[94vh] bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 sm:p-5 flex flex-col">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-slate-200 shrink-0">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-2.5 h-2.5 rounded-full bg-pgme-blue shrink-0"></span>
+          <h3 class="text-xs sm:text-sm font-bold text-slate-800 truncate">Pla d'Implantació · Diagrama Gantt Complet (14 Accions · 7 Mesos)</h3>
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button type="button" data-gantt-zoom-fase="1" class="gantt-zoom-fase-pill px-2.5 py-1 rounded-full text-[11px] font-bold border border-emerald-200 bg-emerald-50 text-emerald-800 cursor-pointer transition-all">Fita 1 · M1-M2</button>
+          <button type="button" data-gantt-zoom-fase="2" class="gantt-zoom-fase-pill px-2.5 py-1 rounded-full text-[11px] font-bold border border-blue-200 bg-blue-50 text-pgme-blue cursor-pointer transition-all">Fita 2 · M3-M5</button>
+          <button type="button" data-gantt-zoom-fase="3" class="gantt-zoom-fase-pill px-2.5 py-1 rounded-full text-[11px] font-bold border border-amber-200 bg-amber-50 text-amber-800 cursor-pointer transition-all">Fita 3 · Pilot M7</button>
+          <button id="gantt-zoom-replay" type="button" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-slate-100 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 transition-colors cursor-pointer" title="Repetir animació de les 3 fites">↻ Repetir</button>
+          <button id="gantt-zoom-close" type="button" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-red-600 text-slate-700 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0 ml-1" title="Tancar vista ampliada (Esc)" aria-label="Tancar vista ampliada">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-auto min-h-0 rounded-xl border border-slate-200 bg-white p-2.5">
+        <div class="gantt-grid-header py-2 px-2.5 bg-slate-100 rounded-lg text-[11px] font-bold text-slate-700 border-b border-slate-200 sticky top-0 z-20">
+          <div class="text-[11px] font-extrabold text-slate-900">Acció Estratègica &amp; Responsable</div>
+          <div class="text-center font-mono">M1</div>
+          <div class="text-center font-mono">M2</div>
+          <div class="text-center font-mono">M3</div>
+          <div class="text-center font-mono">M4</div>
+          <div class="text-center font-mono">M5</div>
+          <div class="text-center font-mono">M6</div>
+          <div class="text-center font-mono text-red-700 font-extrabold bg-red-100/80 rounded py-0.5 border border-red-200">M7 PILOT</div>
+        </div>
+        <div id="gantt-zoom-rows" class="space-y-1 mt-1.5 text-xs"></div>
       </div>
     </div>
   </div>
@@ -3273,6 +3328,182 @@ document.addEventListener('DOMContentLoaded', () => {
     // Renderitzar les 14 accions d'una sola tongada
     renderGanttRows();
     updateInspector(GANTT_ACTIONS[0]);
+
+    // --- MODAL PANTALLA COMPLETA DEL GANTT AMB ANIMACIÓ DE LES 3 FITES ---
+    const ganttZoomBtn = document.getElementById('gantt-zoom-btn');
+    const ganttZoomModal = document.getElementById('gantt-zoom-modal');
+    const ganttZoomClose = document.getElementById('gantt-zoom-close');
+    const ganttZoomReplay = document.getElementById('gantt-zoom-replay');
+    const ganttZoomRows = document.getElementById('gantt-zoom-rows');
+    const ganttZoomPills = document.querySelectorAll('.gantt-zoom-fase-pill');
+    let ganttZoomTimers = [];
+
+    function clearGanttZoomTimers() {
+      ganttZoomTimers.forEach(id => clearTimeout(id));
+      ganttZoomTimers = [];
+    }
+
+    function renderGanttZoomRows() {
+      if (!ganttZoomRows) return;
+      ganttZoomRows.innerHTML = '';
+      let lastFase = null;
+
+      GANTT_ACTIONS.forEach((action) => {
+        if (action.fase !== lastFase) {
+          lastFase = action.fase;
+          const faseHeader = document.createElement('div');
+          const faseColorCls = action.fase === 1
+            ? 'bg-emerald-50/90 text-emerald-900 border-emerald-200'
+            : action.fase === 2
+              ? 'bg-blue-50/90 text-blue-900 border-blue-200'
+              : 'bg-amber-50/90 text-amber-900 border-amber-200';
+          faseHeader.className = `px-3 py-1.5 text-[10.5px] font-extrabold rounded-md border flex items-center justify-between my-1 tracking-tight ${faseColorCls}`;
+          faseHeader.innerHTML = `
+            <span class="tracking-wide">${action.faseNom.toUpperCase()}</span>
+            <span class="font-mono text-[10px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
+          `;
+          ganttZoomRows.appendChild(faseHeader);
+        }
+
+        const row = document.createElement('div');
+        row.className = 'gantt-row py-1.5 px-2.5 rounded-lg border border-slate-100 hover:border-slate-200';
+        row.dataset.actionNum = action.num;
+
+        const leftPct = ((action.inici - 1) / 7 * 100).toFixed(2);
+        const widthPct = ((action.fi - action.inici + 1) / 7 * 100).toFixed(2);
+        const barClass = action.num === 13
+          ? 'gantt-bar-pilot'
+          : action.fase === 1
+            ? 'gantt-bar-fase1'
+            : action.fase === 2
+              ? 'gantt-bar-fase2'
+              : 'gantt-bar-fase3';
+        const labelText = action.num === 13
+          ? 'M7 PILOT BADALONA'
+          : action.inici === action.fi
+            ? `M${action.inici}`
+            : `M${action.inici}-M${action.fi}`;
+
+        row.innerHTML = `
+          <div class="flex items-start gap-2.5 pr-3">
+            <span class="w-5 h-5 rounded text-[10px] font-mono font-bold flex items-center justify-center shrink-0 mt-0.5 ${
+              action.fase === 1 ? 'bg-emerald-100 text-emerald-800' : action.fase === 2 ? 'bg-blue-100 text-blue-800' : 'bg-amber-100 text-amber-800'
+            }">${action.num}</span>
+            <span class="text-[11.5px] text-slate-800 font-medium leading-snug flex-1 whitespace-normal">${action.accio}</span>
+            <span class="text-[9.5px] font-mono font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 shrink-0 mt-0.5">${action.responsable}</span>
+          </div>
+          <div class="gantt-timeline-area">
+            <div class="gantt-grid-lines">
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col"></div>
+              <div class="gantt-grid-col is-pilot-month"></div>
+            </div>
+            <div class="gantt-bar ${barClass}" style="left: ${leftPct}%; width: 0%;" data-target-width="${widthPct}%" data-fase="${action.fase}" data-action-num="${action.num}">
+              <span class="truncate px-1">${labelText}</span>
+            </div>
+          </div>
+        `;
+        ganttZoomRows.appendChild(row);
+      });
+    }
+
+    function applyGanttZoomPhase(fase) {
+      if (!ganttZoomRows) return;
+      ganttZoomPills.forEach(pill => {
+        const pf = parseInt(pill.dataset.ganttZoomFase, 10);
+        if (pf === fase) {
+          pill.classList.add('ring-2', 'ring-pgme-blue', 'scale-105');
+        } else {
+          pill.classList.remove('ring-2', 'ring-pgme-blue', 'scale-105');
+        }
+      });
+
+      ganttZoomRows.querySelectorAll('.gantt-row').forEach(row => {
+        const actionNum = parseInt(row.dataset.actionNum, 10);
+        const action = GANTT_ACTIONS.find(a => a.num === actionNum);
+        if (!action) return;
+        if (action.fase <= fase) {
+          row.classList.remove('is-dimmed');
+          row.classList.add('is-highlighted');
+        } else {
+          row.classList.add('is-dimmed');
+          row.classList.remove('is-highlighted');
+        }
+      });
+
+      ganttZoomRows.querySelectorAll('.gantt-bar').forEach(bar => {
+        const barFase = parseInt(bar.dataset.fase, 10);
+        const actionNum = parseInt(bar.dataset.actionNum, 10);
+        const targetW = bar.dataset.targetWidth || '14.28%';
+        if (barFase <= fase) {
+          if (barFase === fase) {
+            bar.style.width = '0%';
+            requestAnimationFrame(() => {
+              setTimeout(() => {
+                bar.style.width = targetW;
+              }, (actionNum % 6) * 55);
+            });
+          } else {
+            bar.style.width = targetW;
+          }
+        } else {
+          bar.style.width = '0%';
+        }
+      });
+    }
+
+    function playGanttZoomSequence() {
+      clearGanttZoomTimers();
+      renderGanttZoomRows();
+      applyGanttZoomPhase(1);
+      ganttZoomTimers.push(setTimeout(() => applyGanttZoomPhase(2), 1400));
+      ganttZoomTimers.push(setTimeout(() => applyGanttZoomPhase(3), 2800));
+    }
+
+    function closeGanttZoomModal() {
+      clearGanttZoomTimers();
+      ganttZoomModal?.classList.add('hidden');
+    }
+
+    window.closeGanttZoomModal = closeGanttZoomModal;
+
+    if (ganttZoomBtn && ganttZoomModal) {
+      ganttZoomBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        ganttZoomModal.classList.remove('hidden');
+        playGanttZoomSequence();
+      });
+
+      ganttZoomReplay?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        playGanttZoomSequence();
+      });
+
+      ganttZoomPills.forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          e.stopPropagation();
+          clearGanttZoomTimers();
+          const f = parseInt(pill.dataset.ganttZoomFase, 10);
+          applyGanttZoomPhase(f);
+        });
+      });
+
+      ganttZoomClose?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeGanttZoomModal();
+      });
+
+      ganttZoomModal.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (e.target === ganttZoomModal) {
+          closeGanttZoomModal();
+        }
+      });
+    }
   }
 
   // Inicialitzar el Gantt
@@ -3849,6 +4080,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. NAVEGACIÓ PER TECLAT I CLICKER DE PRESENTACIÓ
   document.addEventListener('keydown', (e) => {
     if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+    const ganttZoomModalEl = document.getElementById('gantt-zoom-modal');
+    if (ganttZoomModalEl && !ganttZoomModalEl.classList.contains('hidden')) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (typeof window.closeGanttZoomModal === 'function') {
+          window.closeGanttZoomModal();
+        } else {
+          ganttZoomModalEl.classList.add('hidden');
+        }
+      }
+      return;
+    }
 
     const zoomModalEl = document.getElementById('asme-zoom-modal');
     if (zoomModalEl && !zoomModalEl.classList.contains('hidden')) {

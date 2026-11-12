@@ -373,7 +373,8 @@ body *::-webkit-scrollbar {
 }
 
 @media (min-width: 1024px) {
-  #section-3.story-section {
+  #section-3.story-section,
+  #section-4.story-section {
     justify-content: flex-start;
     padding-top: 0.5rem;
     padding-bottom: 2rem;
@@ -534,6 +535,12 @@ body *::-webkit-scrollbar {
   transition: background-color 0.12s ease;
   position: relative;
   min-height: 30px;
+}
+
+#gantt-zoom-modal .gantt-grid-header,
+#gantt-zoom-modal .gantt-row {
+  grid-template-columns: minmax(420px, 54%) repeat(7, minmax(48px, 1fr));
+  min-height: 34px;
 }
 
 .gantt-row:hover {
