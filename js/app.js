@@ -1048,16 +1048,16 @@ document.addEventListener('DOMContentLoaded', () => {
             : action.fase === 2
               ? 'bg-blue-50/90 text-blue-900 border-blue-200'
               : 'bg-amber-50/90 text-amber-900 border-amber-200';
-          faseHeader.className = `px-3 py-1.5 text-[10.5px] font-extrabold rounded-md border flex items-center justify-between my-1 tracking-tight ${faseColorCls}`;
+          faseHeader.className = `px-2.5 py-1 text-[10px] font-extrabold rounded-md border flex items-center justify-between my-0.5 tracking-tight ${faseColorCls}`;
           faseHeader.innerHTML = `
             <span class="tracking-wide">${action.faseNom.toUpperCase()}</span>
-            <span class="font-mono text-[10px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
+            <span class="font-mono text-[9.5px] uppercase tracking-wider font-semibold">${action.fase === 1 ? 'Mesos 1 - 2 (5 accions)' : action.fase === 2 ? 'Mesos 3 - 5 (3 accions)' : 'Mesos 1 - 7 (6 accions)'}</span>
           `;
           ganttZoomRows.appendChild(faseHeader);
         }
 
         const row = document.createElement('div');
-        row.className = 'gantt-row py-1.5 px-2.5 rounded-lg border border-slate-100 hover:border-slate-200';
+        row.className = 'gantt-row py-1 px-2 rounded-lg border border-slate-100 hover:border-slate-200';
         row.dataset.actionNum = action.num;
 
         const leftPct = ((action.inici - 1) / 7 * 100).toFixed(2);
