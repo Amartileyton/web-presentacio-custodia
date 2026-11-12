@@ -477,7 +477,7 @@
             </p>
 
             <!-- La Fractura Operativa -->
-            <div class="bg-red-50/80 border border-red-200/90 rounded-lg px-3 py-1.5 mb-2.5 text-xs text-slate-700 leading-snug">
+            <div class="bg-red-50/80 border border-red-200/90 rounded-lg px-3 py-1.5 mb-2 text-xs text-slate-700 leading-snug">
               <div class="flex items-center gap-1.5 font-bold text-pgme-red mb-0.5 text-[11px]">
                 <span class="w-1.5 h-1.5 rounded-full bg-pgme-red animate-pulse"></span>
                 <span>Coll d'ampolla: Doble entrada manual sense passarel·la</span>
@@ -485,8 +485,8 @@
               El <strong class="text-pgme-red font-bold">60% de les contencions</strong> queden extraviades abans d'arribar a l'atestat policial i a seu judicial.
             </div>
 
-            <!-- Els 4 Indicadors Clau (2x2 Grid compacte amb animació dinàmica sota demanda) -->
-            <div class="mb-2.5">
+            <!-- Els 4 Indicadors Clau (apilats un sota l'altre) -->
+            <div class="mb-1">
               <div id="trigger-metrics-btn" class="flex items-center justify-between mb-1.5 p-1 rounded-md hover:bg-slate-100/80 cursor-pointer select-none transition-colors group" title="Fes clic per activar/desactivar l'animació dels 4 indicadors">
                 <div class="flex items-center gap-1.5">
                   <h3 class="text-[11px] font-bold uppercase tracking-wider text-slate-800 group-hover:text-pgme-blue transition-colors">Els 4 Indicadors Clau</h3>
@@ -497,98 +497,87 @@
                 </span>
               </div>
 
-              <div class="grid grid-cols-2 gap-2">
+              <div class="flex flex-col gap-1.5">
                 <!-- Indicador 1 -->
-                <div class="p-2 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="text-[11px] font-bold text-slate-900 truncate">1. Consta diligències</span>
+                <div class="px-2.5 py-1.5 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
+                  <div class="flex justify-between items-center mb-0.5">
+                    <span class="text-[11px] font-bold text-slate-900">1. Consta diligències</span>
                     <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-red-100 text-pgme-red shrink-0">Crític</span>
                   </div>
-                  <div class="flex items-baseline justify-between mb-1 font-mono">
+                  <div class="flex items-baseline justify-between mb-0.5 font-mono">
                     <span class="text-[10px] text-slate-400">40%</span>
-                    <span id="metric-val-1" class="text-sm sm:text-base font-black text-emerald-600">40%</span>
+                    <span id="metric-val-1" class="text-sm font-black text-emerald-600">40%</span>
                     <span class="text-[10px] font-bold text-slate-600">100%</span>
                   </div>
                   <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden relative">
                     <div id="metric-bar-1" class="bg-gradient-to-r from-pgme-red to-emerald-500 h-full w-[40%] transition-all duration-75"></div>
                   </div>
-                  <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                  <div class="flex justify-between text-[9px] text-slate-500 mt-0.5">
                     <span>Bretxa: <strong class="text-slate-700">+60%</strong></span>
                     <span class="text-pgme-red font-semibold font-mono">&lt;80% alerta</span>
                   </div>
                 </div>
 
                 <!-- Indicador 2 -->
-                <div class="p-2 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="text-[11px] font-bold text-slate-900 truncate">2. Assistència mèdica</span>
+                <div class="px-2.5 py-1.5 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
+                  <div class="flex justify-between items-center mb-0.5">
+                    <span class="text-[11px] font-bold text-slate-900">2. Assistència mèdica</span>
                     <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 shrink-0">Garanties</span>
                   </div>
-                  <div class="flex items-baseline justify-between mb-1 font-mono">
+                  <div class="flex items-baseline justify-between mb-0.5 font-mono">
                     <span class="text-[10px] text-slate-400">80%</span>
-                    <span id="metric-val-2" class="text-sm sm:text-base font-black text-emerald-600">80%</span>
+                    <span id="metric-val-2" class="text-sm font-black text-emerald-600">80%</span>
                     <span class="text-[10px] font-bold text-slate-600">100%</span>
                   </div>
                   <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden relative">
                     <div id="metric-bar-2" class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full w-[80%] transition-all duration-75"></div>
                   </div>
-                  <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                  <div class="flex justify-between text-[9px] text-slate-500 mt-0.5">
                     <span>Bretxa: <strong class="text-slate-700">+20%</strong></span>
                     <span class="text-amber-700 font-semibold font-mono">&lt;80% alerta</span>
                   </div>
                 </div>
 
                 <!-- Indicador 3 -->
-                <div class="p-2 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="text-[11px] font-bold text-slate-900 truncate">3. Lesions o mort</span>
+                <div class="px-2.5 py-1.5 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
+                  <div class="flex justify-between items-center mb-0.5">
+                    <span class="text-[11px] font-bold text-slate-900">3. Lesions o mort</span>
                     <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-red-100 text-pgme-red shrink-0">Seguretat</span>
                   </div>
-                  <div class="flex items-baseline justify-between mb-1 font-mono">
+                  <div class="flex items-baseline justify-between mb-0.5 font-mono">
                     <span class="text-[10px] text-slate-400">13%</span>
-                    <span id="metric-val-3" class="text-sm sm:text-base font-black text-emerald-600">13%</span>
+                    <span id="metric-val-3" class="text-sm font-black text-emerald-600">13%</span>
                     <span class="text-[10px] font-bold text-slate-600">5%</span>
                   </div>
                   <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden relative">
                     <div id="metric-bar-3" class="bg-gradient-to-r from-pgme-red to-emerald-500 h-full w-[100%] transition-all duration-75"></div>
                   </div>
-                  <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                  <div class="flex justify-between text-[9px] text-slate-500 mt-0.5">
                     <span>Reducció: <strong class="text-emerald-700">-61.5%</strong></span>
                     <span class="text-pgme-red font-semibold font-mono">&gt;8% alerta</span>
                   </div>
                 </div>
 
                 <!-- Indicador 4 -->
-                <div class="p-2 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
-                  <div class="flex justify-between items-center mb-1">
-                    <span class="text-[11px] font-bold text-slate-900 truncate">4. Queixes internes</span>
+                <div class="px-2.5 py-1.5 bg-slate-50/90 rounded-lg border border-slate-200 hover:border-pgme-blue transition-colors">
+                  <div class="flex justify-between items-center mb-0.5">
+                    <span class="text-[11px] font-bold text-slate-900">4. Queixes internes</span>
                     <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-blue-100 text-pgme-blue shrink-0">Clima</span>
                   </div>
-                  <div class="flex items-baseline justify-between mb-1 font-mono">
+                  <div class="flex items-baseline justify-between mb-0.5 font-mono">
                     <span class="text-[10px] text-slate-400">60%</span>
-                    <span id="metric-val-4" class="text-sm sm:text-base font-black text-emerald-600">60%</span>
+                    <span id="metric-val-4" class="text-sm font-black text-emerald-600">60%</span>
                     <span class="text-[10px] font-bold text-slate-600">15%</span>
                   </div>
                   <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden relative">
                     <div id="metric-bar-4" class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full w-[100%] transition-all duration-75"></div>
                   </div>
-                  <div class="flex justify-between text-[9px] text-slate-500 mt-1">
+                  <div class="flex justify-between text-[9px] text-slate-500 mt-0.5">
                     <span>Reducció: <strong class="text-emerald-700">-75.0%</strong></span>
                     <span class="text-slate-600 font-semibold font-mono">&gt;30% alerta</span>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Diagnosi Operativa del Coll d'Ampolla -->
-            <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between text-[11px]">
-              <div>
-                <strong class="text-slate-900 block leading-tight">Ràtio concordança: 40%</strong>
-                <span class="text-slate-500 text-[10px]">Pèrdua per transcripció manual no integrada al SIP.</span>
-              </div>
-              <span class="px-2 py-0.5 rounded text-[9px] font-bold bg-pgme-blue text-white shrink-0 ml-2">
-                Coll d'ampolla clau
-              </span>
             </div>
           </div>
         </section>
@@ -860,18 +849,16 @@
                     <span class="text-[10px] text-slate-500 block">Animació seqüencial del subprocés (13 caixes operatives i 12 fluxos de contenció)</span>
                   </div>
                 </div>
-                <div class="flex items-center gap-2">
-                  <span id="asme-step-badge" class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200 shadow-2xs">
-                    Caixes: 0 / 13 (0%)
-                  </span>
-                  <button onclick="descargarAsmePNG()" class="px-2.5 py-1 rounded-md bg-slate-100 hover:bg-pgme-blue text-slate-700 hover:text-white text-[11px] font-bold transition-all shadow-2xs flex items-center gap-1 border border-slate-200 cursor-pointer" title="Descarregar diagrama complet en alta resolució PNG">
-                    <span>⬇ PNG</span>
-                  </button>
-                </div>
               </div>
 
               <!-- Contenidor Canvas d'Alta Resolució -->
               <div class="asme-canvas-container relative w-full flex-1 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-hidden">
+                <button id="asme-asis-zoom-btn" type="button" class="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-lg bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-sm hover:shadow-md flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama ASME AS-IS complet" aria-label="Ampliar diagrama ASME AS-IS complet">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
+                  </svg>
+                </button>
                 <canvas id="asmeCanvas" class="w-full h-auto max-h-[calc(100vh-9.5rem)] object-contain block"></canvas>
               </div>
             </div>
@@ -1358,7 +1345,7 @@
       <div class="flex items-center justify-between gap-3 pb-2.5 mb-2 border-b border-slate-200">
         <div class="flex items-center gap-2 min-w-0">
           <span class="w-2.5 h-2.5 rounded-full bg-pgme-blue shrink-0"></span>
-          <h3 class="text-xs sm:text-sm font-bold text-slate-800 truncate">Diagrama ASME General PG-ME · Vista Completa Desenvolupada</h3>
+          <h3 id="asme-zoom-title" class="text-xs sm:text-sm font-bold text-slate-800 truncate">Diagrama ASME General PG-ME · Vista Completa Desenvolupada</h3>
         </div>
         <button id="asme-zoom-close" type="button" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-red-600 text-slate-700 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tancar vista ampliada (Esc)" aria-label="Tancar vista ampliada">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">

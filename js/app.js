@@ -517,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.renderAsmeProgress = function renderAsmeProgress(progressRatio) {
     if (!asmeCanvas || !asmeCtx) return;
     const p = Math.min(1, Math.max(0, progressRatio));
+    window.__lastAsmeAsIsProgress = p;
 
     asmeCtx.setTransform(ASME_SCALE, 0, 0, ASME_SCALE, 0, 0);
     asmeCtx.fillStyle = '#ffffff';
@@ -1448,7 +1449,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. ESDEVENIMENT GLOBAL DE CLIC PER AVANÇAR LA PRESENTACIÓ
   document.addEventListener('click', (e) => {
     // Si l'usuari fa clic en un control interactiu específic, deixem que actuï lliurement
-    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .stage5-tab-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance, #asme-gen-zoom-btn, #asme-zoom-modal');
+    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .stage5-tab-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance, #asme-gen-zoom-btn, #asme-asis-zoom-btn, #asme-zoom-modal');
     if (interactive) return;
 
     // Qualsevol clic a la diapositiva avança un pas/animació!
@@ -2609,6 +2610,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const asmeZoomModal = document.getElementById('asme-zoom-modal');
     const asmeZoomClose = document.getElementById('asme-zoom-close');
     const asmeZoomImg = document.getElementById('asme-zoom-img');
+    const asmeZoomTitle = document.getElementById('asme-zoom-title');
 
     if (asmeGenZoomBtn && asmeZoomModal && asmeZoomImg) {
       asmeGenZoomBtn.addEventListener('click', (e) => {
@@ -2616,6 +2618,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevProgress = genProgress;
         renderAsmeGeneral(1.0, false);
         asmeZoomImg.src = asmeGenCanvas.toDataURL('image/png');
+        if (asmeZoomTitle) {
+          asmeZoomTitle.textContent = 'Diagrama ASME General PG-ME · Vista Completa Desenvolupada';
+        }
         if (prevProgress < 0.999) {
           renderAsmeGeneral(prevProgress);
         } else {
@@ -2623,6 +2628,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         asmeZoomModal.classList.remove('hidden');
       });
+
+      const asmeAsisZoomBtn = document.getElementById('asme-asis-zoom-btn');
+      if (asmeAsisZoomBtn && asmeCanvas && typeof window.renderAsmeProgress === 'function') {
+        asmeAsisZoomBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
+            ? window.__lastAsmeAsIsProgress
+            : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
+          window.renderAsmeProgress(1.0);
+          asmeZoomImg.src = asmeCanvas.toDataURL('image/png');
+          if (asmeZoomTitle) {
+            asmeZoomTitle.textContent = 'Diagrama ASME AS-IS · Subprocés de Contenció en Garjola (ACD)';
+          }
+          if (prevAsIsProgress < 0.999) {
+            window.renderAsmeProgress(prevAsIsProgress);
+          }
+          asmeZoomModal.classList.remove('hidden');
+        });
+      }
 
       asmeZoomClose?.addEventListener('click', (e) => {
         e.stopPropagation();
