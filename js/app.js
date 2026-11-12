@@ -20,6 +20,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const mainHeader = document.getElementById('main-header');
   const floatingLogoPill = document.getElementById('floating-logo-pill');
   const currentStepIndicator = document.getElementById('current-step-label');
+  const coverOverlay = document.getElementById('cover-overlay');
+
+  function showCoverOverlay() {
+    if (coverOverlay) {
+      coverOverlay.classList.remove('is-hidden-cover');
+    }
+  }
+
+  function hideCoverOverlay() {
+    if (coverOverlay) {
+      coverOverlay.classList.add('is-hidden-cover');
+    }
+  }
+
+  if (coverOverlay) {
+    coverOverlay.addEventListener('wheel', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+    coverOverlay.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+  }
 
   // Mètriques de la Secció 2
   const metricVal1 = document.getElementById('metric-val-1');
@@ -1033,6 +1055,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 8. CONTROLADOR EXECUTIU DE PRESENTACIÓ PER CLICS & TECLAT ---
   function navigateToSection(index) {
     if (index >= 0 && index < totalSections) {
+      hideCoverOverlay();
       const targetSection = sections[index];
       if (!targetSection) return;
 
@@ -1131,6 +1154,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const PRESENTATION_STEPS = [
     {
       step: 0,
+      sectionIndex: -1,
+      name: "0. Caràtula Oficial PG-ME · Grup 3",
+      desc: "Portada normalitzada corporativa PG-ME",
+      action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+        isPresentationNavigating = true;
+        if (navLockTimeout) clearTimeout(navLockTimeout);
+        navLockTimeout = setTimeout(() => {
+          isPresentationNavigating = false;
+        }, 750);
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        activateStage(0);
+        showCoverOverlay();
+      }
+    },
+    {
+      step: 1,
       sectionIndex: 0,
       name: "1. Abast Territorial & 97 ACDs",
       desc: "Mapa de Catalunya amb 97 ACDs i senyals sonar actives",
@@ -1138,6 +1180,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+        hideCoverOverlay();
         navigateToSection(0);
         activateStage(0);
       }
@@ -1340,9 +1383,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nameEl) nameEl.textContent = cur.name;
 
     // Sincronitzar waypoints
-    if (waypointItems && waypointItems[cur.sectionIndex]) {
+    if (waypointItems && waypointItems.length) {
       waypointItems.forEach((w, idx) => {
-        if (idx === cur.sectionIndex) {
+        if (cur.sectionIndex >= 0 && idx === cur.sectionIndex) {
           w.classList.add('is-active');
         } else {
           w.classList.remove('is-active');
@@ -1359,6 +1402,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (stepIdx < 0) stepIdx = 0;
       if (stepIdx >= PRESENTATION_STEPS.length) stepIdx = PRESENTATION_STEPS.length - 1;
       currentPresStep = stepIdx;
+      if (currentPresStep > 0) {
+        hideCoverOverlay();
+      }
       const stepObj = PRESENTATION_STEPS[currentPresStep];
       if (stepObj && typeof stepObj.action === 'function') {
         stepObj.action();
@@ -1378,6 +1424,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     syncToSection(sectionIdx) {
+      if (currentPresStep === 0) return;
       const cur = PRESENTATION_STEPS[currentPresStep];
       if (cur && cur.sectionIndex !== sectionIdx) {
         const matchingStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === sectionIdx);
@@ -2504,4 +2551,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   activateStage(0);
+  updatePresentationUI();
 });
