@@ -824,6 +824,12 @@
 
               <!-- Contenidor Gràfic Canvas per a l'Animació Suau del Diagrama ASME PG-ME -->
               <div class="relative w-full flex-1 rounded-xl bg-white border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center p-1.5 min-h-[380px]">
+                <button id="asme-gen-zoom-btn" type="button" class="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-lg bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-sm hover:shadow-md flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama ASME complet" aria-label="Ampliar diagrama ASME complet">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
+                  </svg>
+                </button>
                 <canvas id="asmeGeneralCanvas" class="w-full h-full max-h-[calc(100vh-9.5rem)] rounded-lg object-contain shadow-sm cursor-pointer block" title="Clica per reproduir / pausar l'animació"></canvas>
               </div>
 
@@ -1345,6 +1351,26 @@
       </span>
     </div>
   </footer>
+
+  <!-- Modal d'ampliació a pantalla completa del Diagrama ASME PG-ME -->
+  <div id="asme-zoom-modal" class="fixed inset-0 z-[70] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6" role="dialog" aria-modal="true" aria-label="Vista ampliada del diagrama ASME PG-ME">
+    <div id="asme-zoom-dialog" class="relative w-full max-w-[96vw] max-h-[94vh] bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 sm:p-4 flex flex-col">
+      <div class="flex items-center justify-between gap-3 pb-2.5 mb-2 border-b border-slate-200">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-2.5 h-2.5 rounded-full bg-pgme-blue shrink-0"></span>
+          <h3 class="text-xs sm:text-sm font-bold text-slate-800 truncate">Diagrama ASME General PG-ME · Vista Completa Desenvolupada</h3>
+        </div>
+        <button id="asme-zoom-close" type="button" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-red-600 text-slate-700 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tancar vista ampliada (Esc)" aria-label="Tancar vista ampliada">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="flex-1 overflow-auto flex items-center justify-center min-h-0 bg-slate-50/60 rounded-xl p-1">
+        <img id="asme-zoom-img" alt="Diagrama ASME General PG-ME complet" class="max-w-full max-h-[82vh] w-auto h-auto object-contain rounded-lg select-none shadow-sm" />
+      </div>
+    </div>
+  </div>
 
     <!-- =========================================================================
        BARRA FLOTANT DE CONTROL DE PRESENTACIÓ (PAS A PAS PER CLIC)
