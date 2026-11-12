@@ -2110,25 +2110,31 @@ body *::-webkit-scrollbar {
                   </div>
                 </div>
 
-                <!-- Simulador Interactiu Cicle PDCA & Accions Correctores -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
-                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                    <span class="text-xs font-bold text-slate-800 uppercase">Simulador Cicle PDCA · Protocol d'Accions Correctores:</span>
-                    <div class="flex items-center gap-1.5">
-                      <button data-status="green" class="traffic-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-600 text-white shadow-2xs ring-2 ring-offset-1 ring-emerald-600 transition-all cursor-pointer">
-                        ✓ Check: Dins Objectiu
-                      </button>
-                      <button data-status="amber" class="traffic-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 transition-all cursor-pointer">
-                        ⚠ Act: Alerta Formació
-                      </button>
-                      <button data-status="red" class="traffic-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-100 text-pgme-red border border-red-300 hover:bg-red-200 transition-all cursor-pointer">
-                        🔴 Act: Alerta Crítica
-                      </button>
-                    </div>
+                <!-- Protocol d'Accions Correctores (3 estats desplegats) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-bold text-slate-800 uppercase">Protocol d'Accions Correctores:</span>
                   </div>
 
-                  <div id="traffic-status-msg" class="p-2.5 rounded-lg border text-xs leading-relaxed bg-emerald-50 border-emerald-300 text-emerald-900 transition-all">
-                    <strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 4 indicadors es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle de millora contínua PDCA.
+                  <div class="p-2 rounded-lg border text-[11px] leading-snug bg-emerald-50 border-emerald-300 text-emerald-900">
+                    <div class="font-bold text-[10.5px] mb-0.5 flex items-center gap-1.5">
+                      <span>✓ Check: Dins Objectiu</span>
+                    </div>
+                    <strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 4 indicadors SMART es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.
+                  </div>
+
+                  <div class="p-2 rounded-lg border text-[11px] leading-snug bg-amber-50 border-amber-300 text-amber-900">
+                    <div class="font-bold text-[10.5px] mb-0.5 flex items-center gap-1.5">
+                      <span>⚠ Act: Alerta Formació</span>
+                    </div>
+                    <strong>ACT · ALERTA DE DESPLEGAMENT (&lt; 90% Usuaris Formats / &lt; 85% Procediment):</strong> L'AORG (CGIA) activa l'anàlisi de causes per rotació de personal i reforça les accions formatives mitjançant càpsules digitals, Intranet i sessions virtuals Teams.
+                  </div>
+
+                  <div class="p-2 rounded-lg border text-[11px] leading-snug bg-red-50 border-red-300 text-red-900">
+                    <div class="font-bold text-[10.5px] mb-0.5 flex items-center gap-1.5">
+                      <span>🔴 Act: Alerta Crítica</span>
+                    </div>
+                    <strong>ACT · ALERTA CRÍTICA (&lt; 90% Diligències / &lt; 95% Assist. Mèdica / &gt; 8% Lesions):</strong> L'AAE (CGIA) inicia revisió d'urgència de causes arrel i desplega ajustos tecnològics a la passarel·la CGTIC, modificacions procedimentals i supervisió addicional a les ACD afectades.
                   </div>
                 </div>
               </div>
