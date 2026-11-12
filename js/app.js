@@ -1601,6 +1601,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Escape') {
         e.preventDefault();
         zoomModalEl.classList.add('hidden');
+      } else if (e.key === 'ArrowLeft') {
+        const prevBtn = document.getElementById('asme-zoom-prev-btn');
+        if (prevBtn && !prevBtn.classList.contains('hidden')) {
+          e.preventDefault();
+          prevBtn.click();
+        }
+      } else if (e.key === 'ArrowRight') {
+        const nextBtn = document.getElementById('asme-zoom-next-btn');
+        if (nextBtn && !nextBtn.classList.contains('hidden')) {
+          e.preventDefault();
+          nextBtn.click();
+        }
       }
       return;
     }
@@ -2722,10 +2734,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const asmeZoomClose = document.getElementById('asme-zoom-close');
     const asmeZoomImg = document.getElementById('asme-zoom-img');
     const asmeZoomTitle = document.getElementById('asme-zoom-title');
+    const asmeZoomPrevBtn = document.getElementById('asme-zoom-prev-btn');
+    const asmeZoomNextBtn = document.getElementById('asme-zoom-next-btn');
+    const asmeZoomCompareHint = document.getElementById('asme-zoom-compare-hint');
+
+    let zoomCompareSlides = null;
+    let zoomCompareIndex = 0;
+
+    function applyZoomCompareSlide(idx) {
+      if (!zoomCompareSlides || !zoomCompareSlides.length) return;
+      zoomCompareIndex = Math.max(0, Math.min(zoomCompareSlides.length - 1, idx));
+      const slide = zoomCompareSlides[zoomCompareIndex];
+      asmeZoomImg.src = slide.src;
+      if (asmeZoomTitle) asmeZoomTitle.textContent = slide.title;
+      if (asmeZoomCompareHint) {
+        asmeZoomCompareHint.textContent = slide.hint;
+        asmeZoomCompareHint.classList.remove('hidden');
+      }
+      // Índex 0 = TO-BE (fletxa esquerra visible per anar a AS-IS), Índex 1 = AS-IS (fletxa dreta visible per tornar a TO-BE)
+      if (zoomCompareIndex === 0) {
+        asmeZoomPrevBtn?.classList.remove('hidden');
+        asmeZoomNextBtn?.classList.add('hidden');
+      } else {
+        asmeZoomPrevBtn?.classList.add('hidden');
+        asmeZoomNextBtn?.classList.remove('hidden');
+      }
+    }
+
+    function clearZoomCompareMode() {
+      zoomCompareSlides = null;
+      zoomCompareIndex = 0;
+      asmeZoomPrevBtn?.classList.add('hidden');
+      asmeZoomNextBtn?.classList.add('hidden');
+      asmeZoomCompareHint?.classList.add('hidden');
+    }
 
     if (asmeGenZoomBtn && asmeZoomModal && asmeZoomImg) {
       asmeGenZoomBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        clearZoomCompareMode();
         const prevProgress = genProgress;
         renderAsmeGeneral(1.0, false);
         asmeZoomImg.src = asmeGenCanvas.toDataURL('image/png');
@@ -2744,6 +2791,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (asmeAsisZoomBtn && asmeCanvas && typeof window.renderAsmeProgress === 'function') {
         asmeAsisZoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          clearZoomCompareMode();
           const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
             ? window.__lastAsmeAsIsProgress
             : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
@@ -2758,6 +2806,56 @@ document.addEventListener('DOMContentLoaded', () => {
           asmeZoomModal.classList.remove('hidden');
         });
       }
+
+      const asmeTobeZoomBtn = document.getElementById('asme-tobe-zoom-btn');
+      if (asmeTobeZoomBtn && asmeToBeCanvas && typeof renderAsmeToBe === 'function') {
+        asmeTobeZoomBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const prevToBeProgress = typeof window.currentToBeRatio === 'number' ? window.currentToBeRatio : 1.0;
+          renderAsmeToBe(1.0);
+          const toBeDataUrl = asmeToBeCanvas.toDataURL('image/png');
+          if (prevToBeProgress < 0.999) {
+            renderAsmeToBe(prevToBeProgress);
+          }
+
+          let asIsDataUrl = '';
+          if (asmeCanvas && typeof window.renderAsmeProgress === 'function') {
+            const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
+              ? window.__lastAsmeAsIsProgress
+              : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
+            window.renderAsmeProgress(1.0);
+            asIsDataUrl = asmeCanvas.toDataURL('image/png');
+            if (prevAsIsProgress < 0.999) {
+              window.renderAsmeProgress(prevAsIsProgress);
+            }
+          }
+
+          zoomCompareSlides = [
+            {
+              src: toBeDataUrl,
+              title: 'Diagrama ASME TO-BE · Subprocés de Contenció Redissenyat (Interoperabilitat 100%)',
+              hint: 'Comparativa: Fletxa esquerra ◀ per veure AS-IS'
+            },
+            {
+              src: asIsDataUrl || toBeDataUrl,
+              title: 'Diagrama ASME AS-IS · Subprocés de Contenció en Garjola (ACD)',
+              hint: 'Comparativa: Fletxa dreta ▶ per tornar a TO-BE'
+            }
+          ];
+          applyZoomCompareSlide(0);
+          asmeZoomModal.classList.remove('hidden');
+        });
+      }
+
+      asmeZoomPrevBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applyZoomCompareSlide(1);
+      });
+
+      asmeZoomNextBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applyZoomCompareSlide(0);
+      });
 
       asmeZoomClose?.addEventListener('click', (e) => {
         e.stopPropagation();

@@ -1860,6 +1860,12 @@ body *::-webkit-scrollbar {
 
                 <!-- Contenidor Canvas d'Alta Resolució TO-BE -->
                 <div class="asme-canvas-container relative w-full flex-1 flex items-center justify-center bg-white rounded-xl border border-slate-200/90 shadow-2xs p-1.5 overflow-hidden">
+                  <button id="asme-tobe-zoom-btn" type="button" class="absolute top-2.5 right-2.5 z-20 w-9 h-9 rounded-lg bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-200 hover:border-pgme-blue shadow-sm hover:shadow-md flex items-center justify-center transition-all cursor-pointer" title="Ampliar diagrama ASME TO-BE complet" aria-label="Ampliar diagrama ASME TO-BE complet">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35M11 8v6M8 11h6"></path>
+                    </svg>
+                  </button>
                   <canvas id="asmeToBeCanvas" class="w-full h-auto max-h-[calc(100vh-10rem)] object-contain block"></canvas>
                 </div>
               </div>
@@ -1895,15 +1901,6 @@ body *::-webkit-scrollbar {
                 </div>
               </div>
 
-            </div>
-
-            <!-- MODULAR CONTAINER: INJECT CHART HERE (STAGE 3) -->
-            <div id="chart-slot-stage-3" class="modular-chart-container p-3 text-center mt-3">
-              <div class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-600">
-                <span class="w-2 h-2 rounded-full bg-pgme-blue"></span>
-                <span>Contenidor Gràfic: Diagrama de Flux ASME Complet (3 Carrils Interconnectats)</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Component modular preparat per a la injecció del diagrama de flux de procés interactiu complet.</p>
             </div>
           </div>
 
@@ -2145,6 +2142,7 @@ body *::-webkit-scrollbar {
         <div class="flex items-center gap-2 min-w-0">
           <span class="w-2.5 h-2.5 rounded-full bg-pgme-blue shrink-0"></span>
           <h3 id="asme-zoom-title" class="text-xs sm:text-sm font-bold text-slate-800 truncate">Diagrama ASME General PG-ME · Vista Completa Desenvolupada</h3>
+          <span id="asme-zoom-compare-hint" class="hidden text-[11px] font-semibold text-pgme-blue bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full shrink-0">Comparativa: Fletxa esquerra per veure AS-IS</span>
         </div>
         <button id="asme-zoom-close" type="button" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-red-600 text-slate-700 hover:text-white flex items-center justify-center transition-colors cursor-pointer shrink-0" title="Tancar vista ampliada (Esc)" aria-label="Tancar vista ampliada">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -2152,8 +2150,18 @@ body *::-webkit-scrollbar {
           </svg>
         </button>
       </div>
-      <div class="flex-1 overflow-auto flex items-center justify-center min-h-0 bg-slate-50/60 rounded-xl p-1">
+      <div class="relative flex-1 overflow-auto flex items-center justify-center min-h-0 bg-slate-50/60 rounded-xl p-1">
+        <button id="asme-zoom-prev-btn" type="button" class="hidden absolute left-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-300 hover:border-pgme-blue shadow-lg flex items-center justify-center transition-all cursor-pointer" title="Veure diagrama ASME AS-IS (comparativa)" aria-label="Veure diagrama ASME AS-IS">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+          </svg>
+        </button>
         <img id="asme-zoom-img" alt="Diagrama ASME General PG-ME complet" class="max-w-full max-h-[82vh] w-auto h-auto object-contain rounded-lg select-none shadow-sm" />
+        <button id="asme-zoom-next-btn" type="button" class="hidden absolute right-3 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white/95 hover:bg-pgme-blue text-slate-700 hover:text-white border border-slate-300 hover:border-pgme-blue shadow-lg flex items-center justify-center transition-all cursor-pointer" title="Tornar al diagrama ASME TO-BE" aria-label="Tornar al diagrama ASME TO-BE">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+          </svg>
+        </button>
       </div>
     </div>
   </div>
@@ -3777,6 +3785,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Escape') {
         e.preventDefault();
         zoomModalEl.classList.add('hidden');
+      } else if (e.key === 'ArrowLeft') {
+        const prevBtn = document.getElementById('asme-zoom-prev-btn');
+        if (prevBtn && !prevBtn.classList.contains('hidden')) {
+          e.preventDefault();
+          prevBtn.click();
+        }
+      } else if (e.key === 'ArrowRight') {
+        const nextBtn = document.getElementById('asme-zoom-next-btn');
+        if (nextBtn && !nextBtn.classList.contains('hidden')) {
+          e.preventDefault();
+          nextBtn.click();
+        }
       }
       return;
     }
@@ -4898,10 +4918,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const asmeZoomClose = document.getElementById('asme-zoom-close');
     const asmeZoomImg = document.getElementById('asme-zoom-img');
     const asmeZoomTitle = document.getElementById('asme-zoom-title');
+    const asmeZoomPrevBtn = document.getElementById('asme-zoom-prev-btn');
+    const asmeZoomNextBtn = document.getElementById('asme-zoom-next-btn');
+    const asmeZoomCompareHint = document.getElementById('asme-zoom-compare-hint');
+
+    let zoomCompareSlides = null;
+    let zoomCompareIndex = 0;
+
+    function applyZoomCompareSlide(idx) {
+      if (!zoomCompareSlides || !zoomCompareSlides.length) return;
+      zoomCompareIndex = Math.max(0, Math.min(zoomCompareSlides.length - 1, idx));
+      const slide = zoomCompareSlides[zoomCompareIndex];
+      asmeZoomImg.src = slide.src;
+      if (asmeZoomTitle) asmeZoomTitle.textContent = slide.title;
+      if (asmeZoomCompareHint) {
+        asmeZoomCompareHint.textContent = slide.hint;
+        asmeZoomCompareHint.classList.remove('hidden');
+      }
+      // Índex 0 = TO-BE (fletxa esquerra visible per anar a AS-IS), Índex 1 = AS-IS (fletxa dreta visible per tornar a TO-BE)
+      if (zoomCompareIndex === 0) {
+        asmeZoomPrevBtn?.classList.remove('hidden');
+        asmeZoomNextBtn?.classList.add('hidden');
+      } else {
+        asmeZoomPrevBtn?.classList.add('hidden');
+        asmeZoomNextBtn?.classList.remove('hidden');
+      }
+    }
+
+    function clearZoomCompareMode() {
+      zoomCompareSlides = null;
+      zoomCompareIndex = 0;
+      asmeZoomPrevBtn?.classList.add('hidden');
+      asmeZoomNextBtn?.classList.add('hidden');
+      asmeZoomCompareHint?.classList.add('hidden');
+    }
 
     if (asmeGenZoomBtn && asmeZoomModal && asmeZoomImg) {
       asmeGenZoomBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        clearZoomCompareMode();
         const prevProgress = genProgress;
         renderAsmeGeneral(1.0, false);
         asmeZoomImg.src = asmeGenCanvas.toDataURL('image/png');
@@ -4920,6 +4975,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (asmeAsisZoomBtn && asmeCanvas && typeof window.renderAsmeProgress === 'function') {
         asmeAsisZoomBtn.addEventListener('click', (e) => {
           e.stopPropagation();
+          clearZoomCompareMode();
           const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
             ? window.__lastAsmeAsIsProgress
             : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
@@ -4934,6 +4990,56 @@ document.addEventListener('DOMContentLoaded', () => {
           asmeZoomModal.classList.remove('hidden');
         });
       }
+
+      const asmeTobeZoomBtn = document.getElementById('asme-tobe-zoom-btn');
+      if (asmeTobeZoomBtn && asmeToBeCanvas && typeof renderAsmeToBe === 'function') {
+        asmeTobeZoomBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const prevToBeProgress = typeof window.currentToBeRatio === 'number' ? window.currentToBeRatio : 1.0;
+          renderAsmeToBe(1.0);
+          const toBeDataUrl = asmeToBeCanvas.toDataURL('image/png');
+          if (prevToBeProgress < 0.999) {
+            renderAsmeToBe(prevToBeProgress);
+          }
+
+          let asIsDataUrl = '';
+          if (asmeCanvas && typeof window.renderAsmeProgress === 'function') {
+            const prevAsIsProgress = typeof window.__lastAsmeAsIsProgress === 'number'
+              ? window.__lastAsmeAsIsProgress
+              : (typeof window.currentGarjolaRatio === 'number' ? window.currentGarjolaRatio : 0);
+            window.renderAsmeProgress(1.0);
+            asIsDataUrl = asmeCanvas.toDataURL('image/png');
+            if (prevAsIsProgress < 0.999) {
+              window.renderAsmeProgress(prevAsIsProgress);
+            }
+          }
+
+          zoomCompareSlides = [
+            {
+              src: toBeDataUrl,
+              title: 'Diagrama ASME TO-BE · Subprocés de Contenció Redissenyat (Interoperabilitat 100%)',
+              hint: 'Comparativa: Fletxa esquerra ◀ per veure AS-IS'
+            },
+            {
+              src: asIsDataUrl || toBeDataUrl,
+              title: 'Diagrama ASME AS-IS · Subprocés de Contenció en Garjola (ACD)',
+              hint: 'Comparativa: Fletxa dreta ▶ per tornar a TO-BE'
+            }
+          ];
+          applyZoomCompareSlide(0);
+          asmeZoomModal.classList.remove('hidden');
+        });
+      }
+
+      asmeZoomPrevBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applyZoomCompareSlide(1);
+      });
+
+      asmeZoomNextBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applyZoomCompareSlide(0);
+      });
 
       asmeZoomClose?.addEventListener('click', (e) => {
         e.stopPropagation();
