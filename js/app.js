@@ -1301,11 +1301,14 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 11,
       sectionIndex: 5,
-      name: "12. Governança: Semàfor Verd (En termini)",
-      desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
+      name: "12. Fase 5: Pla de Seguiment & Indicadors PDCA",
+      desc: "Taula oficial de 7 indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
       action: () => {
         navigateToSection(5);
         activateStage(5);
+        if (typeof setStage5Mode === 'function') {
+          setStage5Mode('monitoring');
+        }
         const greenBtn = document.querySelector('.traffic-btn[data-status="green"]');
         greenBtn?.click();
       }
@@ -1313,13 +1316,14 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 12,
       sectionIndex: 5,
-      name: "13. Governança: Resposta a Riscos & Conclusió",
-      desc: "Mesures correctores, decisió executiva i tancament",
+      name: "13. Conclusió Final: Riscos, Condicions & Impacte",
+      desc: "Limitacions, condicions imprescindibles de viabilitat i efectes esperats",
       action: () => {
         navigateToSection(5);
         activateStage(5);
-        const amberBtn = document.querySelector('.traffic-btn[data-status="amber"]');
-        amberBtn?.click();
+        if (typeof setStage5Mode === 'function') {
+          setStage5Mode('conclusion');
+        }
       }
     }
   ];
@@ -1388,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. ESDEVENIMENT GLOBAL DE CLIC PER AVANÇAR LA PRESENTACIÓ
   document.addEventListener('click', (e) => {
     // Si l'usuari fa clic en un control interactiu específic, deixem que actuï lliurement
-    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .decision-toggle-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance');
+    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .stage5-tab-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance');
     if (interactive) return;
 
     // Qualsevol clic a la diapositiva avança un pas/animació!
@@ -1753,50 +1757,71 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // --- 10. COMPONENTS INTERACTIUS DE L'ESTAT 5: SIMULADOR DE SEMÀFOR I DECISIONS ---
+  // --- 10. COMPONENTS INTERACTIUS DE L'ESTAT 5: SEGUIMENT PDCA I CONCLUSIÓ ---
+  const tabStage5Monitoring = document.getElementById('tab-stage5-monitoring');
+  const tabStage5Conclusion = document.getElementById('tab-stage5-conclusion');
+  const viewStage5Monitoring = document.getElementById('view-stage5-monitoring');
+  const viewStage5Conclusion = document.getElementById('view-stage5-conclusion');
+
+  function setStage5Mode(mode) {
+    if (mode === 'conclusion') {
+      tabStage5Conclusion?.classList.add('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Conclusion?.classList.remove('text-slate-600');
+      tabStage5Monitoring?.classList.remove('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Monitoring?.classList.add('text-slate-600');
+
+      viewStage5Monitoring?.classList.add('hidden');
+      viewStage5Conclusion?.classList.remove('hidden');
+    } else {
+      tabStage5Monitoring?.classList.add('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Monitoring?.classList.remove('text-slate-600');
+      tabStage5Conclusion?.classList.remove('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Conclusion?.classList.add('text-slate-600');
+
+      viewStage5Conclusion?.classList.add('hidden');
+      viewStage5Monitoring?.classList.remove('hidden');
+    }
+  }
+
+  tabStage5Monitoring?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setStage5Mode('monitoring');
+  });
+
+  tabStage5Conclusion?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setStage5Mode('conclusion');
+  });
+
   const trafficLightBtns = document.querySelectorAll('.traffic-btn');
   const trafficStatusMsg = document.getElementById('traffic-status-msg');
 
   const trafficMessages = {
     green: {
-      text: "PROJECTE EN TERMINI I OBJECTIUS (VERD): Les millores organitzatives avancen segons calendari. La passarel·la TIC està en fase d'integració i es manté la data de la Prova Pilot a l'ACD Badalona (Mes 7).",
-      classes: "bg-emerald-50 border-emerald-300 text-emerald-800"
+      html: "<strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 7 indicadors SMART i els 4 operatius es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.",
+      classes: "bg-emerald-50 border-emerald-300 text-emerald-900"
     },
     amber: {
-      text: "ATENCIÓ OPERATIVA (AMBRE): Es detecta una petita desviació en les sessions formatives de l'AORG per rotació de personal a OAC. S'ha activat la mesura correctora de reforç de càpsules digitals.",
-      classes: "bg-amber-50 border-amber-300 text-amber-800"
+      html: "<strong>ACT · ALERTA DE DESPLEGAMENT (&lt; 90% Usuaris Formats / &lt; 85% Procediment):</strong> L'AORG (CGIA) activa l'anàlisi de causes per rotació de personal i reforça les accions formatives mitjançant càpsules digitals, Intranet i sessions virtuals Teams.",
+      classes: "bg-amber-50 border-amber-300 text-amber-900"
     },
     red: {
-      text: "DESVIACIÓ CRÍTICA (VERMELL): Retard en el desenvolupament de la passarel·la Custòdia-Atestats per manca de recurs TIC dedicat. Es requereix intervenció urgent de la CGTIC per mantenir el calendari.",
-      classes: "bg-red-50 border-red-300 text-red-800"
+      html: "<strong>ACT · ALERTA CRÍTICA (&lt; 90% Diligències / &lt; 95% Assist. Mèdica / &gt; 8% Lesions):</strong> L'AAE (CGIA) inicia revisió d'urgència de causes arrel i desplega ajustos tecnològics a la passarel·la CGTIC, modificacions procedimentals i supervisió addicional a les ACD afectades.",
+      classes: "bg-red-50 border-red-300 text-red-900"
     }
   };
 
   trafficLightBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const color = btn.dataset.status;
-      trafficLightBtns.forEach(b => b.classList.remove('ring-4', 'ring-offset-2', 'ring-slate-400', 'scale-110'));
-      btn.classList.add('ring-4', 'ring-offset-2', 'ring-slate-400', 'scale-110');
+      trafficLightBtns.forEach(b => b.classList.remove('ring-2', 'ring-offset-1', 'ring-emerald-600', 'ring-amber-500', 'ring-pgme-red', 'scale-105'));
+      const ringColor = color === 'green' ? 'ring-emerald-600' : (color === 'amber' ? 'ring-amber-500' : 'ring-pgme-red');
+      btn.classList.add('ring-2', 'ring-offset-1', ringColor, 'scale-105');
 
       if (trafficStatusMsg && trafficMessages[color]) {
-        trafficStatusMsg.className = `p-3.5 rounded-lg border text-xs leading-relaxed transition-all duration-300 ${trafficMessages[color].classes}`;
-        trafficStatusMsg.textContent = trafficMessages[color].text;
-      }
-    });
-  });
-
-  const decisionToggles = document.querySelectorAll('.decision-toggle-btn');
-  decisionToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const isApproved = toggle.dataset.approved === 'true';
-      if (isApproved) {
-        toggle.dataset.approved = 'false';
-        toggle.textContent = 'Pendent';
-        toggle.className = 'decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 transition-all';
-      } else {
-        toggle.dataset.approved = 'true';
-        toggle.textContent = 'Aprovat ✓';
-        toggle.className = 'decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 transition-all';
+        trafficStatusMsg.className = `p-2.5 rounded-lg border text-xs leading-relaxed transition-all duration-300 ${trafficMessages[color].classes}`;
+        trafficStatusMsg.innerHTML = trafficMessages[color].html;
       }
     });
   });

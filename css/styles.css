@@ -245,10 +245,12 @@ body::-webkit-scrollbar,
   }
 }
 
-/* Transicions suaus per als subpanells de la Fase 3 (AS-IS, Resum TO-BE, Diagrama TO-BE) */
+/* Transicions suaus per als subpanells de la Fase 3 i Fase 5 */
 #view-asis-content:not(.hidden),
 #view-tobe-summary:not(.hidden),
-#view-tobe-diagram:not(.hidden) {
+#view-tobe-diagram:not(.hidden),
+#view-stage5-monitoring:not(.hidden),
+#view-stage5-conclusion:not(.hidden) {
   animation: subviewSmoothFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 

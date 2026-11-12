@@ -293,10 +293,12 @@ body::-webkit-scrollbar,
   }
 }
 
-/* Transicions suaus per als subpanells de la Fase 3 (AS-IS, Resum TO-BE, Diagrama TO-BE) */
+/* Transicions suaus per als subpanells de la Fase 3 i Fase 5 */
 #view-asis-content:not(.hidden),
 #view-tobe-summary:not(.hidden),
-#view-tobe-diagram:not(.hidden) {
+#view-tobe-diagram:not(.hidden),
+#view-stage5-monitoring:not(.hidden),
+#view-stage5-conclusion:not(.hidden) {
   animation: subviewSmoothFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
@@ -1225,46 +1227,47 @@ body::-webkit-scrollbar,
         </section>
 
         <!-- ==========================================
-             SECCIÓ 5: GOVERNANÇA I RESPOSTA PREGUNTA CLAU
+             SECCIÓ 5: SEGUIMENT PDCA I CONCLUSIÓ FINAL
              ========================================== -->
         <section id="section-5" class="story-section" data-step-index="5">
-          <div class="story-card">
-            <div class="flex items-center justify-between gap-2 mb-4">
+          <div class="story-card p-4 sm:p-5">
+            <div class="flex items-center justify-between gap-2 mb-3">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20">
                 FASE 5 · FER EL SEGUIMENT DE LES MILLORES IMPLANTADES
               </span>
             </div>
 
-            <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug mb-3">
-              Seguiment Estratègic i Resposta a la Pregunta Clau
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug mb-2">
+              Avaluació PDCA, Indicadors SMART i Conclusió Final
             </h2>
 
-            <p class="text-sm text-slate-600 leading-relaxed mb-4">
-              L'<strong class="text-slate-900 font-semibold">Àrea d'Anàlisi Estratègica (AAE-CGIA)</strong> assumeix el seguiment sistemàtic del model a través del Quadre de Comandament i l'Informe Trimestral a la Direcció.
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-3.5">
+              L'<strong class="text-slate-900 font-semibold">Àrea d'Avaluació Estratègica de la CGIA (AAE-CGIA)</strong>, conjuntament amb <strong class="text-slate-800">AEE</strong> i <strong class="text-slate-800">AORG</strong>, lidera el seguiment mitjançant quadres de comandament i el cicle iteratiu de millora contínua <strong class="text-pgme-blue">PDCA</strong>.
             </p>
 
-            <!-- Protocol Informe Trimestral -->
-            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 mb-5 space-y-2">
-              <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Estructura de l'Informe Executiu</h3>
-              <ul class="text-xs text-slate-600 space-y-1">
-                <li><strong class="text-slate-800">1. Síntesi executiva (30s):</strong> Estat global mitjançant Semàfor (Verd/Ambre/Vermell).</li>
-                <li><strong class="text-slate-800">2. Indicadors SMART:</strong> Evolució dels 4 KPIs davant la línia de base.</li>
-                <li><strong class="text-slate-800">3. Desviacions & Riscos:</strong> Identificació precoç i transparent d'anomalies.</li>
-                <li><strong class="text-slate-800">4. Mesures correctores:</strong> Responsable assignat i termini de xoc.</li>
-                <li><strong class="text-slate-800">5. Decisions de Direcció:</strong> Petició formal amb resposta binària (Sí/No).</li>
+            <!-- Cicle PDCA aplicat al Seguiment -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 mb-4 space-y-1.5">
+              <h3 class="text-[11px] font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+                <span>Sistema de Revisió (Cicle PDCA)</span>
+                <span class="font-mono text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Gestió per Dades</span>
+              </h3>
+              <ul class="text-xs text-slate-600 space-y-1 leading-snug">
+                <li><strong class="text-slate-800">P · Plan & D · Do:</strong> Estandardització (PRO 006 / IO 002) i passarel·la TIC Custòdia-Atestats amb entrada única de dades.</li>
+                <li><strong class="text-slate-800">C · Check (Comprovar):</strong> Monitoratge periòdic (mensual, trimestral, semestral i anual) de 7 indicadors SMART i 4 d'eficiència operativa.</li>
+                <li><strong class="text-slate-800">A · Act (Actuar):</strong> Si s'assoleix un <strong class="text-pgme-red">valor d'alerta</strong>, anàlisi de causes i mesures correctores (formació, procediment, TIC o supervisió).</li>
               </ul>
             </div>
 
-            <!-- La Gran Resposta al Tribunal -->
-            <div class="p-4 bg-gradient-to-br from-pgme-blue-subtle via-white to-red-50/40 rounded-xl border-2 border-pgme-blue/40 shadow-sm">
+            <!-- Defensa davant del Tribunal: Tesi i Resposta Final -->
+            <div class="p-3.5 bg-gradient-to-br from-pgme-blue-subtle via-white to-emerald-50/40 rounded-xl border-2 border-pgme-blue/35 shadow-sm">
               <span class="text-[10px] font-extrabold uppercase tracking-widest text-pgme-blue block mb-1">
-                DEFENSA DAVANT DEL TRIBUNAL · PREGUNTA CLAU
+                CONCLUSIÓ FINAL · RESPOSTA A LA PREGUNTA CLAU
               </span>
-              <h3 class="text-xs font-bold text-slate-900 mb-2 leading-snug">
-                "Com garantir el control i el registre correcte de totes les contencions que es realitzen a les ACD de la PG-ME?"
+              <h3 class="text-xs font-bold text-slate-900 mb-1.5 leading-snug">
+                "És possible garantir la seguretat, traçabilitat i eficiència de totes les contencions a les ACD de la PG-ME?"
               </h3>
-              <p class="text-xs text-slate-800 font-medium leading-relaxed">
-                Mitjançant la <strong class="text-pgme-blue">reducció radical d'activitats manuals sense valor afegit</strong> que comporten risc d'oblit o error gràcies a l'automatització informàtica (passarel·la Custòdia-Atestats), <strong class="text-pgme-blue">l'estandardització de procediments unificats (PRO 006 / IO 002)</strong> per minimitzar riscos i garantir la seguretat jurídica dels agents, i una <strong class="text-pgme-blue">supervisió activa basada en dades</strong> i traçabilitat integral.
+              <p class="text-xs text-slate-700 leading-relaxed">
+                <strong class="text-pgme-blue">Sí.</strong> Les evidències proven que les deficiències no són per manca de regulació o protocols, sinó per <strong class="text-slate-900">documentació fragmentada, transmissió manual entre unitats i escassa explotació de dades</strong>. Amb la <strong class="text-pgme-blue">dada única (Custòdia-Atestats)</strong>, formularis normalitzats, alertes preventives i control PDCA, es protegeixen els drets fonamentals i la seguretat jurídica dels agents.
               </p>
             </div>
           </div>
@@ -1594,104 +1597,243 @@ body::-webkit-scrollbar,
           </div>
 
           <!-- ===============================================================
-               ESTAT VISUAL 5: GOVERNANÇA I RESULTATS (#visual-stage-5)
+               ESTAT VISUAL 5: SEGUIMENT PDCA I CONCLUSIÓ (#visual-stage-5)
                =============================================================== -->
           <div id="visual-stage-5" class="stage-panel flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
-                  Quadre de Comandament & Informe Trimestral a la Direcció
-                </h3>
-                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-50 text-emerald-800 border border-emerald-200">
-                  AAE-CGIA Monitoratge
-                </span>
-              </div>
-
-              <!-- 1. SEMÀFOR EXECUTIU (SÍNTESI EN 30 SEGONS) -->
-              <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 mb-4">
-                <div class="flex items-center justify-between mb-2">
-                  <span class="text-xs font-bold text-slate-700 uppercase">Semàfor Executiu (Estat Global en 30s):</span>
-                  <div class="flex items-center gap-2">
-                    <button data-status="green" class="traffic-btn w-6 h-6 rounded-full bg-emerald-500 hover:opacity-90 transition-all ring-4 ring-offset-2 ring-slate-400 scale-110 shadow-xs" title="Estat Verd: En termini"></button>
-                    <button data-status="amber" class="traffic-btn w-6 h-6 rounded-full bg-amber-500 hover:opacity-90 transition-all shadow-xs" title="Estat Ambre: Atenció requerida"></button>
-                    <button data-status="red" class="traffic-btn w-6 h-6 rounded-full bg-pgme-red hover:opacity-90 transition-all shadow-xs" title="Estat Vermell: Desviació crítica"></button>
-                  </div>
+            <div class="flex flex-col h-full justify-between">
+              <!-- Capçalera + Selector de Subvista (Pas 12 / Pas 13) -->
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2 border-b border-slate-100 shrink-0">
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-slate-800">
+                    Governança, Quadre d'Indicadors PDCA & Conclusió
+                  </h3>
+                  <span class="text-[10px] font-mono text-slate-400">Pla de Seguiment Oficial · AAE / AEE / AORG (CGIA)</span>
                 </div>
-
-                <div id="traffic-status-msg" class="p-3 rounded-lg border text-xs leading-relaxed bg-emerald-50 border-emerald-300 text-emerald-800 transition-all">
-                  <strong>PROJECTE EN TERMINI I OBJECTIUS (VERD):</strong> Les millores organitzatives avancen segons calendari. La passarel·la TIC està en fase d'integració i es manté la data de la Prova Pilot a l'ACD Badalona (Mes 7).
+                <div class="inline-flex p-0.5 rounded-lg bg-slate-100 border border-slate-200">
+                  <button id="tab-stage5-monitoring" class="stage5-tab-btn px-2.5 py-1 rounded-md text-[11px] font-bold transition-all bg-pgme-blue text-white shadow-2xs cursor-pointer">
+                    Pla de Seguiment & PDCA
+                  </button>
+                  <button id="tab-stage5-conclusion" class="stage5-tab-btn px-2.5 py-1 rounded-md text-[11px] font-bold transition-all text-slate-600 hover:text-slate-900 cursor-pointer">
+                    Riscos, Condicions & Conclusió
+                  </button>
                 </div>
               </div>
 
-              <!-- 2. TAULA DE CONTROL AMB LLINDARS D'ALERTA VERMELLA -->
-              <div class="bg-white rounded-xl border border-slate-200 p-3 mb-4 shadow-2xs">
-                <div class="flex items-center justify-between mb-2 pb-1 border-b border-slate-100">
-                  <h4 class="text-xs font-bold text-slate-800 uppercase">Llindars d'Alerta Vermella (Seguiment AAE-CGIA)</h4>
-                  <span class="text-[10px] font-mono text-slate-400">Pauta d'Informe Trimestral</span>
+              <!-- ============================================================
+                   SUBVISTA 1 (PAS 12): TAULA 1 INDICADORS SMART & CICLE PDCA
+                   ============================================================ -->
+              <div id="view-stage5-monitoring" class="flex-1 flex flex-col justify-between gap-2.5">
+                <!-- Taula 1: Pla de Seguiment Oficial (7 Indicadors) -->
+                <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+                  <div class="bg-slate-50 px-3 py-1.5 border-b border-slate-200 flex items-center justify-between">
+                    <span class="text-[11px] font-bold text-slate-800 uppercase tracking-wider">Taula 1 · Pla de Seguiment dels Indicadors (SMART)</span>
+                    <span class="text-[10px] font-mono text-emerald-700 font-semibold">Línia Base ➔ Objectiu · Alerta</span>
+                  </div>
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-[11px]">
+                      <thead>
+                        <tr class="bg-slate-50/70 text-[10px] uppercase tracking-wider text-slate-500 border-b border-slate-200">
+                          <th class="py-1.5 px-2.5 font-bold">Indicador (%)</th>
+                          <th class="py-1.5 px-2 font-bold text-center">Partida ➔ Obj.</th>
+                          <th class="py-1.5 px-2 font-bold text-center">Freqüència</th>
+                          <th class="py-1.5 px-2 font-bold text-center">Responsable</th>
+                          <th class="py-1.5 px-2.5 font-bold text-right">Valor d'Alerta</th>
+                        </tr>
+                      </thead>
+                      <tbody class="divide-y divide-slate-100 text-slate-700">
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">1. Contencions en diligències policials</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-pgme-red font-bold">40%</span> ➔ <span class="text-emerald-700 font-bold">100%</span></td>
+                          <td class="py-1.5 px-2 text-center">Mensual</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AAE (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 90%</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">2. Assistència o valoració mèdica registrada</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-amber-600 font-bold">80%</span> ➔ <span class="text-emerald-700 font-bold">100%</span></td>
+                          <td class="py-1.5 px-2 text-center">Mensual</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AAE (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 95%</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">3. Contencions amb lesions greus o mort</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-pgme-red font-bold">13%</span> ➔ <span class="text-emerald-700 font-bold">&le; 5%</span></td>
+                          <td class="py-1.5 px-2 text-center">Semestral</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AAE (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&gt; 8%</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">4. Inconformitats enquesta de satisfacció</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-pgme-red font-bold">60%</span> ➔ <span class="text-emerald-700 font-bold">&le; 15%</span></td>
+                          <td class="py-1.5 px-2 text-center">Anual</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AEE (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&gt; 25%</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors bg-blue-50/20">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">5. Coincidència Custòdia &harr; Atestats</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-slate-400">N/D</span> ➔ <span class="text-pgme-blue font-bold">&ge; 98%</span></td>
+                          <td class="py-1.5 px-2 text-center">Mensual</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AAE (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 95%</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors bg-blue-50/20">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">6. Tramitació pel procediment estandarditzat</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-slate-400">0%</span> ➔ <span class="text-pgme-blue font-bold">100%</span></td>
+                          <td class="py-1.5 px-2 text-center">Trimestral</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AORG (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 85%</span></td>
+                        </tr>
+                        <tr class="hover:bg-blue-50/30 transition-colors bg-blue-50/20">
+                          <td class="py-1.5 px-2.5 font-semibold text-slate-900">7. Usuaris formats sobre el nou procediment</td>
+                          <td class="py-1.5 px-2 text-center font-mono"><span class="text-slate-400">0%</span> ➔ <span class="text-pgme-blue font-bold">100%</span></td>
+                          <td class="py-1.5 px-2 text-center">Trimestral (imp.)</td>
+                          <td class="py-1.5 px-2 text-center font-mono text-[10px]">AORG (CGIA)</td>
+                          <td class="py-1.5 px-2.5 text-right"><span class="px-1.5 py-0.5 rounded bg-red-50 text-pgme-red font-mono font-bold border border-red-200/70">&lt; 90%</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                  <div class="p-2 rounded bg-slate-50 border border-slate-200">
-                    <span class="text-[10px] text-slate-500 block">Diligències Policials</span>
-                    <strong class="text-xs font-bold text-slate-900 font-mono block">Mensual</strong>
-                    <span class="text-[10px] font-bold text-pgme-red">Alerta: &lt; 80%</span>
+                <!-- Tira d'Indicadors d'Eficiència Operativa (Activitat 2/4) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[10px]">
+                  <div class="p-2 rounded-lg bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block leading-tight">Registres duplicats</span>
+                    <strong class="font-mono text-slate-900">35% &rarr; 5%</strong>
+                    <span class="text-pgme-red font-semibold block">Mensual · Alerta &gt;15%</span>
+                  </div>
+                  <div class="p-2 rounded-lg bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block leading-tight">Temps tramitació exp.</span>
+                    <strong class="font-mono text-slate-900">90 &rarr; 60 min</strong>
+                    <span class="text-pgme-red font-semibold block">Mensual · Alerta &gt;75m</span>
+                  </div>
+                  <div class="p-2 rounded-lg bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block leading-tight">Desviacions mensuals</span>
+                    <strong class="font-mono text-slate-900">20 &rarr; 5/mes</strong>
+                    <span class="text-pgme-red font-semibold block">Trimestral · Alerta &gt;10</span>
+                  </div>
+                  <div class="p-2 rounded-lg bg-slate-50 border border-slate-200">
+                    <span class="text-slate-500 block leading-tight">Homogeneïtat ABP</span>
+                    <strong class="font-mono text-slate-900">60% &rarr; 95%</strong>
+                    <span class="text-pgme-red font-semibold block">Semestral · Alerta &lt;80%</span>
+                  </div>
+                </div>
+
+                <!-- Simulador Interactiu Cicle PDCA & Accions Correctores -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
+                  <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                    <span class="text-xs font-bold text-slate-800 uppercase">Simulador Cicle PDCA · Protocol d'Accions Correctores:</span>
+                    <div class="flex items-center gap-1.5">
+                      <button data-status="green" class="traffic-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-600 text-white shadow-2xs ring-2 ring-offset-1 ring-emerald-600 transition-all cursor-pointer">
+                        ✓ Check: Dins Objectiu
+                      </button>
+                      <button data-status="amber" class="traffic-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 transition-all cursor-pointer">
+                        ⚠ Act: Alerta Formació
+                      </button>
+                      <button data-status="red" class="traffic-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-red-100 text-pgme-red border border-red-300 hover:bg-red-200 transition-all cursor-pointer">
+                        🔴 Act: Alerta Crítica
+                      </button>
+                    </div>
                   </div>
 
-                  <div class="p-2 rounded bg-slate-50 border border-slate-200">
-                    <span class="text-[10px] text-slate-500 block">Assistència Mèdica</span>
-                    <strong class="text-xs font-bold text-slate-900 font-mono block">Mensual</strong>
-                    <span class="text-[10px] font-bold text-pgme-red">Alerta: &lt; 80%</span>
+                  <div id="traffic-status-msg" class="p-2.5 rounded-lg border text-xs leading-relaxed bg-emerald-50 border-emerald-300 text-emerald-900 transition-all">
+                    <strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 7 indicadors es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle de millora contínua PDCA.
                   </div>
 
-                  <div class="p-2 rounded bg-slate-50 border border-slate-200">
-                    <span class="text-[10px] text-slate-500 block">Lesions Greus o Mort</span>
-                    <strong class="text-xs font-bold text-slate-900 font-mono block">Mensual</strong>
-                    <span class="text-[10px] font-bold text-pgme-red">Alerta: &gt; 10%</span>
-                  </div>
-
-                  <div class="p-2 rounded bg-slate-50 border border-slate-200">
-                    <span class="text-[10px] text-slate-500 block">Queixes Satisfacció</span>
-                    <strong class="text-xs font-bold text-slate-900 font-mono block">Semestral</strong>
-                    <span class="text-[10px] font-bold text-pgme-red">Alerta: &gt; 30%</span>
+                  <div class="grid grid-cols-4 gap-1.5 mt-2 text-[10px] text-center">
+                    <div class="px-2 py-1 rounded bg-white border border-slate-200 font-semibold text-slate-700">1. Actuacions formatives</div>
+                    <div class="px-2 py-1 rounded bg-white border border-slate-200 font-semibold text-slate-700">2. Ajust procedimental</div>
+                    <div class="px-2 py-1 rounded bg-white border border-slate-200 font-semibold text-slate-700">3. Ajust tecnològic TIC</div>
+                    <div class="px-2 py-1 rounded bg-white border border-slate-200 font-semibold text-slate-700">4. Supervisió addicional</div>
                   </div>
                 </div>
               </div>
 
-              <!-- 3. DECISIONS REQUERIDES A LA DIRECCIÓ (ACORD BINARI) -->
-              <div class="bg-white rounded-xl border border-slate-200 p-3 mb-2">
-                <h4 class="text-xs font-bold text-slate-800 uppercase mb-2">Decisions Requerides de la Direcció (Acord Binari)</h4>
-                <div class="space-y-1.5 text-xs">
-                  <div class="flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-100">
-                    <span class="text-slate-800">1. Aprovació formal de modificació normativa de les <strong>PRO 006</strong> i <strong>IO 002</strong></span>
-                    <button class="decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-emerald-600 text-white shadow-2xs hover:bg-emerald-700 transition-all" data-approved="true">
-                      Aprovat ✓
-                    </button>
+              <!-- ============================================================
+                   SUBVISTA 2 (PAS 13): RISCOS, CONDICIONS DE VIABILITAT & EFECTES
+                   ============================================================ -->
+              <div id="view-stage5-conclusion" class="hidden flex-1 flex flex-col justify-between gap-2.5">
+                <!-- Riscos i Limitacions + Condicions de Viabilitat -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 flex-1">
+                  <!-- Riscos i Limitacions -->
+                  <div class="bg-red-50/40 rounded-xl border border-red-200/80 p-3 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-red-200/60">
+                      <h4 class="text-xs font-bold uppercase tracking-wider text-pgme-red">4 Riscos i Limitacions</h4>
+                      <span class="text-[10px] font-mono text-red-700 bg-white px-1.5 py-0.5 rounded border border-red-200">Gestió Preventiva</span>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">1. Recursos tècnics i coordinació</strong>
+                        <span class="text-slate-600 text-[11px]">Disponibilitat de desenvolupadors especialitzats i coordinació efectiva entre unitats funcionals i CGTIC.</span>
+                      </div>
+                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">2. Resistències organitzatives al canvi</strong>
+                        <span class="text-slate-600 text-[11px]">Modificació de rutines consolidades o percepció inicial d'un increment d'obligacions de registre.</span>
+                      </div>
+                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">3. Qualitat de les dades en origen</strong>
+                        <span class="text-slate-600 text-[11px]">L'automatització perd eficàcia si la informació introduïda inicialment pels usuaris a l'ACD és incompleta.</span>
+                      </div>
+                      <div class="p-2 bg-white rounded-lg border border-red-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">4. Evolució normativa o aplicativa</strong>
+                        <span class="text-slate-600 text-[11px]">Canvis futurs en legislació processal o aplicacions corporatives que requereixin ajustos addicionals.</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div class="flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-100">
-                    <span class="text-slate-800">2. Assignació prioritària d'un desenvolupador TIC a la CGTIC per a la passarel·la</span>
-                    <button class="decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-emerald-600 text-white shadow-2xs hover:bg-emerald-700 transition-all" data-approved="true">
-                      Aprovat ✓
-                    </button>
+                  <!-- Condicions Imprescindibles de Viabilitat -->
+                  <div class="bg-blue-50/40 rounded-xl border border-blue-200/80 p-3 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-2 pb-1.5 border-b border-blue-200/60">
+                      <h4 class="text-xs font-bold uppercase tracking-wider text-pgme-blue">4 Condicions Imprescindibles</h4>
+                      <span class="text-[10px] font-mono text-pgme-blue bg-white px-1.5 py-0.5 rounded border border-blue-200">Viabilitat d'Èxit</span>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">1. Suport explícit de la Direcció</strong>
+                        <span class="text-slate-600 text-[11px]">Implicació ferma dels comandaments de custòdia per impulsar els canvis organitzatius i normatius.</span>
+                      </div>
+                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">2. Participació dels usuaris finals</strong>
+                        <span class="text-slate-600 text-[11px]">Co-disseny funcional, prova pilot a l'ACD Badalona i desplegament adaptat a les necessitats reals.</span>
+                      </div>
+                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">3. Recursos TIC i formació adequada</strong>
+                        <span class="text-slate-600 text-[11px]">Capacitat per executar la passarel·la i pla formatiu (Intranet, Teams i càpsules multimèdia).</span>
+                      </div>
+                      <div class="p-2 bg-white rounded-lg border border-blue-100 shadow-2xs">
+                        <strong class="text-slate-900 block text-[11px]">4. Seguiment estable PDCA</strong>
+                        <span class="text-slate-600 text-[11px]">Manteniment permanent del sistema d'indicadors per detectar desviacions i consolidar millores.</span>
+                      </div>
+                    </div>
                   </div>
+                </div>
 
-                  <div class="flex items-center justify-between p-2 rounded bg-slate-50 border border-slate-100">
-                    <span class="text-slate-800">3. Validació de l'ACD de Badalona com a seu oficial de la Prova Pilot (Mes 7)</span>
-                    <button class="decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-emerald-600 text-white shadow-2xs hover:bg-emerald-700 transition-all" data-approved="true">
-                      Aprovat ✓
-                    </button>
+                <!-- Efectes Esperats de la Proposta (Tancament Global) -->
+                <div class="bg-gradient-to-r from-emerald-50 via-white to-blue-50 rounded-xl border border-emerald-200 p-3">
+                  <div class="flex items-center justify-between mb-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-900">Efectes Esperats de la Proposta (De la Fragmentació a la Dada Única)</h4>
+                    <span class="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Impacte Integral PG-ME</span>
+                  </div>
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px]">
+                    <div class="p-2 rounded-lg bg-white border border-emerald-200/80 text-center">
+                      <span class="text-base font-black font-mono text-emerald-700 block">100%</span>
+                      <span class="text-slate-700 font-semibold leading-tight block">Registre a diligències i part mèdic</span>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white border border-blue-200/80 text-center">
+                      <span class="text-base font-black font-mono text-pgme-blue block">0</span>
+                      <span class="text-slate-700 font-semibold leading-tight block">Duplicitats manuals (LEAN)</span>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white border border-emerald-200/80 text-center">
+                      <span class="text-base font-black font-mono text-emerald-700 block">&le; 5%</span>
+                      <span class="text-slate-700 font-semibold leading-tight block">Risc de lesions greus</span>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white border border-blue-200/80 text-center">
+                      <span class="text-base font-black font-mono text-pgme-blue block">360&deg;</span>
+                      <span class="text-slate-700 font-semibold leading-tight block">Seguretat jurídica i drets</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- MODULAR CONTAINER: INJECT CHART HERE (STAGE 5) -->
-            <div id="chart-slot-stage-5" class="modular-chart-container p-3 text-center mt-3">
-              <div class="flex items-center justify-center gap-2 text-xs font-semibold text-slate-600">
-                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
-                <span>Contenidor Gràfic: Simulador Executiu de Presa de Decisions i Panell de Control AAE-CGIA</span>
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Component modular preparat per a la injecció del panell de control interactiu en temps real.</p>
             </div>
           </div>
 
@@ -3037,11 +3179,14 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 11,
       sectionIndex: 5,
-      name: "12. Governança: Semàfor Verd (En termini)",
-      desc: "Quadre de comandament executiu i monitoratge AAE-CGIA",
+      name: "12. Fase 5: Pla de Seguiment & Indicadors PDCA",
+      desc: "Taula oficial de 7 indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
       action: () => {
         navigateToSection(5);
         activateStage(5);
+        if (typeof setStage5Mode === 'function') {
+          setStage5Mode('monitoring');
+        }
         const greenBtn = document.querySelector('.traffic-btn[data-status="green"]');
         greenBtn?.click();
       }
@@ -3049,13 +3194,14 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 12,
       sectionIndex: 5,
-      name: "13. Governança: Resposta a Riscos & Conclusió",
-      desc: "Mesures correctores, decisió executiva i tancament",
+      name: "13. Conclusió Final: Riscos, Condicions & Impacte",
+      desc: "Limitacions, condicions imprescindibles de viabilitat i efectes esperats",
       action: () => {
         navigateToSection(5);
         activateStage(5);
-        const amberBtn = document.querySelector('.traffic-btn[data-status="amber"]');
-        amberBtn?.click();
+        if (typeof setStage5Mode === 'function') {
+          setStage5Mode('conclusion');
+        }
       }
     }
   ];
@@ -3124,7 +3270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. ESDEVENIMENT GLOBAL DE CLIC PER AVANÇAR LA PRESENTACIÓ
   document.addEventListener('click', (e) => {
     // Si l'usuari fa clic en un control interactiu específic, deixem que actuï lliurement
-    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .decision-toggle-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance');
+    const interactive = e.target.closest('button, a, input, select, textarea, .gantt-row, .traffic-btn, .stage5-tab-btn, .waypoint-item, #rail-btn-up, #rail-btn-down, #toggle-asis-btn, #toggle-tobe-btn, #pres-btn-prev, #pres-btn-next, #pres-click-advance');
     if (interactive) return;
 
     // Qualsevol clic a la diapositiva avança un pas/animació!
@@ -3489,50 +3635,71 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // --- 10. COMPONENTS INTERACTIUS DE L'ESTAT 5: SIMULADOR DE SEMÀFOR I DECISIONS ---
+  // --- 10. COMPONENTS INTERACTIUS DE L'ESTAT 5: SEGUIMENT PDCA I CONCLUSIÓ ---
+  const tabStage5Monitoring = document.getElementById('tab-stage5-monitoring');
+  const tabStage5Conclusion = document.getElementById('tab-stage5-conclusion');
+  const viewStage5Monitoring = document.getElementById('view-stage5-monitoring');
+  const viewStage5Conclusion = document.getElementById('view-stage5-conclusion');
+
+  function setStage5Mode(mode) {
+    if (mode === 'conclusion') {
+      tabStage5Conclusion?.classList.add('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Conclusion?.classList.remove('text-slate-600');
+      tabStage5Monitoring?.classList.remove('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Monitoring?.classList.add('text-slate-600');
+
+      viewStage5Monitoring?.classList.add('hidden');
+      viewStage5Conclusion?.classList.remove('hidden');
+    } else {
+      tabStage5Monitoring?.classList.add('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Monitoring?.classList.remove('text-slate-600');
+      tabStage5Conclusion?.classList.remove('bg-pgme-blue', 'text-white', 'shadow-2xs');
+      tabStage5Conclusion?.classList.add('text-slate-600');
+
+      viewStage5Conclusion?.classList.add('hidden');
+      viewStage5Monitoring?.classList.remove('hidden');
+    }
+  }
+
+  tabStage5Monitoring?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setStage5Mode('monitoring');
+  });
+
+  tabStage5Conclusion?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    setStage5Mode('conclusion');
+  });
+
   const trafficLightBtns = document.querySelectorAll('.traffic-btn');
   const trafficStatusMsg = document.getElementById('traffic-status-msg');
 
   const trafficMessages = {
     green: {
-      text: "PROJECTE EN TERMINI I OBJECTIUS (VERD): Les millores organitzatives avancen segons calendari. La passarel·la TIC està en fase d'integració i es manté la data de la Prova Pilot a l'ACD Badalona (Mes 7).",
-      classes: "bg-emerald-50 border-emerald-300 text-emerald-800"
+      html: "<strong>CHECK SUPERAT (ESTAT NORMAL):</strong> Els 7 indicadors SMART i els 4 operatius es mantenen dins dels llindars establerts. L'AAE-CGIA consolida el quadre de comandament mensual i verifica la coherència (&ge; 98%) entre Custòdia i Atestats dins el cicle PDCA.",
+      classes: "bg-emerald-50 border-emerald-300 text-emerald-900"
     },
     amber: {
-      text: "ATENCIÓ OPERATIVA (AMBRE): Es detecta una petita desviació en les sessions formatives de l'AORG per rotació de personal a OAC. S'ha activat la mesura correctora de reforç de càpsules digitals.",
-      classes: "bg-amber-50 border-amber-300 text-amber-800"
+      html: "<strong>ACT · ALERTA DE DESPLEGAMENT (&lt; 90% Usuaris Formats / &lt; 85% Procediment):</strong> L'AORG (CGIA) activa l'anàlisi de causes per rotació de personal i reforça les accions formatives mitjançant càpsules digitals, Intranet i sessions virtuals Teams.",
+      classes: "bg-amber-50 border-amber-300 text-amber-900"
     },
     red: {
-      text: "DESVIACIÓ CRÍTICA (VERMELL): Retard en el desenvolupament de la passarel·la Custòdia-Atestats per manca de recurs TIC dedicat. Es requereix intervenció urgent de la CGTIC per mantenir el calendari.",
-      classes: "bg-red-50 border-red-300 text-red-800"
+      html: "<strong>ACT · ALERTA CRÍTICA (&lt; 90% Diligències / &lt; 95% Assist. Mèdica / &gt; 8% Lesions):</strong> L'AAE (CGIA) inicia revisió d'urgència de causes arrel i desplega ajustos tecnològics a la passarel·la CGTIC, modificacions procedimentals i supervisió addicional a les ACD afectades.",
+      classes: "bg-red-50 border-red-300 text-red-900"
     }
   };
 
   trafficLightBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       const color = btn.dataset.status;
-      trafficLightBtns.forEach(b => b.classList.remove('ring-4', 'ring-offset-2', 'ring-slate-400', 'scale-110'));
-      btn.classList.add('ring-4', 'ring-offset-2', 'ring-slate-400', 'scale-110');
+      trafficLightBtns.forEach(b => b.classList.remove('ring-2', 'ring-offset-1', 'ring-emerald-600', 'ring-amber-500', 'ring-pgme-red', 'scale-105'));
+      const ringColor = color === 'green' ? 'ring-emerald-600' : (color === 'amber' ? 'ring-amber-500' : 'ring-pgme-red');
+      btn.classList.add('ring-2', 'ring-offset-1', ringColor, 'scale-105');
 
       if (trafficStatusMsg && trafficMessages[color]) {
-        trafficStatusMsg.className = `p-3.5 rounded-lg border text-xs leading-relaxed transition-all duration-300 ${trafficMessages[color].classes}`;
-        trafficStatusMsg.textContent = trafficMessages[color].text;
-      }
-    });
-  });
-
-  const decisionToggles = document.querySelectorAll('.decision-toggle-btn');
-  decisionToggles.forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const isApproved = toggle.dataset.approved === 'true';
-      if (isApproved) {
-        toggle.dataset.approved = 'false';
-        toggle.textContent = 'Pendent';
-        toggle.className = 'decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-300 transition-all';
-      } else {
-        toggle.dataset.approved = 'true';
-        toggle.textContent = 'Aprovat ✓';
-        toggle.className = 'decision-toggle-btn px-3 py-1 rounded text-xs font-semibold bg-emerald-600 text-white shadow-sm hover:bg-emerald-700 transition-all';
+        trafficStatusMsg.className = `p-2.5 rounded-lg border text-xs leading-relaxed transition-all duration-300 ${trafficMessages[color].classes}`;
+        trafficStatusMsg.innerHTML = trafficMessages[color].html;
       }
     });
   });
