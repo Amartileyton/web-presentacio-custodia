@@ -1001,8 +1001,18 @@ body::-webkit-scrollbar,
         </div>
       </div>
 
-      <!-- Punt 2 -->
+      <!-- Punt 2 (Anàlisi de l'impacte organitzatiu) -->
       <div data-target-step="2" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
+        <div class="waypoint-pill-track">
+          <div class="waypoint-pill-fill"></div>
+        </div>
+        <div class="waypoint-tooltip absolute right-7 top-1/2 -translate-y-1/2 bg-pgme-blue text-white text-xs px-3 py-1.5 rounded-md font-semibold whitespace-nowrap shadow-lg z-50">
+          ANÀLISI DE L'IMPACTE ORGANITZATIU
+        </div>
+      </div>
+
+      <!-- Punt 2b (ASME Garjola AS-IS) -->
+      <div data-target-step="3" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
         <div class="waypoint-pill-track">
           <div class="waypoint-pill-fill"></div>
         </div>
@@ -1012,7 +1022,7 @@ body::-webkit-scrollbar,
       </div>
 
       <!-- Punt 3 -->
-      <div data-target-step="3" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
+      <div data-target-step="4" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
         <div class="waypoint-pill-track">
           <div class="waypoint-pill-fill"></div>
         </div>
@@ -1022,7 +1032,7 @@ body::-webkit-scrollbar,
       </div>
 
       <!-- Punt 4 -->
-      <div data-target-step="4" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
+      <div data-target-step="5" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
         <div class="waypoint-pill-track">
           <div class="waypoint-pill-fill"></div>
         </div>
@@ -1032,7 +1042,7 @@ body::-webkit-scrollbar,
       </div>
 
       <!-- Punt 5 -->
-      <div data-target-step="5" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
+      <div data-target-step="6" class="waypoint-item relative group flex items-center justify-center cursor-pointer py-0.5">
         <div class="waypoint-pill-track">
           <div class="waypoint-pill-fill"></div>
         </div>
@@ -1083,7 +1093,7 @@ body::-webkit-scrollbar,
             </div>
 
             <h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-snug mb-3">
-              Abast Operatiu i Impacte Organitzatiu
+              Priorització i enquadrament del procés
             </h2>
 
             <p class="text-sm text-slate-600 leading-relaxed mb-4">
@@ -1117,82 +1127,9 @@ body::-webkit-scrollbar,
               </div>
             </div>
 
-            <!-- Matriu Visual d'Impacte Organitzatiu (Taula 6 Oficial) -->
-            <div class="bg-white rounded-xl border border-slate-200 p-3.5 mb-4 shadow-2xs">
-              <div class="flex items-center justify-between mb-2.5">
-                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-pgme-red animate-pulse"></span>
-                  Matriu d'Impacte Organitzatiu
-                </h4>
-                <span class="text-[10px] font-mono text-slate-400">Gravetat (1-5)</span>
-              </div>
-
-              <div class="space-y-2 text-xs">
-                <div class="flex items-center justify-between py-1 border-b border-slate-100">
-                  <div class="w-1/2">
-                    <span class="font-bold text-slate-900 block leading-tight">Coordinació i Control</span>
-                    <span class="text-[10px] text-slate-500">Fractura Custòdia - Atestats</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="severity-bar">
-                      <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span>
-                    </div>
-                    <span class="font-mono font-bold text-pgme-red text-xs">5/5</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between py-1 border-b border-slate-100">
-                  <div class="w-1/2">
-                    <span class="font-bold text-slate-900 block leading-tight">Eficiència Operativa</span>
-                    <span class="text-[10px] text-slate-500">Reiteració manual de dades</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="severity-bar">
-                      <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
-                    </div>
-                    <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between py-1 border-b border-slate-100">
-                  <div class="w-1/2">
-                    <span class="font-bold text-slate-900 block leading-tight">Qualitat i Traçabilitat</span>
-                    <span class="text-[10px] text-slate-500">Pèrdua d'informació a ACD</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="severity-bar">
-                      <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
-                    </div>
-                    <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between py-1 border-b border-slate-100">
-                  <div class="w-1/2">
-                    <span class="font-bold text-slate-900 block leading-tight">Presa de Decisions</span>
-                    <span class="text-[10px] text-slate-500">Manca de criteris operatius clars</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="severity-bar">
-                      <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
-                    </div>
-                    <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between py-1">
-                  <div class="w-1/2">
-                    <span class="font-bold text-slate-900 block leading-tight">Seguretat Jurídica</span>
-                    <span class="text-[10px] text-slate-500">Exposició i risc professional</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="severity-bar">
-                      <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
-                    </div>
-                    <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
-                  </div>
-                </div>
-              </div>
+            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 mb-4 text-xs text-slate-600 leading-relaxed">
+              <span class="font-bold text-slate-800 block mb-1">Procés / macroprocés on s'enquadra</span>
+              Procés operatiu de detenció i custòdia de persones detingudes, integrat dins del Sistema de Gestió de la Qualitat de la PG-ME i subjecte a les activitats de seguiment, inspecció i avaluació de la CGIA.
             </div>
 
             <div class="p-2.5 bg-blue-50/60 rounded-xl border border-blue-200/80 flex items-center justify-between text-xs">
@@ -1289,9 +1226,60 @@ body::-webkit-scrollbar,
         </section>
 
         <!-- ==========================================
+             SECCIÓ 2A: ANÀLISI DE L'IMPACTE ORGANITZATIU (FASE 2)
+             ========================================== -->
+        <section id="section-2-impact" class="story-section" data-step-index="2">
+          <div class="story-card p-4 sm:p-5">
+            <div class="flex items-center justify-between gap-2 mb-2.5">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-800 border border-amber-500/20">
+                FASE 2 · ANALITZAR EL PROCÉS A MILLORAR
+              </span>
+            </div>
+
+            <h2 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-snug mb-2">
+              Anàlisi de l'impacte organitzatiu
+            </h2>
+
+            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+              Tot i que els protocols corporatius són comuns, s'han detectat diferències en la documentació dels actes de custòdia, els registres administratius, la coordinació entre serveis, la traçabilitat i el seguiment dels terminis. La gestió amb registres múltiples i comprovacions manuals genera duplicitats i limita els recursos per a les funcions operatives.
+            </p>
+
+            <div class="space-y-2">
+              <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <strong class="text-xs font-bold text-slate-900 block mb-0.5">Impacte en l'eficiència</strong>
+                <p class="text-[11px] text-slate-600 leading-snug">
+                  Controls manuals, registres redundants i verificacions successives incrementen els temps de gestió i dediquen recursos a tasques administratives sense valor directe.
+                </p>
+              </div>
+
+              <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <strong class="text-xs font-bold text-slate-900 block mb-0.5">Impacte en la qualitat</strong>
+                <p class="text-[11px] text-slate-600 leading-snug">
+                  La dispersió de la informació i les diferències entre unitats augmenten el risc d'errors documentals, omissions involuntàries i inconsistències entre registres.
+                </p>
+              </div>
+
+              <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <strong class="text-xs font-bold text-slate-900 block mb-0.5">Impacte en el control intern</strong>
+                <p class="text-[11px] text-slate-600 leading-snug">
+                  La manca d'indicadors homogenis i d'eines de seguiment en temps real dificulta detectar desviacions i limita la supervisió dels comandaments.
+                </p>
+              </div>
+
+              <div class="p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+                <strong class="text-xs font-bold text-slate-900 block mb-0.5">Impacte en la satisfacció dels usuaris interns</strong>
+                <p class="text-[11px] text-slate-600 leading-snug">
+                  Els professionals perceben una excessiva càrrega administrativa i manca d'homogeneïtat, i reclamen sistemes de control més simples i fiables.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
              SECCIÓ 2: DIAGNOSI I XOC DE DADES (PINNED SCROLL)
              ========================================== -->
-        <section id="section-2" class="story-section pinned-scroll-section" data-step-index="2">
+        <section id="section-2" class="story-section pinned-scroll-section" data-step-index="3">
           <div class="story-card story-card-pinned p-4 sm:p-5">
             <div class="flex items-center justify-between gap-2 mb-2">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-800 border border-amber-500/20">
@@ -1412,7 +1400,7 @@ body::-webkit-scrollbar,
         <!-- ==========================================
              SECCIÓ 3: PROPOSTA DE VALOR I REDISSENY
              ========================================== -->
-        <section id="section-3" class="story-section" data-step-index="3">
+        <section id="section-3" class="story-section" data-step-index="4">
           <div class="story-card">
             <div class="flex items-center justify-between gap-2 mb-4">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-pgme-blue/10 text-pgme-blue border border-pgme-blue/20">
@@ -1467,7 +1455,7 @@ body::-webkit-scrollbar,
         <!-- ==========================================
              SECCIÓ 4: PLA D'IMPLANTACIÓ I PROVA PILOT
              ========================================== -->
-        <section id="section-4" class="story-section" data-step-index="4">
+        <section id="section-4" class="story-section" data-step-index="5">
           <div class="story-card">
             <div class="flex items-center justify-between gap-2 mb-4">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-purple-500/10 text-purple-800 border border-purple-500/20">
@@ -1531,7 +1519,7 @@ body::-webkit-scrollbar,
         <!-- ==========================================
              SECCIÓ 5: SEGUIMENT PDCA I CONCLUSIÓ FINAL
              ========================================== -->
-        <section id="section-5" class="story-section" data-step-index="5">
+        <section id="section-5" class="story-section" data-step-index="6">
           <div class="story-card p-4 sm:p-5">
             <div class="flex items-center justify-between gap-2 mb-3">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-800 border border-emerald-500/20">
@@ -1656,6 +1644,134 @@ body::-webkit-scrollbar,
                   Diagrama ASME Oficial PG-ME &mdash; 4 Carrils Swimlane (Model Vectorial 100% Nítid)
                 </span>
                 <span class="font-mono text-[10px] text-slate-400">Resolució Vectorial Retina 2x HD</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===============================================================
+               ESTAT VISUAL 2A: MATRIU D'IMPACTE ORGANITZATIU (#visual-stage-2-impact)
+               =============================================================== -->
+          <div id="visual-stage-2-impact" class="stage-panel flex-1 flex flex-col justify-between">
+            <div class="flex-1 flex flex-col h-full justify-between gap-3">
+              <div class="flex items-center justify-between pb-2.5 border-b border-slate-200 shrink-0">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-pgme-red animate-pulse"></span>
+                  <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-900 leading-tight">
+                      Matriu d'Impacte Organitzatiu
+                    </h3>
+                    <span class="text-[10px] text-slate-500 block">Anàlisi de l'impacte organitzatiu – Activitat 2</span>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                  Gravetat (1-5)
+                </span>
+              </div>
+
+              <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex-1 flex flex-col justify-between">
+                <div class="grid grid-cols-12 gap-3 pb-2 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                  <div class="col-span-3">Tipus d'impacte</div>
+                  <div class="col-span-4">Descripció</div>
+                  <div class="col-span-2 text-center">Gravetat (1-5)</div>
+                  <div class="col-span-3">Evidència / dada a recollir</div>
+                </div>
+
+                <div class="divide-y divide-slate-100 flex-1 flex flex-col justify-evenly text-xs">
+                  <!-- Row 1: Coordinació / control intern -->
+                  <div class="grid grid-cols-12 gap-3 items-center py-2.5">
+                    <div class="col-span-3">
+                      <span class="font-bold text-slate-900 block leading-tight">Coordinació / control intern</span>
+                    </div>
+                    <div class="col-span-4 text-[11px] text-slate-600 leading-snug">
+                      El responsable de l'ACD ha de vetllar pel registre de les contencions a les aplicacions i la comunicació a la unitat instructora per incloure-les en diligències.
+                    </div>
+                    <div class="col-span-2 flex flex-col items-center gap-1">
+                      <div class="severity-bar">
+                        <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span>
+                      </div>
+                      <span class="font-mono font-bold text-pgme-red text-xs">5/5</span>
+                    </div>
+                    <div class="col-span-3 text-[11px] text-slate-600 leading-snug">
+                      Ràtio de concordança = (contencions a Custòdia i diligències / total Custòdia) × 100
+                    </div>
+                  </div>
+
+                  <!-- Row 2: Eficiència -->
+                  <div class="grid grid-cols-12 gap-3 items-center py-2.5">
+                    <div class="col-span-3">
+                      <span class="font-bold text-slate-900 block leading-tight">Eficiència</span>
+                    </div>
+                    <div class="col-span-4 text-[11px] text-slate-600 leading-snug">
+                      Registre de la contenció a Custòdia, comunicació a OAC/UI per a diligències i garantia d'assistència sanitària documentada.
+                    </div>
+                    <div class="col-span-2 flex flex-col items-center gap-1">
+                      <div class="severity-bar">
+                        <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
+                      </div>
+                      <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
+                    </div>
+                    <div class="col-span-3 text-[11px] text-slate-600 leading-snug">
+                      Registres de novetats, enregistraments CTTV, diligències policials i assentaments a Custòdia.
+                    </div>
+                  </div>
+
+                  <!-- Row 3: Qualitat -->
+                  <div class="grid grid-cols-12 gap-3 items-center py-2.5">
+                    <div class="col-span-3">
+                      <span class="font-bold text-slate-900 block leading-tight">Qualitat</span>
+                    </div>
+                    <div class="col-span-4 text-[11px] text-slate-600 leading-snug">
+                      Manca d'estandardització entre les 96 ACD en registrar i comunicar contencions, amb pèrdua de traçabilitat entre custòdia i instrucció.
+                    </div>
+                    <div class="col-span-2 flex flex-col items-center gap-1">
+                      <div class="severity-bar">
+                        <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
+                      </div>
+                      <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
+                    </div>
+                    <div class="col-span-3 text-[11px] text-slate-600 leading-snug">
+                      Ràtio de registre = (contencions registrades / total efectuades) × 100
+                    </div>
+                  </div>
+
+                  <!-- Row 4: Presa de decisions -->
+                  <div class="grid grid-cols-12 gap-3 items-center py-2.5">
+                    <div class="col-span-3">
+                      <span class="font-bold text-slate-900 block leading-tight">Presa de decisions</span>
+                    </div>
+                    <div class="col-span-4 text-[11px] text-slate-600 leading-snug">
+                      La persona responsable de l'ACD no disposa de criteris operatius detallats que justifiquin la decisió de contenir.
+                    </div>
+                    <div class="col-span-2 flex flex-col items-center gap-1">
+                      <div class="severity-bar">
+                        <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
+                      </div>
+                      <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
+                    </div>
+                    <div class="col-span-3 text-[11px] text-slate-600 leading-snug">
+                      Concreció de criteris operatius a PRO 006 (Estada ACD) i IO 002 (Reducció i contenció).
+                    </div>
+                  </div>
+
+                  <!-- Row 5: Satisfacció dels usuaris interns -->
+                  <div class="grid grid-cols-12 gap-3 items-center py-2.5">
+                    <div class="col-span-3">
+                      <span class="font-bold text-slate-900 block leading-tight">Satisfacció dels usuaris interns</span>
+                    </div>
+                    <div class="col-span-4 text-[11px] text-slate-600 leading-snug">
+                      Percepció de baixa utilitat del procés entre efectius d'OAC i Custòdia i d'inseguretat jurídica quan el procés falla.
+                    </div>
+                    <div class="col-span-2 flex flex-col items-center gap-1">
+                      <div class="severity-bar">
+                        <span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment active-high"></span><span class="severity-segment"></span>
+                      </div>
+                      <span class="font-mono font-bold text-amber-700 text-xs">4/5</span>
+                    </div>
+                    <div class="col-span-3 text-[11px] text-slate-600 leading-snug">
+                      Enquesta interna de satisfacció a les ACD sobre utilitat, eines i seguretat jurídica.
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2193,7 +2309,7 @@ body::-webkit-scrollbar,
     <button id="pres-btn-prev" class="w-6 h-6 rounded-full bg-slate-800 hover:bg-pgme-blue flex items-center justify-center transition-colors text-slate-300 hover:text-white cursor-pointer" title="Pas Anterior (o Fletxa Esquerra)">◀</button>
     <div class="flex items-center gap-2 cursor-pointer" id="pres-click-advance" title="Clic per avançar el següent pas / diapositiva">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-      <span id="pres-step-badge" class="font-mono font-bold text-emerald-300">Pas 1 / 14</span>
+      <span id="pres-step-badge" class="font-mono font-bold text-emerald-300">Pas 1 / 15</span>
       <span class="text-slate-500">|</span>
       <span id="pres-step-name" class="text-slate-200 text-[11px] max-w-[200px] sm:max-w-[340px] truncate">0. Caràtula Oficial PG-ME · Grup 3</span>
     </div>
@@ -2907,7 +3023,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Progrés per al diagrama de la secció actual
 
       // SINCRONITZACIÓ AMB LA FASE 2: Diagrama ASME
-      if (i === 2) {
+      if (i === 3) {
         if (!isGarjolaPlaying && !window.isGarjolaPresentationControlled) {
           const diagramProgress = Math.min(1.0, (percent / 85));
           if (scrollY < start) {
@@ -3191,7 +3307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 5. ACTIVACIÓ D'ESTAT VISUAL DRET (STAGE PANELS) ---
   window.activateStage = function activateStage(stageIndex) {
     if (stageIndex < 0 || stageIndex >= totalSections) return;
-    const stagePanelMap = [0, 1, 2, 3, 4, 5];
+    const stagePanelMap = [0, 1, 2, 3, 4, 5, 6];
     const targetPanelIdx = stagePanelMap[stageIndex] !== undefined ? stagePanelMap[stageIndex] : 0;
     
     // Evitar re-execució si ja està actiu (elimina qualsevol parpelleig)
@@ -3221,7 +3337,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Si s'activa la Secció 2 (ASME Pinned) en navegació lliure, s'assegura el renderitzat inicial
-    if (stageIndex === 2 && !window.isGarjolaPresentationControlled) {
+    if (stageIndex === 3 && !window.isGarjolaPresentationControlled) {
       if (typeof renderAsmeProgress === 'function') renderAsmeProgress(0.0);
     }
 
@@ -3230,6 +3346,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const stepNames = [
         "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Abast Territorial i 96 ACDs)",
         "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Diagrama ASME General PG-ME)",
+        "Fase 2: ANALITZAR EL PROCÉS A MILLORAR (Anàlisi de l'impacte organitzatiu)",
         "Fase 2: ANALITZAR EL PROCÉS A MILLORAR (Subprocés de Contenció en Garjola)",
         "Fase 3: PROPOSAR MILLORES EN EL PROCÉS",
         "Fase 4: IMPLEMENTAR MILLORES EN EL PROCÉS",
@@ -3431,17 +3548,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 3,
+      step: 4,
       sectionIndex: 2,
-      name: "4. Subprocés ASME Garjola AS-IS (Estructura)",
+      name: "4. Fase 2: Anàlisi de l'impacte organitzatiu",
+      desc: "Matriu d'Impacte Organitzatiu (Activitat 2)",
+      action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+        navigateToSection(2);
+        activateStage(2);
+      }
+    },
+    {
+      step: 5,
+      sectionIndex: 3,
+      name: "5. Subprocés ASME Garjola AS-IS (Estructura)",
       desc: "Estructura inicial buida de 3 carrils (ACD, Unitat Instructora, Serveis Mèdics)",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         window.isGarjolaPresentationControlled = true;
-        navigateToSection(2);
-        activateStage(2);
+        navigateToSection(3);
+        activateStage(3);
         if (typeof setMetricsDisplay === 'function') {
           setMetricsDisplay(0.0);
           if (metricsStatusBadge) {
@@ -3455,16 +3585,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 4,
-      sectionIndex: 2,
-      name: "5. Animació Subprocés ASME Garjola AS-IS & Indicadors",
+      step: 6,
+      sectionIndex: 3,
+      name: "6. Animació Subprocés ASME Garjola AS-IS & Indicadors",
       desc: "Dibuix fluid suau de les 13 caixes operatives i activació dels 4 indicadors clau",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         window.isGarjolaPresentationControlled = true;
-        navigateToSection(2);
-        activateStage(2);
+        navigateToSection(3);
+        activateStage(3);
         if (typeof window.playAsmeGarjolaAnimation === 'function') {
           window.playAsmeGarjolaAnimation(6500);
         }
@@ -3478,91 +3608,91 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 5,
-      sectionIndex: 3,
-      name: "6. Proposta de Valor: Diagnosi AS-IS",
+      step: 7,
+      sectionIndex: 4,
+      name: "7. Proposta de Valor: Diagnosi AS-IS",
       desc: "Deficiències operatives, paper extraviable i manca d'alertes",
       action: () => {
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
-        navigateToSection(3);
-        activateStage(3);
+        navigateToSection(4);
+        activateStage(4);
         setAsIsToBeMode('asis');
-      }
-    },
-    {
-      step: 6,
-      sectionIndex: 3,
-      name: "7. Proposta de Valor: Principis Clau TO-BE",
-      desc: "Model de 3 carrils: Registre Únic ACD, Passarel·la SIP i Formulari Mèdic Integrat",
-      action: () => {
-        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
-        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
-        navigateToSection(3);
-        activateStage(3);
-        setAsIsToBeMode('tobe-summary');
-      }
-    },
-    {
-      step: 7,
-      sectionIndex: 3,
-      name: "8. Proposta de Valor: Diagrama ASME Redissenyat TO-BE",
-      desc: "Diagrama animat (13 caixes): interoperabilitat 100%, avís ≤ 30 min i flux digital",
-      action: () => {
-        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
-        navigateToSection(3);
-        activateStage(3);
-        setAsIsToBeMode('tobe-diagram');
       }
     },
     {
       step: 8,
       sectionIndex: 4,
-      name: "9. Pla Implantació: Gantt F1 Organització (M1-M2)",
-      desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
+      name: "8. Proposta de Valor: Principis Clau TO-BE",
+      desc: "Model de 3 carrils: Registre Únic ACD, Passarel·la SIP i Formulari Mèdic Integrat",
       action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(4);
         activateStage(4);
+        setAsIsToBeMode('tobe-summary');
+      }
+    },
+    {
+      step: 9,
+      sectionIndex: 4,
+      name: "9. Proposta de Valor: Diagrama ASME Redissenyat TO-BE",
+      desc: "Diagrama animat (13 caixes): interoperabilitat 100%, avís ≤ 30 min i flux digital",
+      action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        navigateToSection(4);
+        activateStage(4);
+        setAsIsToBeMode('tobe-diagram');
+      }
+    },
+    {
+      step: 10,
+      sectionIndex: 5,
+      name: "10. Pla Implantació: Gantt F1 Organització (M1-M2)",
+      desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
+      action: () => {
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+        navigateToSection(5);
+        activateStage(5);
         if (typeof window.animateGanttPhase === 'function') {
           window.animateGanttPhase(1);
         }
       }
     },
     {
-      step: 9,
-      sectionIndex: 4,
-      name: "10. Pla Implantació: Gantt F2 TIC (M3-M5)",
+      step: 11,
+      sectionIndex: 5,
+      name: "11. Pla Implantació: Gantt F2 TIC (M3-M5)",
       desc: "Accions 6 a 8: Connectar Custòdia i Atestats (Font única de dades)",
       action: () => {
-        navigateToSection(4);
-        activateStage(4);
+        navigateToSection(5);
+        activateStage(5);
         if (typeof window.animateGanttPhase === 'function') {
           window.animateGanttPhase(2);
         }
       }
     },
     {
-      step: 10,
-      sectionIndex: 4,
-      name: "11. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
+      step: 12,
+      sectionIndex: 5,
+      name: "12. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
       desc: "Accions 9 a 14: Fita Clau Prova Pilot ACD Badalona (Mes 7)",
       action: () => {
-        navigateToSection(4);
-        activateStage(4);
+        navigateToSection(5);
+        activateStage(5);
         if (typeof window.animateGanttPhase === 'function') {
           window.animateGanttPhase(3);
         }
       }
     },
     {
-      step: 11,
-      sectionIndex: 5,
-      name: "12. Fase 5: Pla de Seguiment & Indicadors PDCA",
+      step: 13,
+      sectionIndex: 6,
+      name: "13. Fase 5: Pla de Seguiment & Indicadors PDCA",
       desc: "Taula oficial de 7 indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
       action: () => {
-        navigateToSection(5);
-        activateStage(5);
+        navigateToSection(6);
+        activateStage(6);
         if (typeof setStage5Mode === 'function') {
           setStage5Mode('monitoring');
         }
@@ -3571,13 +3701,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 12,
-      sectionIndex: 5,
-      name: "13. Conclusió Final: Riscos, Condicions & Impacte",
+      step: 14,
+      sectionIndex: 6,
+      name: "14. Conclusió Final: Riscos, Condicions & Impacte",
       desc: "Limitacions, condicions imprescindibles de viabilitat i efectes esperats",
       action: () => {
-        navigateToSection(5);
-        activateStage(5);
+        navigateToSection(6);
+        activateStage(6);
         if (typeof setStage5Mode === 'function') {
           setStage5Mode('conclusion');
         }
@@ -3713,7 +3843,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       window.presentationController.goToStep(PRESENTATION_STEPS.length - 1);
     } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
-      const stepIdx = parseInt(e.key, 10) - 1;
+      const phaseSectionMap = [0, 2, 4, 5, 6];
+      const stepIdx = phaseSectionMap[parseInt(e.key, 10) - 1];
       const targetStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === stepIdx);
       if (targetStep !== -1) {
         window.presentationController.goToStep(targetStep);

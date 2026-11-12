@@ -703,7 +703,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Progrés per al diagrama de la secció actual
 
       // SINCRONITZACIÓ AMB LA FASE 2: Diagrama ASME
-      if (i === 2) {
+      if (i === 3) {
         if (!isGarjolaPlaying && !window.isGarjolaPresentationControlled) {
           const diagramProgress = Math.min(1.0, (percent / 85));
           if (scrollY < start) {
@@ -987,7 +987,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 5. ACTIVACIÓ D'ESTAT VISUAL DRET (STAGE PANELS) ---
   window.activateStage = function activateStage(stageIndex) {
     if (stageIndex < 0 || stageIndex >= totalSections) return;
-    const stagePanelMap = [0, 1, 2, 3, 4, 5];
+    const stagePanelMap = [0, 1, 2, 3, 4, 5, 6];
     const targetPanelIdx = stagePanelMap[stageIndex] !== undefined ? stagePanelMap[stageIndex] : 0;
     
     // Evitar re-execució si ja està actiu (elimina qualsevol parpelleig)
@@ -1017,7 +1017,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Si s'activa la Secció 2 (ASME Pinned) en navegació lliure, s'assegura el renderitzat inicial
-    if (stageIndex === 2 && !window.isGarjolaPresentationControlled) {
+    if (stageIndex === 3 && !window.isGarjolaPresentationControlled) {
       if (typeof renderAsmeProgress === 'function') renderAsmeProgress(0.0);
     }
 
@@ -1026,6 +1026,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const stepNames = [
         "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Abast Territorial i 96 ACDs)",
         "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Diagrama ASME General PG-ME)",
+        "Fase 2: ANALITZAR EL PROCÉS A MILLORAR (Anàlisi de l'impacte organitzatiu)",
         "Fase 2: ANALITZAR EL PROCÉS A MILLORAR (Subprocés de Contenció en Garjola)",
         "Fase 3: PROPOSAR MILLORES EN EL PROCÉS",
         "Fase 4: IMPLEMENTAR MILLORES EN EL PROCÉS",
@@ -1227,17 +1228,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 3,
+      step: 4,
       sectionIndex: 2,
-      name: "4. Subprocés ASME Garjola AS-IS (Estructura)",
+      name: "4. Fase 2: Anàlisi de l'impacte organitzatiu",
+      desc: "Matriu d'Impacte Organitzatiu (Activitat 2)",
+      action: () => {
+        if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+        navigateToSection(2);
+        activateStage(2);
+      }
+    },
+    {
+      step: 5,
+      sectionIndex: 3,
+      name: "5. Subprocés ASME Garjola AS-IS (Estructura)",
       desc: "Estructura inicial buida de 3 carrils (ACD, Unitat Instructora, Serveis Mèdics)",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         window.isGarjolaPresentationControlled = true;
-        navigateToSection(2);
-        activateStage(2);
+        navigateToSection(3);
+        activateStage(3);
         if (typeof setMetricsDisplay === 'function') {
           setMetricsDisplay(0.0);
           if (metricsStatusBadge) {
@@ -1251,16 +1265,16 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 4,
-      sectionIndex: 2,
-      name: "5. Animació Subprocés ASME Garjola AS-IS & Indicadors",
+      step: 6,
+      sectionIndex: 3,
+      name: "6. Animació Subprocés ASME Garjola AS-IS & Indicadors",
       desc: "Dibuix fluid suau de les 13 caixes operatives i activació dels 4 indicadors clau",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         window.isGarjolaPresentationControlled = true;
-        navigateToSection(2);
-        activateStage(2);
+        navigateToSection(3);
+        activateStage(3);
         if (typeof window.playAsmeGarjolaAnimation === 'function') {
           window.playAsmeGarjolaAnimation(6500);
         }
@@ -1274,91 +1288,91 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 5,
-      sectionIndex: 3,
-      name: "6. Proposta de Valor: Diagnosi AS-IS",
+      step: 7,
+      sectionIndex: 4,
+      name: "7. Proposta de Valor: Diagnosi AS-IS",
       desc: "Deficiències operatives, paper extraviable i manca d'alertes",
       action: () => {
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
-        navigateToSection(3);
-        activateStage(3);
+        navigateToSection(4);
+        activateStage(4);
         setAsIsToBeMode('asis');
-      }
-    },
-    {
-      step: 6,
-      sectionIndex: 3,
-      name: "7. Proposta de Valor: Principis Clau TO-BE",
-      desc: "Model de 3 carrils: Registre Únic ACD, Passarel·la SIP i Formulari Mèdic Integrat",
-      action: () => {
-        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
-        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
-        navigateToSection(3);
-        activateStage(3);
-        setAsIsToBeMode('tobe-summary');
-      }
-    },
-    {
-      step: 7,
-      sectionIndex: 3,
-      name: "8. Proposta de Valor: Diagrama ASME Redissenyat TO-BE",
-      desc: "Diagrama animat (13 caixes): interoperabilitat 100%, avís ≤ 30 min i flux digital",
-      action: () => {
-        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
-        navigateToSection(3);
-        activateStage(3);
-        setAsIsToBeMode('tobe-diagram');
       }
     },
     {
       step: 8,
       sectionIndex: 4,
-      name: "9. Pla Implantació: Gantt F1 Organització (M1-M2)",
-      desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
+      name: "8. Proposta de Valor: Principis Clau TO-BE",
+      desc: "Model de 3 carrils: Registre Únic ACD, Passarel·la SIP i Formulari Mèdic Integrat",
       action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
         if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
         navigateToSection(4);
         activateStage(4);
+        setAsIsToBeMode('tobe-summary');
+      }
+    },
+    {
+      step: 9,
+      sectionIndex: 4,
+      name: "9. Proposta de Valor: Diagrama ASME Redissenyat TO-BE",
+      desc: "Diagrama animat (13 caixes): interoperabilitat 100%, avís ≤ 30 min i flux digital",
+      action: () => {
+        if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
+        navigateToSection(4);
+        activateStage(4);
+        setAsIsToBeMode('tobe-diagram');
+      }
+    },
+    {
+      step: 10,
+      sectionIndex: 5,
+      name: "10. Pla Implantació: Gantt F1 Organització (M1-M2)",
+      desc: "Accions 1 a 5: Redisseny TO-BE, funcions i model de registre",
+      action: () => {
+        if (typeof window.stopAsmeToBeAnimation === 'function') window.stopAsmeToBeAnimation();
+        navigateToSection(5);
+        activateStage(5);
         if (typeof window.animateGanttPhase === 'function') {
           window.animateGanttPhase(1);
         }
       }
     },
     {
-      step: 9,
-      sectionIndex: 4,
-      name: "10. Pla Implantació: Gantt F2 TIC (M3-M5)",
+      step: 11,
+      sectionIndex: 5,
+      name: "11. Pla Implantació: Gantt F2 TIC (M3-M5)",
       desc: "Accions 6 a 8: Connectar Custòdia i Atestats (Font única de dades)",
       action: () => {
-        navigateToSection(4);
-        activateStage(4);
+        navigateToSection(5);
+        activateStage(5);
         if (typeof window.animateGanttPhase === 'function') {
           window.animateGanttPhase(2);
         }
       }
     },
     {
-      step: 10,
-      sectionIndex: 4,
-      name: "11. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
+      step: 12,
+      sectionIndex: 5,
+      name: "12. Pla Implantació: Gantt F3 Pilot Badalona (M1-M7)",
       desc: "Accions 9 a 14: Fita Clau Prova Pilot ACD Badalona (Mes 7)",
       action: () => {
-        navigateToSection(4);
-        activateStage(4);
+        navigateToSection(5);
+        activateStage(5);
         if (typeof window.animateGanttPhase === 'function') {
           window.animateGanttPhase(3);
         }
       }
     },
     {
-      step: 11,
-      sectionIndex: 5,
-      name: "12. Fase 5: Pla de Seguiment & Indicadors PDCA",
+      step: 13,
+      sectionIndex: 6,
+      name: "13. Fase 5: Pla de Seguiment & Indicadors PDCA",
       desc: "Taula oficial de 7 indicadors SMART, llindars d'alerta i cicle PDCA (AAE-CGIA)",
       action: () => {
-        navigateToSection(5);
-        activateStage(5);
+        navigateToSection(6);
+        activateStage(6);
         if (typeof setStage5Mode === 'function') {
           setStage5Mode('monitoring');
         }
@@ -1367,13 +1381,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     },
     {
-      step: 12,
-      sectionIndex: 5,
-      name: "13. Conclusió Final: Riscos, Condicions & Impacte",
+      step: 14,
+      sectionIndex: 6,
+      name: "14. Conclusió Final: Riscos, Condicions & Impacte",
       desc: "Limitacions, condicions imprescindibles de viabilitat i efectes esperats",
       action: () => {
-        navigateToSection(5);
-        activateStage(5);
+        navigateToSection(6);
+        activateStage(6);
         if (typeof setStage5Mode === 'function') {
           setStage5Mode('conclusion');
         }
@@ -1509,7 +1523,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       window.presentationController.goToStep(PRESENTATION_STEPS.length - 1);
     } else if (['1', '2', '3', '4', '5'].includes(e.key)) {
-      const stepIdx = parseInt(e.key, 10) - 1;
+      const phaseSectionMap = [0, 2, 4, 5, 6];
+      const stepIdx = phaseSectionMap[parseInt(e.key, 10) - 1];
       const targetStep = PRESENTATION_STEPS.findIndex(s => s.sectionIndex === stepIdx);
       if (targetStep !== -1) {
         window.presentationController.goToStep(targetStep);
