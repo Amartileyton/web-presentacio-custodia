@@ -1023,7 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Actualitzar etiqueta de text al panell dret
     if (currentStepIndicator) {
       const stepNames = [
-        "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Abast Territorial i 97 ACDs)",
+        "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Abast Territorial i 96 ACDs)",
         "Fase 1: IDENTIFICAR EL PROCÉS A MILLORAR (Diagrama ASME General PG-ME)",
         "Fase 2: ANALITZAR EL PROCÉS A MILLORAR (Subprocés de Contenció en Garjola)",
         "Fase 3: PROPOSAR MILLORES EN EL PROCÉS",
@@ -1183,8 +1183,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       step: 1,
       sectionIndex: 0,
-      name: "1. Abast Territorial & 97 ACDs",
-      desc: "Mapa de Catalunya amb 97 ACDs i senyals sonar actives",
+      name: "1. Abast Territorial & 96 ACDs",
+      desc: "Mapa de Catalunya amb 96 ACDs i senyals sonar actives",
       action: () => {
         if (typeof window.stopAsmeGeneralAnimation === 'function') window.stopAsmeGeneralAnimation();
         if (typeof window.stopAsmeGarjolaAnimation === 'function') window.stopAsmeGarjolaAnimation();
